@@ -229,3 +229,5 @@ void TouchDisplayModule::processAfterStartupDelay()
 // {
 //     return 10;
 // }
+
+TouchDisplayModule openknxTouchDisplayModule;

@@ -17,7 +17,8 @@
 #ifndef LV_CONF_H
 #define LV_CONF_H
 
-#include <stdint.h>
+// needed to remove this include to make it compile with latest tool chain version
+//#include <stdint.h>
 
 /*====================
    COLOR SETTINGS

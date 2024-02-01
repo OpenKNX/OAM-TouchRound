@@ -54,3 +54,5 @@ class TouchDisplayModule : public OpenKNX::Module
 		inline static int16_t lastValue = 0;
 		inline static int16_t last2Value = 0;
 };
+
+extern TouchDisplayModule openknxTouchDisplayModule;

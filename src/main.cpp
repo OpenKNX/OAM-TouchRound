@@ -6,7 +6,7 @@ void setup()
 {
     const uint8_t firmwareRevision = 0;
     openknx.init(firmwareRevision);
-    openknx.addModule(1, new TouchDisplayModule());
+    openknx.addModule(1, openknxTouchDisplayModule);
     openknx.setup();
 }
 
