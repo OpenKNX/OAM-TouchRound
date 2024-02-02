@@ -82,7 +82,7 @@ void TouchDisplayModule::setup1(bool configured)
     }
 }
 
-void TouchDisplayModule::lv_log(const char * buf)
+void TouchDisplayModule::lv_log(lv_log_level_t level, const char * buf)
 {
 //     logDebug("lvgl", buf);
 }
@@ -172,7 +172,7 @@ void TouchDisplayModule::loadPage(int channel)
     logDebug("Display", "type: %i", ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex)-1);
     TouchDisplayModule::currentScreen = screenTypes[ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex)-1];
     setTextForChannel(TouchDisplayModule::currentScreenIndex);
-    lv_scr_load(currentScreen);
+    lv_screen_load(currentScreen);
     //lv_scr_load_anim(currentScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
     //_ui_screen_change(&currentScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, screenInits[TouchDisplayModule::currentScreenIndex]);
 }

@@ -31,7 +31,7 @@ class TouchDisplayModule : public OpenKNX::Module
 			AUTO
 		};
 
-		static void lv_log(const char * buf);
+		static void lv_log(lv_log_level_t level, const char * buf);
 		static void handleGesture(lv_event_t * event);
 		static void handleValues(lv_event_t * event);
 		static void resetDisplayTimeout();

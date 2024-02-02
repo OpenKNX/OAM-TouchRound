@@ -40,7 +40,7 @@ void _ui_roller_set_property( lv_obj_t *target, int id, int val);
 #define _UI_SLIDER_PROPERTY_VALUE_WITH_ANIM 1
 void _ui_slider_set_property( lv_obj_t *target, int id, int val);
 
-void _ui_screen_change( lv_obj_t ** target, lv_scr_load_anim_t fademode, int spd, int delay, void (*target_init)(void));
+void _ui_screen_change( lv_obj_t ** target, lv_screen_load_anim_t fademode, int spd, int delay, void (*target_init)(void));
 
 void _ui_screen_delete( lv_obj_t ** target );
 
@@ -113,7 +113,8 @@ void _ui_slider_set_text_value( lv_obj_t *trg, lv_obj_t *src, const char *prefix
 
 void _ui_checked_set_text_value( lv_obj_t *trg, lv_obj_t *src, const char *txt_on, const char *txt_off);
 
-void _ui_spinbox_step(lv_obj_t * target, int val);
+void _ui_spinbox_step(lv_obj_t * target, int val)
+;
 
 #ifdef __cplusplus
 } /*extern "C"*/
