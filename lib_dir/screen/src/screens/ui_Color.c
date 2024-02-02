@@ -4,6 +4,7 @@
 // Project name: Visu
 
 #include "../ui.h"
+#include "lv_colorwheel.h"
 
 void ui_Color_screen_init(void)
 {
