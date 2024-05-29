@@ -36,9 +36,10 @@ class TouchDisplayModule : public OpenKNX::Module
 		static void handleValues(lv_event_t * event);
 		static void resetDisplayTimeout();
 		static void display_pressed();
-		static void setTextForChannel(int index);
-		static bool checkPageActive(int index);
-		static void loadPage(int index);
+		static void setTextForChannel(int channel);
+		static bool checkPageActive(int channel);
+		static uint8_t getPageType(int channel);
+		static void loadPage(int channel);
 
 		inline static lv_obj_t* screenTypes[VISU_MAX_PAGE];
 		inline static lv_obj_t* screenLabels[VISU_MAX_PAGE];

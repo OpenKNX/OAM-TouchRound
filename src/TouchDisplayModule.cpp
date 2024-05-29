@@ -5,12 +5,12 @@
 
 const std::string TouchDisplayModule::name()
 {
-    return "Touch Display";
+    return "TouchRound";
 }
 
 const std::string TouchDisplayModule::version()
 {
-    return "0.0dev";
+    return MAIN_Version;
 }
 
 void TouchDisplayModule::setup(bool configured)
@@ -60,13 +60,19 @@ void TouchDisplayModule::setup1(bool configured)
     bool flag = false;
     if(configured)
     {
-        for(int i = 0; i < 2; i++)
+        #ifdef USE_OPENKNXPRODUCER
+            uint16_t channelCount = ParamTCH_VisibleChannels;
+        #else
+            uint16_t channelCount = 2;
+        #endif
+
+        for(uint16_t i = 0; i < channelCount; i++)
         {
             if(checkPageActive(i))
             {
                 flag = true;
                 loadPage(i);
-                currentScreen = screenTypes[ParamPAGE_typeIndex(i)-1];
+                currentScreen = screenTypes[getPageType(i)];
                 TouchDisplayModule::currentScreenIndex = i;
                 break;
             }
@@ -169,8 +175,8 @@ void TouchDisplayModule::handleGesture(lv_event_t * event)
 void TouchDisplayModule::loadPage(int channel)
 {
     logDebug("Display", "Loading Page %i", channel);
-    logDebug("Display", "type: %i", ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex)-1);
-    TouchDisplayModule::currentScreen = screenTypes[ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex)-1];
+    logDebug("Display", "type: %i", getPageType(TouchDisplayModule::currentScreenIndex));
+    TouchDisplayModule::currentScreen = screenTypes[getPageType(TouchDisplayModule::currentScreenIndex)];
     setTextForChannel(TouchDisplayModule::currentScreenIndex);
     lv_scr_load(currentScreen);
     //lv_scr_load_anim(currentScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
@@ -179,12 +185,30 @@ void TouchDisplayModule::loadPage(int channel)
 
 bool TouchDisplayModule::checkPageActive(int channel)
 {
-     return ParamPAGE_typeIndex(channel) != 0;
+    #ifdef USE_OPENKNXPRODUCER
+        return ((knx.paramByte(TCH_ChannelActive + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelActiveMask) >> TCH_ChannelActiveShift) > 0;
+    #else
+        return ParamPAGE_typeIndex(channel) != 0;
+    #endif
+}
+
+uint8_t TouchDisplayModule::getPageType(int channel)
+{
+    #ifdef USE_OPENKNXPRODUCER
+        return (knx.paramByte(TCH_ChannelPageType + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelPageTypeMask) >> TCH_ChannelPageTypeShift;
+    #else
+        return ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex) - 1;
+    #endif
 }
 
 void TouchDisplayModule::setTextForChannel(int channel)
 {
-    char *display = (char*)ParamPAGE_displayIndex(channel);
+    #ifdef USE_OPENKNXPRODUCER
+        char *display = (char*)knx.paramData(TCH_ChannelDisplayName + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize);
+    #else
+        char *display = (char*)ParamPAGE_displayIndex(channel);
+    #endif
+
     println(display);
     lv_label_set_text(screenLabels[channel], display);
 }

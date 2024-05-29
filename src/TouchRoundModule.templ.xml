@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+  <ManufacturerData>
+    <Manufacturer>
+      <ApplicationPrograms>
+        <ApplicationProgram>
+          <Static>
+            <Parameters>
+              <Parameter Id="%AID%_P-%T%%CCC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" Access="Read" />
+              <Union SizeInBit="136">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%001" Name="Channel%C%Active" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ChannelActive" Text="Kanalaktivität" Value="0" />
+                <Parameter Id="%AID%_UP-%T%%CCC%002" Name="Channel%C%PageType" Offset="0" BitOffset="2" ParameterType="%AID%_PT-PageType" Text="Seitentyp" Value="0" />
+                <!-- 4 bit -->
+                <Parameter Id="%AID%_UP-%T%%CCC%003" Name="Channel%C%DisplayName" ParameterType="%AID%_PT-Text16Byte" Offset="1" BitOffset="0" Text="Anzeigenname" Value="0" />
+              </Union>
+            </Parameters>
+            <ParameterRefs>
+              <ParameterRef Id="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" RefId="%AID%_P-%T%%CCC%000" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_UP-%T%%CCC%001" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_UP-%T%%CCC%002" />
+              <ParameterRef Id="%AID%_UP-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_UP-%T%%CCC%003" />
+            </ParameterRefs>
+            <ComObjectTable>
+            </ComObjectTable>
+            <ComObjectRefs>
+            </ComObjectRefs>
+          </Static>
+          <Dynamic>
+            <ChannelIndependentBlock> 
+              <ParameterBlock Id="%AID%_PB-nnn" Name="TCH%C%Page" Text="Seite %C%: {{0: ...}}" TextParameterRefId="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" HelpContext="Empty" ShowInComObjectTree="true">
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
+                <!-- Channel name -->
+                <ParameterRefRef RefId="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" IndentLevel="1" />
+                <ParameterRefRef RefId="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101" IndentLevel="1" />
+
+                <choose ParamRefId="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101">
+                  <when test="&gt;0">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Seitendefinition" UIHint="Headline" />
+                    <ParameterRefRef RefId="%AID%_UP-%T%%CCC%002_R-%T%%CCC%00201" IndentLevel="1" />
+                    <ParameterRefRef RefId="%AID%_UP-%T%%CCC%003_R-%T%%CCC%00301" IndentLevel="1" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>
