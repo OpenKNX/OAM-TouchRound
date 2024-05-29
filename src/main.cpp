@@ -12,7 +12,7 @@ void setup()
 
 void loop()
 {
-	openknx.loop();
+    openknx.loop();
 }
 
 #ifdef OPENKNX_DUALCORE
