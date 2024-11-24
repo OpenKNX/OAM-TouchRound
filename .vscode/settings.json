@@ -6,6 +6,7 @@
         "ostream": "cpp",
         "*.tcc": "cpp",
         "algorithm": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "pio_spi_18bit.pio.h": "c"
     }
 }

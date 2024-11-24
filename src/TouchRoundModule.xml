@@ -17,7 +17,7 @@
 
     <op:define prefix="BASE" ModuleType="1"
               share="../lib/OGM-Common/src/Common.share.xml">
-      <op:verify File="../lib/OGM-Common/library.json" ModuleVersion="1.1" />
+      <op:verify File="../lib/OGM-Common/library.json" ModuleVersion="1.2" />
     </op:define>
 
     <op:define prefix="TCH"
@@ -34,7 +34,7 @@
               NumChannels="1"
               KoOffset="100"
               ModuleType="1" >
-      <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="3.2" />
+      <op:verify File="../lib/OFM-LogicModule/library.json" ModuleVersion="3.3" />
     </op:define>
 
     <op:define prefix="BTN"
@@ -43,7 +43,7 @@
               NumChannels="1"
               KoOffset="400"
               ModuleType="3" >
-      <op:verify File="../lib/OFM-VirtualButton/library.json" ModuleVersion="0.3" />
+      <op:verify File="../lib/OFM-VirtualButton/library.json" ModuleVersion="0.5" />
     </op:define>
 
     <generate />
