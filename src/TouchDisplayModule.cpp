@@ -95,7 +95,7 @@ void TouchDisplayModule::lv_log(lv_log_level_t level, const char * buf)
 void TouchDisplayModule::handleValues(lv_event_t *event)
 {
     TouchDisplayModule::resetDisplayTimeout();
-    switch (event->code)
+    switch (lv_event_get_code(event))
     {
     case LV_EVENT_PRESSED:
     {
