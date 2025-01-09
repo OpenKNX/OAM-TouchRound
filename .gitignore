@@ -4,3 +4,9 @@ lib/*
 include/versions.h
 *.knxprod
 knxprod.h
+**/*.debug.xml
+release*/*
+src/*.baggages
+compile_commands.json
+include/versions.h
+data/
