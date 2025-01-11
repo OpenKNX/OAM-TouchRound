@@ -26,7 +26,33 @@ void TouchDisplayModule::setup1(bool configured)
 
     lv_init();
 
-    lv_xiao_disp_init();
+    logErrorP("Display init");
+
+#if defined(XIAO_BL)
+    pinMode(XIAO_BL, OUTPUT); // Turn on screen backlight
+    digitalWrite(XIAO_BL, HIGH);
+#endif
+
+    logErrorP("TFT begin");
+#if defined(USE_TFT_ESPI_LIBRARY)
+    tft.begin();
+    tft.setRotation(screen_rotation);
+    tft.fillScreen(TFT_BLACK);
+#elif defined(USE_ARDUINO_GFX_LIBRARY)
+    gfx->begin(SPI_FREQ);
+    gfx->fillScreen(BLACK);
+#endif
+
+   
+
+    lv_display_t *disp = lv_display_create(SCREEN_WIDTH, SCREEN_HEIGHT);
+    lv_display_set_flush_cb(disp, xiao_disp_flush);
+   
+
+    int drawBufSize = SCREEN_WIDTH * SCREEN_HEIGHT * 2;
+    lv_color_t* buf = (lv_color_t*) malloc(drawBufSize);
+    lv_display_set_buffers(disp, buf, NULL, drawBufSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
+
     lv_xiao_touch_init();
 
     lv_disp_t *dispp = lv_disp_get_default();
@@ -87,7 +113,7 @@ void TouchDisplayModule::setup1(bool configured)
     }
 }
 
-void TouchDisplayModule::lv_log(lv_log_level_t level, const char * buf)
+void TouchDisplayModule::lv_log(lv_log_level_t level, const char *buf)
 {
     //     logDebug("lvgl", buf);
 }

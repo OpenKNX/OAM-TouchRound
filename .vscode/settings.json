@@ -8,6 +8,8 @@
         "algorithm": "cpp",
         "stop_token": "cpp",
         "pio_spi_18bit.pio.h": "c",
-        "system_error": "cpp"
+        "system_error": "cpp",
+        "compare": "cpp",
+        "cstdint": "cpp"
     }
 }
