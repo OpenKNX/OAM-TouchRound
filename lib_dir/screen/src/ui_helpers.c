@@ -66,7 +66,7 @@ void _ui_arc_increment( lv_obj_t *target, int val)
 {
    int old = lv_arc_get_value(target);
    lv_arc_set_value(target, old+val);
-   lv_event_send(target,LV_EVENT_VALUE_CHANGED, 0);
+   lv_event_send(target,LV_EVENT_VALUE_CHANGED, NULL);
 }
 
 void _ui_bar_increment( lv_obj_t *target, int val, int anm) 
