@@ -3,10 +3,28 @@
 <KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
   <ManufacturerData>
     <Manufacturer RefId="M-00FA">
+
       <ApplicationPrograms>
         <ApplicationProgram Id="%AID%" ApplicationNumber="200" ApplicationVersion="1" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="TCH" LoadProcedureStyle="MergedProcedure" PeiType="0" DefaultLanguage="de" DynamicTableManagement="false" Linkable="false" MinEtsVersion="4.0">
+          
+          <op:part href="TouchRoundModule.DeviceEnumValue.xml" name="DeviceEnumValue" instances="50">
+						<!-- Enum value number -->
+						<op:param name="%Pn%" value="1" />
+					</op:part>
+          <op:part href="TouchRoundModule.FieldDefinition.xml" name="FieldDefinition" instances="4">
+				    <op:param name="%N%" value="1" />
+            <op:param name="%OFFSET%" value="19" increment="4"/>
+					</op:part>
+          
           <Static>
             <ParameterTypes>
+             <ParameterType Id="%AID%_PT-TCHDeviceSelection" Name="TCHDeviceSelection">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Absprung zu andere Seite" Value="0" Id="%ENID%" />
+                  	<!-- TouchRoundModule.DeviceEnumValue.xml will be included here -->
+									  <op:usePart name="DeviceEnumValue" xpath="//TypeRestriction/*" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="%AID%_PT-BTNInputs" Name="BTNInputs">
                 <TypeRestriction Base="Value" SizeInBit="16">
                   <Enumeration Text="Externes KO" Value="0" Id="%ENID%" />
@@ -32,22 +50,92 @@
                   <Enumeration Text="Rolladen" Value="3" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="%AID%_PT-TCHNumberOfFields" Name="TCHNumberOfFields">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Nicht aktiv" Value="0" Id="%ENID%" />
+                  <Enumeration Text="1 Feld" Value="1" Id="%ENID%" />
+                  <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
+                  <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
+                  <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="%AID%_PT-Text16Byte" Name="Text16Byte">
                 <TypeText SizeInBit="128" />
               </ParameterType>
+              <ParameterType Id="%AID%_PT-TCHClickFunction" Name="TCHClickFunction">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Hauptfunktion" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Detailseite" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
             </ParameterTypes>
             <Parameters>
-              <Union SizeInBit="8">
+              <Union SizeInBit="48">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%T%000000" Name="VisibleChannels" ParameterType="%AID%_PT-TCHNumChannels" Offset="0" BitOffset="0" Text="Verfügbare Kanäle" Value="%N%" SuffixText=" von %N%" />
+                <!-- Visible Channels -->
+                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%00000" Name="VisibleChannels" ParameterType="%AID%_PT-TCHNumChannels"  Text="Verfügbare Seiten" Value="1" SuffixText=" von %N%" />
+                <!-- Default Page -->
+                <Parameter Offset="1" BitOffset="0"  Id="%AID%_UP-%TT%00001" Name="DefaultPage" ParameterType="%AID%_PT-TCHNumChannels" Text="Standard Seite" Value="1" />
+                <!-- Default Page Fallback Time DelayBase -->
+                <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%00002" Name="DefaultPageDelayBase"   ParameterType="%AID%_PT-DelayBase" Text="Standardseite nach Zeitbasis" Value="1" />
+                <!-- Default Page Fallback Timeg DelayTime -->
+                <Parameter Offset="2" BitOffset="2" Id="%AID%_UP-%TT%00003" Name="DefaultPageDelayTime"   ParameterType="%AID%_PT-DelayTime"    Text="Standardseite nach Zeit" Value="1" />
+                <!-- ^^^  Need 2 Bytes ^^^ -->       
+                <!-- Default Page KO -->
+                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%00004" Name="DefaultPageKO" ParameterType="%AID%_PT-OnOffYesNo"  Text="Gruppenobjekt für Standard Seitenauswahl" Value="0" />
+                <!-- 7 bits free -->
+                <!-- Switch Off Time DelayBase -->
+                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%00005" Name="SwitchOffDeleayBase" ParameterType="%AID%_PT-DelayBase" Text="Anzeige aus nach Zeitbasis" Value="1" />
+                <!-- Switch Off Fallback Timeg DelayTime -->
+                <Parameter Offset="4" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="0" />
+                <!-- ^^^  Need 2 Bytes ^^^ -->       
+              
               </Union>
+              <!-- Next Id="%AID%_UP-%TT%00007" -->
             </Parameters>
             <ParameterRefs>
-              <ParameterRef Id="%AID%_UP-%T%000000_R-%T%00000001" RefId="%AID%_UP-%T%000000" />
+              <!-- Visible Channels -->
+              <ParameterRef Id="%AID%_UP-%TT%00000_R-%TT%0000001" RefId="%AID%_UP-%TT%00000" />
+              <!-- Default Page -->
+              <ParameterRef Id="%AID%_UP-%TT%00001_R-%TT%0000101" RefId="%AID%_UP-%TT%00001" />
+              <!-- Default Page Fallback Time DelayBase -->
+              <ParameterRef Id="%AID%_UP-%TT%00002_R-%TT%0000201" RefId="%AID%_UP-%TT%00002" />
+              <!-- Default Page Fallback Timeg DelayTime -->
+              <ParameterRef Id="%AID%_UP-%TT%00003_R-%TT%0000301" RefId="%AID%_UP-%TT%00003" />
+              <!-- Default Page KO -->
+              <ParameterRef Id="%AID%_UP-%TT%00004_R-%TT%0000401" RefId="%AID%_UP-%TT%00004" />
+              <!-- Switch Off DeleayBase -->
+              <ParameterRef Id="%AID%_UP-%TT%00005_R-%TT%0000501" RefId="%AID%_UP-%TT%00005" />
+              <!-- Switch Off DelayTime -->
+              <ParameterRef Id="%AID%_UP-%TT%00006_R-%TT%0000601" RefId="%AID%_UP-%TT%00006" />
+
             </ParameterRefs>
             <ComObjectTable>
+            	<!-- Display On/Off -->
+							<ComObject Number="0" Id="%AID%_O-%TT%00000" ObjectSize="1 Bit" DatapointType="DPST-1-1" Name="DisplayOnOff" Text="Display Einschalten" FunctionText="Display Einschalten" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+				    	<!-- Display On/Off  Status-->
+							<ComObject Number="1" Id="%AID%_O-%TT%00001" ObjectSize="1 Bit" DatapointType="DPST-1-1" Name="DisplayOnOffState" Text="Display Eingeschalten" FunctionText="Display Einschalten" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+     	        <!-- Page -->
+							<ComObject Number="2" Id="%AID%_O-%TT%00002" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="Page" Text="Gehe zu Seite" FunctionText="Gehe zu Seite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+				    	<!-- Current Page  Status-->
+							<ComObject Number="3" Id="%AID%_O-%TT%00003" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="CurrentPage" Text="Aktuelle Seite" FunctionText="Aktuelle Seite" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+			        <!-- Default Page -->
+							<ComObject Number="4" Id="%AID%_O-%TT%00004" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="DefaultPage" Text="Standardseite" FunctionText="Standardseite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+			
             </ComObjectTable>
             <ComObjectRefs>
+              <!-- Display On/Off -->
+              <ComObjectRef Id="%AID%_O-%TT%00000_R-%TT%0000001" RefId="%AID%_O-%TT%00000" />
+              <!-- Display On/Off  Status-->
+              <ComObjectRef Id="%AID%_O-%TT%00001_R-%TT%0000101" RefId="%AID%_O-%TT%00001" />
+              <!-- Page -->
+              <ComObjectRef Id="%AID%_O-%TT%00002_R-%TT%0000201" RefId="%AID%_O-%TT%00002" />
+              <!-- Current Page  Status-->
+              <ComObjectRef Id="%AID%_O-%TT%00003_R-%TT%0000301" RefId="%AID%_O-%TT%00003" />
+              <!-- Default Page -->
+              <ComObjectRef Id="%AID%_O-%TT%00004_R-%TT%0000401" RefId="%AID%_O-%TT%00004" />
+          
             </ComObjectRefs>
             <Extension>
               <Baggage RefId="%FILE-HELP-de%" />
@@ -58,28 +146,109 @@
             </Extension>
           </Static>
           <Dynamic>
-            <Channel Id="%AID%_CH-Basic" Name="BasicChannel" Number="1" Text="Rundes Touch-Display">
-              <ParameterBlock Id="%AID%_PB-nnn" Name="Basic" Text="Einstellung" Icon="cog-outline" HelpContext="Empty">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Version des runden Rouch-Moduls: %ModuleVersion%" UIHint="Headline" />
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+            <Channel Id="%AID%_CH-Basic" Name="BasicChannel" Number="1" Text="Rundes Touch-Display" Icon="animation-outline">
+              <ParameterBlock Id="%AID%_PB-nnn" Name="Basic" Text="Allgemein" Icon="cog-outline" HelpContext="Empty" >
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Rundes Touch-Display" UIHint="Headline" />
+								<ParameterSeparator Id="%AID%_PS-nnn" Text="Version: %ModuleVersion%" />
+								<ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Basiseinstellungen" UIHint="Headline" />
+
+
+                <ParameterBlock Id="%AID%_PB-nnn" Name="DisplayOffTime" Inline="true" Layout="Grid" HelpContext="TCH-Anzeige-ausschalten-nach" >
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Name="Col2" Width="45%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col3" Width="15%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col4" Width="25%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="  Anzeige ausschalten nach" Cell="1,1" />
+                  <!-- Display Off DelayTime -->
+                  <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00006_R-%TT%0000601" Cell="1,2" HelpContext="%DOC%" />
+                  <!-- Display Off Fallback Time DelayBase -->
+                  <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00005_R-%TT%0000501" Cell="1,3" HelpContext="%DOC%"/>
+                </ParameterBlock> 
+
+                <!-- Display On/Off -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00000_R-%TT%0000001" />
+                <!-- Display On/Off  Status-->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00001_R-%TT%0000101" />
+                <!-- Page -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
+                <!-- Current Page  Status-->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+              
+
+
+                <!-- Default Page -->
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00001_R-%TT%0000101" />
+                
+
+                <ParameterBlock Id="%AID%_PB-nnn" Name="DefaultPageFallbackTime" Inline="true" Layout="Grid" HelpContext="TCH-Standardseite-Rueckfallzeit" >
+                  <Rows>
+                    <Row Id="%AID%_PB-nnn_R-1" Name="Row1" />
+                  </Rows>
+                  <Columns>
+                    <Column Id="%AID%_PB-nnn_C-1" Name="Col2" Width="45%" />
+                    <Column Id="%AID%_PB-nnn_C-2" Name="Col3" Width="15%" />
+                    <Column Id="%AID%_PB-nnn_C-3" Name="Col4" Width="25%" />
+                  </Columns>
+                  <ParameterSeparator Id="%AID%_PS-nnn" Text="  Rückfall auf Standardseite nach" Cell="1,1" />
+                  <!-- Default Page Fallback Timeg DelayTime -->
+                  <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00003_R-%TT%0000301" Cell="1,2" HelpContext="%DOC%" />
+                  <!-- Default Page Fallback Time DelayBase -->
+                  <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00002_R-%TT%0000201" Cell="1,3" HelpContext="%DOC%"/>
+                </ParameterBlock> 
+
+                 <!-- Default Page KO -->
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" />
+                <choose ParamRefId="%AID%_UP-%TT%00004_R-%TT%0000401">
+                  <when test="1">
+
+                    <!-- Default Page -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                  </when>
+                </choose>
+          
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalauswahl" UIHint="Headline" />
-                <ParameterRefRef RefId="%AID%_UP-%T%000000_R-%T%00000001" HelpContext="BASE-Verfuegbare-Kanaele" IndentLevel="1" />
+                <!-- Visible Channels -->
+                <ParameterRefRef RefId="%AID%_UP-%TT%00000_R-%TT%0000001" HelpContext="BASE-Verfuegbare-Kanaele" IndentLevel="1" />
                 <ParameterSeparator Id="%AID%_PS-52" Text="" UIHint="HorizontalRuler" />
               </ParameterBlock>
 
               <op:include href="TouchRoundModule.templ.xml" xpath="//Dynamic/ChannelIndependentBlock/*" type="template" prefix="TCH" IsInner="true" />
+
+              <!-- Verfügbare Kanäle -->
+							<choose ParamRefId="%AID%_UP-%TT%00000_R-%TT%0000001">
+								<when test="&gt;0">
+                
+
+									<!-- More Page -->
+									<choose ParamRefId="%AID%_UP-%TT%00000_R-%TT%0000001">
+										<when test="&lt;%N%">
+											<ParameterBlock Id="%AID%_PB-nnn" Name="SHCAdditionalChannels" Text="(mehr)" Icon="dots-horizontal">												<!-- HelpContext="Empty" -->
+												<ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalauswahl" UIHint="Headline" />
+					          	    <!-- Visible Channels -->
+                          <ParameterRefRef RefId="%AID%_UP-%TT%00000_R-%TT%0000001" HelpContext="BASE-Verfuegbare-Kanaele" IndentLevel="1" />
+           						</ParameterBlock>
+										</when>
+									</choose>
+								</when>
+							</choose>
             </Channel>
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>
       <Baggages>
-        <Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
-          <FileInfo TimeInfo="%DATETIME%" />
-        </Baggage>
-        <Baggage TargetPath="" Name="Icons.zip" Id="%FILE-ICONS%">
-          <FileInfo TimeInfo="%DATETIME%" />
-        </Baggage>
-      </Baggages>
+      	<Baggage TargetPath="" Name="Help_de.zip" Id="%FILE-HELP-de%">
+					<FileInfo TimeInfo="%DATETIME%" />
+				</Baggage>
+				<Baggage TargetPath="" Name="Icons.zip" Id="%FILE-ICONS%">
+					<FileInfo TimeInfo="%DATETIME%" />
+				</Baggage>
+			</Baggages>
     </Manufacturer>
   </ManufacturerData>
 </KNX>

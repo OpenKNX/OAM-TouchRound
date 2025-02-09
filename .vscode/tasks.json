@@ -2,15 +2,15 @@
 	"version": "2.0.0",
 	"tasks": [
         {
-            "label": "OpenKNXproducer",
+            "label": "OpenKNXproducer (Dev)",
             "type": "shell",
-            "command": "~/bin/OpenKNXproducer.exe",
+            "command": "OpenKNXproducer",
             "args": [
                 "create",
                 "--Debug",
                 "-h",
                 "include/knxprod.h",
-                "src/TouchRoundModule"
+                "src/TouchRoundModule-Dev"
             ],
             "problemMatcher": [],
             "group": "test"

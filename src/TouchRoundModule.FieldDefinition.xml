@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<KNX xmlns:op="http://github.com/OpenKNX/OpenKNXproducer" xmlns="http://knx.org/xml/project/20" CreatedBy="KNX MT" ToolVersion="5.1.255.16695">
+    <ManufacturerData>
+        <Manufacturer>
+            <ApplicationPrograms>
+                <ApplicationProgram>
+                    <Static>
+                        <Parameters>
+                            <!-- Feld %N% -->
+                            <Union SizeInBit="32">
+                                <Memory CodeSegment="%AID%_RS-04-00000" Offset="%OFFSET%" BitOffset="0" />
+                                <!-- Device Selection Field -->      
+                                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%00" Name="Channel%C%DeviceSelection%N%" ParameterType="%AID%_PT-TCHDeviceSelection" Text="Funktion" Value="1" />    
+                                <!-- Short Press -->      
+                                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%01" Name="Channel%C%ShortPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Kurzer Druck" Value="0" />    
+                                <!-- Long Press -->      
+                                <Parameter Offset="1" BitOffset="4" Id="%AID%_UP-%TT%%CC%%N%02" Name="Channel%C%LongPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Langer Druck" Value="1" />    
+                                 <!-- Jump To Short Press-->
+                                <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%03" Name="Channel%C%JumpToShort%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
+                                <!-- Jump To Long Press -->
+                                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%04" Name="Channel%C%JumpToLong%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
+                            </Union>
+                        </Parameters>
+                        <ParameterRefs>
+                            <!-- Device Selection -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" RefId="%AID%_UP-%TT%%CC%%N%00" />
+                            <!-- Short Press -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" RefId="%AID%_UP-%TT%%CC%%N%01" />
+                            <!-- Long Press -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" RefId="%AID%_UP-%TT%%CC%%N%02" />
+                            <!-- Jump To Short Press -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" RefId="%AID%_UP-%TT%%CC%%N%03" />
+                            <!-- Jump To Long Press -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" RefId="%AID%_UP-%TT%%CC%%N%04" />
+                        </ParameterRefs>
+                    </Static>
+                    <Dynamic>
+                        <ChannelIndependentBlock>
+                            <!-- Number Of Fields -->
+                            <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
+                                <when test="&gt;=%N%" >
+                                   <ParameterBlock  Id="%AID%_PB-nnn" Name="Field%N%" Text="Feld %N%" HelpContext="TCH-Felddefintion" Inline="true">
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Feld %N%" UIHint="Headline" />
+                
+                                    <!-- Device Selection -->
+                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
+                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001">
+                                        <when test="0" >
+                                            <!-- Jump To Short Press -->
+                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
+                                        </when>
+                                    </choose>
+                                      
+                                    <!-- Number Of Fields -->
+                                    <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
+                                        <when test="&gt;0" >
+                                            <choose ParamRefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001">
+                                                <when test="&gt;0">
+                                                    <!-- Short Press -->
+                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
+                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
+                                                        <when test="2" >
+                                                            <!-- Jump To Short Press -->
+                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
+                                                        </when>
+                                                    </choose>
+                                                    <!-- Long Press -->
+                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
+                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
+                                                        <when test="2" >
+                                                            <!-- Jump To Long Press -->
+                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
+                                                      </when>
+                                                    </choose>
+                                                </when>
+                                            </choose>
+                                        </when>
+                                    </choose>
+                                    </ParameterBlock>    
+                                </when>                    
+                            </choose>
+                        </ChannelIndependentBlock>
+                    </Dynamic>
+                </ApplicationProgram>
+            </ApplicationPrograms>
+        </Manufacturer>
+    </ManufacturerData>
+</KNX>
+        

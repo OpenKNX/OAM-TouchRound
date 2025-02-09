@@ -7,20 +7,50 @@
         <ApplicationProgram>
           <Static>
             <Parameters>
-              <Parameter Id="%AID%_P-%T%%CCC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" Access="Read" />
-              <Union SizeInBit="136">
+              <!-- Channel Description -->
+              <Parameter Id="%AID%_P-%TT%%CC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" />
+              <Union SizeInBit="168">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%001" Name="Channel%C%Active" Offset="0" BitOffset="0" ParameterType="%AID%_PT-ChannelActive" Text="Kanalaktivität" Value="0" />
-                <Parameter Id="%AID%_UP-%T%%CCC%002" Name="Channel%C%PageType" Offset="0" BitOffset="2" ParameterType="%AID%_PT-PageType" Text="Seitentyp" Value="0" />
-                <!-- 4 bit -->
-                <Parameter Id="%AID%_UP-%T%%CCC%003" Name="Channel%C%DisplayName" ParameterType="%AID%_PT-Text16Byte" Offset="1" BitOffset="0" Text="Anzeigenname" Value="0" />
+                <!-- Channel Active -->  
+                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="Channel%C%Active" ParameterType="%AID%_PT-ChannelActive" Text="Kanalaktivität - ALT" Value="0" />
+                <!-- Page Type -->
+                <Parameter Offset="0" BitOffset="2" Id="%AID%_UP-%TT%%CC%002" Name="Channel%C%PageType" ParameterType="%AID%_PT-PageType" Text="Seitentyp - ALT" Value="0" />
+                <!-- Number Of Fields -->
+                <Parameter Offset="0" BitOffset="4" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumFields" ParameterType="%AID%_PT-TCHNumberOfFields" Text="Feldanzahl" Value="0" />
+                <!-- Display Name -->
+                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%003" Name="Channel%C%DisplayName" ParameterType="%AID%_PT-Text16Byte"  Text="Anzeigenname" Value="Wohnzimmer" />
+                <!-- ^^^ 16 Bytes + 0-Terminator = 17 bytes ^^^ -->     
+                <!-- Page Reachable -->  
+                <Parameter Offset="18" BitOffset="0" Id="%AID%_UP-%TT%%CC%005" Name="Channel%C%Navigation" ParameterType="%AID%_PT-OnOffYesNo" Text="Seite über Blättern erreichbar" Value="1" />
+                <!--7 bits free --> 
+            
               </Union>
+              <!-- Next Id="%AID%_UP-%TT%%CC%008" -->
+              <!-- Next Offset must be set to  <op:part href="TouchRoundModule.FieldDefinition.xml" name="FieldDefinition" instances="4"> in shared -->
+             
+              <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
+              <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/Parameters/*" /> 
+                
+
+              <!-- Next Id "%AID%_UP-%TT%%CC%006" -->
             </Parameters>
             <ParameterRefs>
-              <ParameterRef Id="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" RefId="%AID%_P-%T%%CCC%000" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101" RefId="%AID%_UP-%T%%CCC%001" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%002_R-%T%%CCC%00201" RefId="%AID%_UP-%T%%CCC%002" />
-              <ParameterRef Id="%AID%_UP-%T%%CCC%003_R-%T%%CCC%00301" RefId="%AID%_UP-%T%%CCC%003" />
+              <!-- Channel Description -->
+              <ParameterRef Id="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_P-%TT%%CC%000" />
+              <!-- Channel Active -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_UP-%TT%%CC%001" />
+              <!-- Page Type -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_UP-%TT%%CC%002" />
+              <!-- Display Name -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_UP-%TT%%CC%003" />
+              <!-- Number Of Fields -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_UP-%TT%%CC%004" />
+              <!-- Page Reachable -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_UP-%TT%%CC%005" />
+           
+              <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
+              <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
+          
             </ParameterRefs>
             <ComObjectTable>
             </ComObjectTable>
@@ -29,21 +59,48 @@
           </Static>
           <Dynamic>
             <ChannelIndependentBlock> 
-              <ParameterBlock Id="%AID%_PB-nnn" Name="TCH%C%Page" Text="Seite %C%: {{0: ...}}" TextParameterRefId="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" HelpContext="Empty" ShowInComObjectTree="true">
-                <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
-                <!-- Channel name -->
-                <ParameterRefRef RefId="%AID%_P-%T%%CCC%000_R-%T%%CCC%00001" IndentLevel="1" />
-                <ParameterRefRef RefId="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101" IndentLevel="1" />
-
-                <choose ParamRefId="%AID%_UP-%T%%CCC%001_R-%T%%CCC%00101">
-                  <when test="&gt;0">
+              <!-- Visible Channels -->
+              <choose ParamRefId="%AID%_UP-%TT%00000_R-%TT%0000001">
+                <when test="&gt;=%C%">
+                  <ParameterBlock Id="%AID%_PB-nnn" Name="TCH%C%Page" Text="Seite %C%: {{0: ...}}" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" HelpContext="Empty" Icon="application-parentheses-outline" ShowInComObjectTree="true">
+                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanaldefinition" UIHint="Headline" />
+                    <!-- Channel Description -->
+                    <ParameterRefRef RefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" IndentLevel="1" />
+                    <!-- Channel Active -->  
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" IndentLevel="1" />
+                    
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101">
+                      <when test="&gt;0">
+                       <ParameterSeparator Id="%AID%_PS-nnn" Text="Seitendefinition - ALT" UIHint="Headline" />
+                        <!-- Page Type -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" HelpContext="Empty" />
+                        <!-- Display Name -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1" HelpContext="Empty" />
+
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                      </when>
+                  
+                    </choose>
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Seitendefinition" UIHint="Headline" />
-                    <ParameterRefRef RefId="%AID%_UP-%T%%CCC%002_R-%T%%CCC%00201" IndentLevel="1" />
-                    <ParameterRefRef RefId="%AID%_UP-%T%%CCC%003_R-%T%%CCC%00301" IndentLevel="1" />
-                  </when>
-                </choose>
-              </ParameterBlock>
+          
+          
+                    <!-- Number Of Fields -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" HelpContext="%DOC%" />
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
+                      <when test="&gt;0">
+                        <!-- Page Reachable -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="1" HelpContext="%DOC%" />   
+                      </when>
+                    </choose>
+                   
+           
+                    <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
+                    <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
+              
+                  </ParameterBlock>
+                </when>
+              </choose>
             </ChannelIndependentBlock>
           </Dynamic>
         </ApplicationProgram>
