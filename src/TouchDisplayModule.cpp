@@ -59,11 +59,7 @@ void TouchDisplayModule::setup1(bool configured)
     bool flag = false;
     if (configured)
     {
-#ifdef USE_OPENKNXPRODUCER
         uint16_t channelCount = ParamTCH_VisibleChannels;
-#else
-        uint16_t channelCount = 2;
-#endif
 
         for (uint16_t i = 0; i < channelCount; i++)
         {
@@ -192,29 +188,17 @@ void TouchDisplayModule::loadPage(int channel)
 
 bool TouchDisplayModule::checkPageActive(int channel)
 {
-#ifdef USE_OPENKNXPRODUCER
     return ((knx.paramByte(TCH_ChannelActive + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelActiveMask) >> TCH_ChannelActiveShift) > 0;
-#else
-    return ParamPAGE_typeIndex(channel) != 0;
-#endif
 }
 
 uint8_t TouchDisplayModule::getPageType(int channel)
 {
-#ifdef USE_OPENKNXPRODUCER
     return (knx.paramByte(TCH_ChannelPageType + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelPageTypeMask) >> TCH_ChannelPageTypeShift;
-#else
-    return ParamPAGE_typeIndex(TouchDisplayModule::currentScreenIndex) - 1;
-#endif
 }
 
 void TouchDisplayModule::setTextForChannel(int channel)
 {
-#ifdef USE_OPENKNXPRODUCER
     char *display = (char *)knx.paramData(TCH_ChannelDisplayName + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize);
-#else
-    char *display = (char *)ParamPAGE_displayIndex(channel);
-#endif
 
     println(display);
     lv_label_set_text(screenLabels[channel], display);

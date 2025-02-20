@@ -44,7 +44,9 @@
               template="TouchRoundModule.templ.xml"
               ModuleType="14"
               KoSingleOffset="500"
-              NumChannels="15" />
+              NumChannels="15" >
+      <op:verify File="../library.json" ModuleVersion="%TCH_VerifyVersion%" />
+    </op:define>
 
     <op:define prefix="LOG" 
               share="../lib/OFM-LogicModule/src/Logikmodul.share.xml" 

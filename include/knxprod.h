@@ -17,6 +17,7 @@
 #define BASE_ModuleVersion 19
 #define UCT_ModuleVersion 2
 #define BRI_ModuleVersion 1
+#define TCH_ModuleVersion 1
 #define LOG_ModuleVersion 53
 #define FCB_ModuleVersion 4
 #define BTN_ModuleVersion 5

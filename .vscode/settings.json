@@ -7,6 +7,10 @@
         "*.tcc": "cpp",
         "algorithm": "cpp",
         "stop_token": "cpp",
-        "pio_spi_18bit.pio.h": "c"
+        "pio_spi_18bit.pio.h": "c",
+        "cstdint": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
     }
 }
