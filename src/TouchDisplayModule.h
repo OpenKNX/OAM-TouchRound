@@ -6,17 +6,18 @@
 
 #define DISPLAY_SLEEP_DELAY 10000
 #define VISU_MAX_PAGE 5
+class Page;
 
 class TouchDisplayModule : public OpenKNX::Module
 {
+	uint8_t _channelIndex = 255; // current active channel, do not ranme, because var name is used in macros
 public:
 	void loop(bool configured) override;
-	void setup(bool configured) override;
+	void setup() override;
 	void loop1(bool configured) override;
 	void setup1(bool configured) override;
 	void processAfterStartupDelay() override;
-	void processInputKo(GroupObject &ko) override;
-
+	
 	const std::string name() override;
 	const std::string version() override;
 	// void writeFlash() override;
@@ -52,9 +53,19 @@ private:
 	inline static DoorState doorState;
 	inline static bool displayOn;
 	inline static unsigned long lastPressed;
+
 	inline static bool isChangingValue = false;
 	inline static int16_t lastValue = 0;
 	inline static int16_t last2Value = 0;
+
+private:
+	Page* _currentPage = nullptr;
+public:
+	void activePage(uint8_t channel);
+	void nextPage();
+	void previousPage();
+
+	void processInputKo(GroupObject &ko) override;
 };
 
 extern TouchDisplayModule openknxTouchDisplayModule;

@@ -21,6 +21,8 @@
              <ParameterType Id="%AID%_PT-TCHDeviceSelection" Name="TCHDeviceSelection">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Absprung zu andere Seite" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Zeit / Datum" Value="255" Id="%ENID%" />
+                  <Enumeration Text="Deaktiviert" Value="254" Id="%ENID%" />
                   	<!-- TouchRoundModule.DeviceEnumValue.xml will be included here -->
 									  <op:usePart name="DeviceEnumValue" xpath="//TypeRestriction/*" />
                 </TypeRestriction>

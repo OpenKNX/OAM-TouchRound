@@ -2,6 +2,8 @@
 #include <Arduino.h>
 #include <ui.h>
 #include "lv_xiao_round_screen.h"
+#include "knxprod.h"
+#include "Page.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -13,9 +15,66 @@ const std::string TouchDisplayModule::version()
     return MAIN_Version;
 }
 
-void TouchDisplayModule::setup(bool configured)
+void TouchDisplayModule::setup()
 {
+    uint8_t pageToActivate = ParamTCH_DefaultPage;
+    if (ParamTCH_DefaultPageKO)
+    {
+        if (KoTCH_Page.initialized())
+            pageToActivate = KoTCH_Page.value(DPT_SceneNumber);
+        else
+            KoTCH_Page.requestObjectRead();
+    }
+    activePage(pageToActivate);
 }
+
+void TouchDisplayModule::processInputKo(GroupObject &ko)
+{
+    if (ko.asap() == TCH_KoPage)
+    {
+        activePage(KoTCH_Page.value(DPT_SceneNumber));
+    }
+}
+
+void TouchDisplayModule::activePage(uint8_t channel)
+{
+    _channelIndex = channel;
+    KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
+    if (_currentPage != nullptr)
+        delete _currentPage;
+    _currentPage = new Page();
+    _currentPage->init(_channelIndex);
+   
+}
+
+void TouchDisplayModule::nextPage()
+{
+    uint8_t currentChannel = _channelIndex;
+    while(currentChannel != _channelIndex++)
+    {
+        if (_channelIndex >= ParamTCH_VisibleChannels)
+            _channelIndex = 0;
+
+        if (ParamTCH_ChannelNavigation)
+            break;
+      
+    }
+    activePage(_channelIndex);
+}
+
+void TouchDisplayModule::previousPage()
+{
+    uint8_t currentChannel = _channelIndex;
+    while(currentChannel != _channelIndex--)
+    {
+        if (_channelIndex >= ParamTCH_VisibleChannels)
+            _channelIndex = ParamTCH_VisibleChannels - 1;
+        if (ParamTCH_ChannelNavigation)
+            break;
+    }
+    activePage(_channelIndex);
+}
+
 void TouchDisplayModule::setup1(bool configured)
 {
     TouchDisplayModule::doorState = DoorState::UNDEFINED;
@@ -218,9 +277,6 @@ void TouchDisplayModule::loop1(bool configured)
     // }
 }
 
-void TouchDisplayModule::processInputKo(GroupObject &iKo)
-{
-}
 
 void TouchDisplayModule::processAfterStartupDelay()
 {
