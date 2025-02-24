@@ -4,6 +4,15 @@
 
 WidgetFactory* DeviceCell::_widgetFactory = nullptr;
 
+DeviceCell::~DeviceCell()
+{
+    if (_device != nullptr)
+    {
+        KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(_channelIndex);
+        channel->deleteBridgeDevice(_device);
+    }
+}
+
 void DeviceCell::init(uint8_t deviceIndex)
 {
     _channelIndex = deviceIndex;
