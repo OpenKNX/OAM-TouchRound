@@ -11,11 +11,12 @@ class Page;
 class TouchDisplayModule : public OpenKNX::Module
 {
 	uint8_t _channelIndex = 255; // current active channel, do not ranme, because var name is used in macros
+	uint8_t _defaultPage = 0;
 public:
 	void loop(bool configured) override;
 	void setup() override;
 	void loop1(bool configured) override;
-	void setup1(bool configured) override;
+	void setup(bool configured) override;
 	void processAfterStartupDelay() override;
 	
 	const std::string name() override;
@@ -25,39 +26,20 @@ public:
 	// uint16_t flashSize() override;
 
 private:
-	enum DoorState
-	{
-		UNDEFINED,
-		OPEN,
-		CLOSED,
-		AUTO
-	};
-
+	
 	static void lv_log(const char *buf);
 	static void handleGesture(lv_event_t *event);
 	static void handleValues(lv_event_t *event);
 	static void resetDisplayTimeout();
 	static void display_pressed();
-	static void setTextForChannel(int channel);
-	static bool checkPageActive(int channel);
-	static uint8_t getPageType(int channel);
 	static void loadPage(int channel);
-
-	inline static lv_obj_t *screenTypes[VISU_MAX_PAGE];
-	inline static lv_obj_t *screenLabels[VISU_MAX_PAGE];
-	inline static void (*screenInits[VISU_MAX_PAGE])(void);
-
+	
 	inline static lv_obj_t *currentScreen;
 	inline static int currentScreenIndex = 0;
 
-	inline static DoorState doorState;
 	inline static bool displayOn;
 	inline static unsigned long lastPressed;
-
-	inline static bool isChangingValue = false;
-	inline static int16_t lastValue = 0;
-	inline static int16_t last2Value = 0;
-
+	
 private:
 	Page* _currentPage = nullptr;
 public:

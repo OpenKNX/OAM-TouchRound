@@ -17,28 +17,55 @@ const std::string TouchDisplayModule::version()
 
 void TouchDisplayModule::setup()
 {
-    uint8_t pageToActivate = ParamTCH_DefaultPage;
+    logDebugP("TouchDisplayModule setup");
+    logDebugP("ParamTCH_DefaultPage %d", (int) ParamTCH_DefaultPage);
+    logDebugP("ParamTCH_DefaultPageKO %d", (int) ParamTCH_DefaultPageKO);
+    logDebugP("ParamTCH_VisibleChannels %d", (int) ParamTCH_VisibleChannels);
+    logDebugP("ParamTCH_ChannelNavigation %d", (int) ParamTCH_ChannelNavigation);
+    logDebugP("ParamTCH_ChannelDeviceSelection1 %d", (int) ParamTCH_ChannelDeviceSelection1);
+    logDebugP("ParamTCH_ChannelNumFields %d", (int) ParamTCH_ChannelNumFields);
+    _defaultPage = ParamTCH_DefaultPage;
     if (ParamTCH_DefaultPageKO)
     {
-        if (KoTCH_Page.initialized())
-            pageToActivate = KoTCH_Page.value(DPT_SceneNumber);
+        if (KoTCH_DefaultPage.initialized())
+            _defaultPage = KoTCH_DefaultPage.value(DPT_SceneNumber);
         else
-            KoTCH_Page.requestObjectRead();
+            KoTCH_DefaultPage.requestObjectRead();
     }
-    activePage(pageToActivate);
+    activePage(_defaultPage);
 }
 
 void TouchDisplayModule::processInputKo(GroupObject &ko)
 {
-    if (ko.asap() == TCH_KoPage)
+    switch (ko.asap())
     {
-        activePage(KoTCH_Page.value(DPT_SceneNumber));
+        case TCH_KoPage:
+        {
+            activePage(ko.value(DPT_SceneNumber));
+        }
+        break;
+        case TCH_KoPrevNext:
+        {
+            if (ko.value(DPT_UpDown))
+                nextPage();
+            else
+                previousPage();
+        }
+        break;
+        case TCH_KoDefaultPage:
+        {
+            bool isDefaultPageActive = _defaultPage != _channelIndex;
+            _defaultPage = ko.value(DPT_SceneNumber);
+            if (isDefaultPageActive)
+                activePage(_defaultPage);
+        }
+        break;
     }
 }
 
 void TouchDisplayModule::activePage(uint8_t channel)
 {
-    _channelIndex = channel;
+   _channelIndex = channel;
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
     if (_currentPage != nullptr)
         delete _currentPage;
@@ -75,9 +102,8 @@ void TouchDisplayModule::previousPage()
     activePage(_channelIndex);
 }
 
-void TouchDisplayModule::setup1(bool configured)
+void TouchDisplayModule::setup(bool configured)
 {
-    TouchDisplayModule::doorState = DoorState::UNDEFINED;
     TouchDisplayModule::displayOn = true;
     TouchDisplayModule::lastPressed = 0;
 
@@ -94,6 +120,8 @@ void TouchDisplayModule::setup1(bool configured)
     ui_Switch_screen_init();
     ui_Dimm_screen_init();
     ui_Color_screen_init();
+    ui_Message_screen_init();
+
     ui____initial_actions0 = lv_obj_create(NULL);
 
     lv_obj_add_event_cb(ui_Switch, handleGesture, LV_EVENT_GESTURE, NULL);
@@ -106,40 +134,12 @@ void TouchDisplayModule::setup1(bool configured)
     _ui_flag_modify(ui_Dimm, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
     _ui_flag_modify(ui_Switch, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
 
-    screenTypes[0] = ui_Switch;
-    screenTypes[1] = ui_Dimm;
-    screenTypes[2] = ui_Color;
-    screenTypes[3] = ui_Color;
-    screenLabels[0] = ui_Label1;
-    screenLabels[1] = ui_LabelName;
-    screenLabels[2] = ui_Label2;
-    screenLabels[3] = ui_Label1;
-
-    bool flag = false;
-    if (configured)
-    {
-        uint16_t channelCount = ParamTCH_VisibleChannels;
-
-        for (uint16_t i = 0; i < channelCount; i++)
-        {
-            if (checkPageActive(i))
-            {
-                flag = true;
-                loadPage(i);
-                currentScreen = screenTypes[getPageType(i)];
-                TouchDisplayModule::currentScreenIndex = i;
-                break;
-            }
-        }
-    }
-
-    if (!flag)
+    if (!configured)
     {
         logErrorP("No start Page found");
-        ui_Message_screen_init();
         lv_disp_load_scr(ui_Message);
-        TouchDisplayModule::currentScreenIndex = 255;
     }
+    Module::setup(configured);
 }
 
 void TouchDisplayModule::lv_log(const char *buf)
@@ -150,35 +150,6 @@ void TouchDisplayModule::lv_log(const char *buf)
 void TouchDisplayModule::handleValues(lv_event_t *event)
 {
     TouchDisplayModule::resetDisplayTimeout();
-    switch (event->code)
-    {
-    case LV_EVENT_PRESSED:
-    {
-        logDebug("Display", "Pressed");
-        break;
-    }
-
-    case LV_EVENT_RELEASED:
-    {
-        TouchDisplayModule::isChangingValue = false;
-        logDebug("Display", "Released %i", TouchDisplayModule::last2Value);
-        lv_arc_set_value(ui_Dimm, TouchDisplayModule::last2Value);
-        break;
-    }
-
-    case LV_EVENT_VALUE_CHANGED:
-    {
-        uint16_t value = lv_arc_get_value(ui_DimmValue);
-        if (!TouchDisplayModule::isChangingValue)
-        {
-            TouchDisplayModule::last2Value = value;
-        }
-        TouchDisplayModule::isChangingValue = true;
-        TouchDisplayModule::last2Value = TouchDisplayModule::lastValue;
-        TouchDisplayModule::lastValue = value;
-        break;
-    }
-    }
 }
 
 void TouchDisplayModule::resetDisplayTimeout()
@@ -196,79 +167,28 @@ void TouchDisplayModule::handleGesture(lv_event_t *event)
 {
     TouchDisplayModule::resetDisplayTimeout();
 
-    if (TouchDisplayModule::isChangingValue)
-    {
-        logDebug("Display", "ignore gesture");
-        return;
-    }
-
     int oldIndex = TouchDisplayModule::currentScreenIndex;
     if (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT)
     {
         lv_indev_wait_release(lv_indev_get_act());
-        do
-        {
-            TouchDisplayModule::currentScreenIndex++;
-            if (TouchDisplayModule::currentScreenIndex >= VISU_MAX_PAGE)
-                TouchDisplayModule::currentScreenIndex = 0;
-        } while (!checkPageActive(TouchDisplayModule::currentScreenIndex));
+        openknxTouchDisplayModule.nextPage();
     }
     else if (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT)
     {
         lv_indev_wait_release(lv_indev_get_act());
-        do
-        {
-            TouchDisplayModule::currentScreenIndex--;
-            if (TouchDisplayModule::currentScreenIndex < 0)
-                TouchDisplayModule::currentScreenIndex = VISU_MAX_PAGE - 1;
-        } while (!checkPageActive(TouchDisplayModule::currentScreenIndex));
+        openknxTouchDisplayModule.previousPage();
     }
-    else
-    {
-        return;
-    }
-
-    if (oldIndex == TouchDisplayModule::currentScreenIndex)
-        return;
-
-    loadPage(TouchDisplayModule::currentScreenIndex);
 }
 
-void TouchDisplayModule::loadPage(int channel)
-{
-    logDebug("Display", "Loading Page %i", channel);
-    logDebug("Display", "type: %i", getPageType(TouchDisplayModule::currentScreenIndex));
-    TouchDisplayModule::currentScreen = screenTypes[getPageType(TouchDisplayModule::currentScreenIndex)];
-    setTextForChannel(TouchDisplayModule::currentScreenIndex);
-    lv_scr_load(currentScreen);
-    // lv_scr_load_anim(currentScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, false);
-    //_ui_screen_change(&currentScreen, LV_SCR_LOAD_ANIM_FADE_IN, 500, 0, screenInits[TouchDisplayModule::currentScreenIndex]);
-}
-
-bool TouchDisplayModule::checkPageActive(int channel)
-{
-    return ((knx.paramByte(TCH_ChannelActive + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelActiveMask) >> TCH_ChannelActiveShift) > 0;
-}
-
-uint8_t TouchDisplayModule::getPageType(int channel)
-{
-    return (knx.paramByte(TCH_ChannelPageType + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize) & TCH_ChannelPageTypeMask) >> TCH_ChannelPageTypeShift;
-}
-
-void TouchDisplayModule::setTextForChannel(int channel)
-{
-    char *display = (char *)knx.paramData(TCH_ChannelDisplayName + TCH_ParamBlockOffset + channel * TCH_ParamBlockSize);
-
-    println(display);
-    lv_label_set_text(screenLabels[channel], display);
-}
 
 void TouchDisplayModule::loop(bool configured)
 {
+    lv_timer_handler(); // let the GUI do its work
+
 }
 void TouchDisplayModule::loop1(bool configured)
 {
-    lv_timer_handler(); // let the GUI do its work
+//    lv_timer_handler(); // let the GUI do its work
 
     // if (TouchDisplayModule::currentScreenIndex != 255 && TouchDisplayModule::displayOn && (millis() - TouchDisplayModule::lastPressed > DISPLAY_SLEEP_DELAY)) {
     //     logDebugP("Turn display off.");

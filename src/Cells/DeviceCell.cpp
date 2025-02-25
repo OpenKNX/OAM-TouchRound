@@ -4,6 +4,11 @@
 
 WidgetFactory* DeviceCell::_widgetFactory = nullptr;
 
+const char* DeviceCell::cellType()
+{
+    return "Device";
+}
+
 DeviceCell::~DeviceCell()
 {
     if (_device != nullptr)

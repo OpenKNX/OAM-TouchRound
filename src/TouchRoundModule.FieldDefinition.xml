@@ -8,7 +8,7 @@
                     <Static>
                         <Parameters>
                             <!-- Feld %N% -->
-                            <Union SizeInBit="32">
+                            <Union SizeInBit="40">
                                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="%OFFSET%" BitOffset="0" />
                                 <!-- Device Selection Field -->      
                                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%00" Name="Channel%C%DeviceSelection%N%" ParameterType="%AID%_PT-TCHDeviceSelection" Text="Funktion" Value="1" />    
@@ -20,6 +20,9 @@
                                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%03" Name="Channel%C%JumpToShort%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
                                 <!-- Jump To Long Press -->
                                 <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%04" Name="Channel%C%JumpToLong%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
+                                <!-- Device Page Type -->      
+                                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%05" Name="Channel%C%DevicePageType%N%" ParameterType="%AID%_PT-TCHDevicePageType" Text="Darstellung" Value="1" />    
+                                <!-- 4 bits free -->
                             </Union>
                         </Parameters>
                         <ParameterRefs>
@@ -33,6 +36,8 @@
                             <ParameterRef Id="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" RefId="%AID%_UP-%TT%%CC%%N%03" />
                             <!-- Jump To Long Press -->
                             <ParameterRef Id="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" RefId="%AID%_UP-%TT%%CC%%N%04" />
+                            <!-- Device Page Type -->
+                            <ParameterRef Id="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501" RefId="%AID%_UP-%TT%%CC%%N%05" />
                         </ParameterRefs>
                     </Static>
                     <Dynamic>
@@ -40,44 +45,67 @@
                             <!-- Number Of Fields -->
                             <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
                                 <when test="&gt;=%N%" >
-                                   <ParameterBlock  Id="%AID%_PB-nnn" Name="Field%N%" Text="Feld %N%" HelpContext="TCH-Felddefintion" Inline="true">
-                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                                    <ParameterSeparator Id="%AID%_PS-nnn" Text="Feld %N%" UIHint="Headline" />
-                
-                                    <!-- Device Selection -->
-                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
-                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001">
-                                        <when test="0" >
-                                            <!-- Jump To Short Press -->
-                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
-                                        </when>
-                                    </choose>
-                                      
-                                    <!-- Number Of Fields -->
-                                    <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
-                                        <when test="&gt;0" >
-                                            <choose ParamRefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001">
-                                                <when test="&gt;0">
-                                                    <!-- Short Press -->
-                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
-                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
-                                                        <when test="2" >
-                                                            <!-- Jump To Short Press -->
-                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
-                                                        </when>
-                                                    </choose>
-                                                    <!-- Long Press -->
-                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
-                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
-                                                        <when test="2" >
-                                                            <!-- Jump To Long Press -->
-                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
-                                                      </when>
-                                                    </choose>
-                                                </when>
-                                            </choose>
-                                        </when>
-                                    </choose>
+                                    <ParameterBlock  Id="%AID%_PB-nnn" Name="Field%N%" Text="Feld %N%" HelpContext="TCH-Felddefintion" Inline="true">
+                                        <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Feld %N%" UIHint="Headline" />
+                    
+                                        <!-- Device Selection -->
+                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
+                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001">
+                                            <when test="0" >
+                                                <!-- Jump To Short Press -->
+                                                <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
+                                            </when>
+                                        </choose>
+                                        
+                                        <!-- Number Of Fields -->
+                                        <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
+                                            
+                                            <when test="1" >
+                                                <!-- One Field -->
+                                                <!-- Devie Page Type-->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501" IndentLevel="1" HelpContext="%DOC%" />
+                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
+                                                    <when test="0" >
+                                                        <!-- Short Press -->
+                                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
+                                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
+                                                            <when test="2" >
+                                                                <!-- Jump To Short Press -->
+                                                                <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
+                                                            </when>
+                                                        </choose>
+                                                        <!-- Long Press -->
+                                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
+                                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
+                                                            <when test="2" >
+                                                                <!-- Jump To Long Press -->
+                                                                <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
+                                                            </when>
+                                                        </choose>    
+                                                    </when>
+                                                </choose>
+                                            </when>
+                                            <when test="&gt;1">
+                                                <!-- More than one Field -->
+                                                <!-- Short Press -->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
+                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
+                                                    <when test="2" >
+                                                        <!-- Jump To Short Press -->
+                                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
+                                                    </when>
+                                                </choose>
+                                                <!-- Long Press -->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
+                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
+                                                    <when test="2" >
+                                                        <!-- Jump To Long Press -->
+                                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
+                                                    </when>
+                                                </choose>
+                                            </when>
+                                        </choose>
                                     </ParameterBlock>    
                                 </when>                    
                             </choose>

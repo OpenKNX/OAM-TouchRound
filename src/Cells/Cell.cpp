@@ -7,6 +7,11 @@
 #include "DeviceCell.h"
 #include "DeviceMainFunctionCell.h"
    
+const std::string Cell::logPrefix()
+{
+    return _name;
+}
+
 void Cell::init(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height)
 {
     _channelIndex = channelIndex;
@@ -15,6 +20,7 @@ void Cell::init(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t le
     _left = left;
     _width = width;
     _height = height;
+    logDebugP("Init %d %s of page %d", (int) _cellIndex, cellType(), (int) _channelIndex);
 }
    
 Cell* Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height)

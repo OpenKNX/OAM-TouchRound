@@ -5,4 +5,7 @@
 
 class DeviceMainFunctionCell : public DeviceCell
 {
+protected:
+    virtual const char* cellType() override;
+
 };

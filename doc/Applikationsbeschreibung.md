@@ -56,6 +56,9 @@ Legt fest, wieviele Bedien- bzw. Anzeigefelder auf der Seite sind.
 ### Funktion
 
 <!-- DOC -->
+### Darstellung
+
+<!-- DOC -->
 ### Kurzer Druck
 
 <!-- DOC -->

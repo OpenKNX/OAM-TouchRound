@@ -13,7 +13,7 @@
 					</op:part>
           <op:part href="TouchRoundModule.FieldDefinition.xml" name="FieldDefinition" instances="4">
 				    <op:param name="%N%" value="1" />
-            <op:param name="%OFFSET%" value="19" increment="4"/>
+            <op:param name="%OFFSET%" value="19" increment="5"/>
 					</op:part>
           
           <Static>
@@ -66,14 +66,20 @@
               </ParameterType>
               <ParameterType Id="%AID%_PT-TCHClickFunction" Name="TCHClickFunction">
                 <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="%AID%_PT-TCHDevicePageType" Name="TCHDevicePageType">
+                <TypeRestriction Base="Value" SizeInBit="4">
                   <Enumeration Text="Hauptfunktion" Value="0" Id="%ENID%" />
                   <Enumeration Text="Detailseite" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
             </ParameterTypes>
             <Parameters>
-              <Union SizeInBit="48">
+              <Union SizeInBit="64">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <!-- Visible Channels -->
                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%00000" Name="VisibleChannels" ParameterType="%AID%_PT-TCHNumChannels"  Text="Verfügbare Seiten" Value="1" SuffixText=" von %N%" />
@@ -85,12 +91,12 @@
                 <Parameter Offset="2" BitOffset="2" Id="%AID%_UP-%TT%00003" Name="DefaultPageDelayTime"   ParameterType="%AID%_PT-DelayTime"    Text="Standardseite nach Zeit" Value="1" />
                 <!-- ^^^  Need 2 Bytes ^^^ -->       
                 <!-- Default Page KO -->
-                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%00004" Name="DefaultPageKO" ParameterType="%AID%_PT-OnOffYesNo"  Text="Gruppenobjekt für Standard Seitenauswahl" Value="0" />
+                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%00004" Name="DefaultPageKO" ParameterType="%AID%_PT-OnOffYesNo"  Text="Gruppenobjekt für Standard Seitenauswahl" Value="0" />
                 <!-- 7 bits free -->
                 <!-- Switch Off Time DelayBase -->
-                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%00005" Name="SwitchOffDeleayBase" ParameterType="%AID%_PT-DelayBase" Text="Anzeige aus nach Zeitbasis" Value="1" />
+                <Parameter Offset="5" BitOffset="0" Id="%AID%_UP-%TT%00005" Name="SwitchOffDeleayBase" ParameterType="%AID%_PT-DelayBase" Text="Anzeige aus nach Zeitbasis" Value="1" />
                 <!-- Switch Off Fallback Timeg DelayTime -->
-                <Parameter Offset="4" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="0" />
+                <Parameter Offset="6" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="0" />
                 <!-- ^^^  Need 2 Bytes ^^^ -->       
               
               </Union>
@@ -122,9 +128,11 @@
 							<ComObject Number="2" Id="%AID%_O-%TT%00002" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="Page" Text="Gehe zu Seite" FunctionText="Gehe zu Seite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
 				    	<!-- Current Page  Status-->
 							<ComObject Number="3" Id="%AID%_O-%TT%00003" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="CurrentPage" Text="Aktuelle Seite" FunctionText="Aktuelle Seite" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
-			        <!-- Default Page -->
-							<ComObject Number="4" Id="%AID%_O-%TT%00004" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="DefaultPage" Text="Standardseite" FunctionText="Standardseite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
-			
+			        <!-- Next/Previous Page -->
+							<ComObject Number="4" Id="%AID%_O-%TT%00004" ObjectSize="1 Bit" DatapointType="DPST-1-8" Name="PrevNext" Text="Blättern" FunctionText="Zurück / Vor" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+					    <!-- Default Page -->
+							<ComObject Number="5" Id="%AID%_O-%TT%00005" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="DefaultPage" Text="Standardseite" FunctionText="Standardseite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+	         
             </ComObjectTable>
             <ComObjectRefs>
               <!-- Display On/Off -->
@@ -135,8 +143,10 @@
               <ComObjectRef Id="%AID%_O-%TT%00002_R-%TT%0000201" RefId="%AID%_O-%TT%00002" />
               <!-- Current Page  Status-->
               <ComObjectRef Id="%AID%_O-%TT%00003_R-%TT%0000301" RefId="%AID%_O-%TT%00003" />
-              <!-- Default Page -->
+              <!-- Next/Previous Page -->
               <ComObjectRef Id="%AID%_O-%TT%00004_R-%TT%0000401" RefId="%AID%_O-%TT%00004" />
+              <!-- Default Page -->
+              <ComObjectRef Id="%AID%_O-%TT%00005_R-%TT%0000501" RefId="%AID%_O-%TT%00005" />
           
             </ComObjectRefs>
             <Extension>
@@ -181,6 +191,8 @@
                 <ComObjectRefRef RefId="%AID%_O-%TT%00002_R-%TT%0000201" />
                 <!-- Current Page  Status-->
                 <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
+                <!-- Next/Previous Page -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
               
 
 
@@ -208,9 +220,8 @@
                 <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" />
                 <choose ParamRefId="%AID%_UP-%TT%00004_R-%TT%0000401">
                   <when test="1">
-
                     <!-- Default Page -->
-                    <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
                   </when>
                 </choose>
           

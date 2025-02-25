@@ -11,6 +11,8 @@ class DeviceCell : public Cell
 protected:
     uint8_t _channelIndex = 0; // device channel index
     ChannelBridge* _device;
+    virtual const char* cellType() override;
+
 public:
     virtual ~DeviceCell() override;
     void init(uint8_t deviceIndex);
