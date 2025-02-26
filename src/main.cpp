@@ -13,7 +13,7 @@ void setup()
     const uint8_t firmwareRevision = 0;
     openknx.init(firmwareRevision);
     openknx.addModule(9, openknxFileTransferModule);
-  //  openknx.addModule(8, openknxUsbExchangeModule);
+    // openknx.addModule(8, openknxUsbExchangeModule);
     openknx.addModule(7, openknxSmartHomeBridgeModule);
     openknx.addModule(1, openknxTouchDisplayModule);
     openknx.addModule(1, openknxLogic);

@@ -14,6 +14,6 @@ ui_Label3 = lv_label_create(ui_Message);
 lv_obj_set_width( ui_Label3, LV_SIZE_CONTENT);  /// 1
 lv_obj_set_height( ui_Label3, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_align( ui_Label3, LV_ALIGN_CENTER );
-lv_label_set_text(ui_Label3,"Bitte uebertragen Sie die\nETS Applikation oder\nkonfigurieren Sie mindestens\neine Seite.");
+lv_label_set_text(ui_Label3,"");
 
 }

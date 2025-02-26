@@ -9,17 +9,18 @@ const std::string Page::logPrefix()
 void Page::init(uint8_t channelIndex)
 {
     _channelIndex = channelIndex;
+    auto page = channelIndex + 1;
     _name = "Page";
-    _name += _channelIndex;
+    _name += page;
     if (channelIndex >= ParamTCH_VisibleChannels)
     {
-        logDebugP("Page not visible: %d", (int) ParamTCH_VisibleChannels);
+        logInfoP("Page not visible: %d", (int) ParamTCH_VisibleChannels);
         return;
     }
     _numberOfCells = ParamTCH_ChannelNumFields;
     if (_numberOfCells == 0)
     {
-        logDebugP("Page has no cells");
+        logInfoP("Page has no cells");
         return;
     }
     logDebugP("Init page with %d cells", (int) _numberOfCells);
@@ -27,6 +28,11 @@ void Page::init(uint8_t channelIndex)
     for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
     {
         _cells[cellIndex] = Cell::createCell(_channelIndex, cellIndex, 0, 0, 0, 0);
+    }
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        logDebugP("Setup cell");
+        _cells[cellIndex]->setupCell();
     }
 }
 

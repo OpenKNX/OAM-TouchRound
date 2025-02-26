@@ -388,8 +388,8 @@
 // KO9 %C%
 #define KoBRI_KO9_                                (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO9_)))
 
-#define TCH_VisibleChannels                     1833      // uint16_t
-#define TCH_DefaultPage                         1834      // uint16_t
+#define TCH_VisibleChannels                     1833      // uint8_t
+#define TCH_DefaultPage                         1834      // uint8_t
 #define TCH_DefaultPageDelayBase                1835      // 2 Bits, Bit 7-6
 #define     TCH_DefaultPageDelayBaseMask 0xC0
 #define     TCH_DefaultPageDelayBaseShift 6
@@ -407,9 +407,9 @@
 #define     TCH_SwitchOffDelayTimeShift 0
 
 // Verfügbare Seiten
-#define ParamTCH_VisibleChannels                     (knx.paramWord(TCH_VisibleChannels))
+#define ParamTCH_VisibleChannels                     (knx.paramByte(TCH_VisibleChannels))
 // Standard Seite
-#define ParamTCH_DefaultPage                         (knx.paramWord(TCH_DefaultPage))
+#define ParamTCH_DefaultPage                         (knx.paramByte(TCH_DefaultPage))
 // Standardseite nach Zeitbasis
 #define ParamTCH_DefaultPageDelayBase                ((knx.paramByte(TCH_DefaultPageDelayBase) & TCH_DefaultPageDelayBaseMask) >> TCH_DefaultPageDelayBaseShift)
 // Standardseite nach Zeit
@@ -465,8 +465,8 @@
 #define TCH_ChannelLongPress1                   20      // 4 Bits, Bit 3-0
 #define     TCH_ChannelLongPress1Mask 0x0F
 #define     TCH_ChannelLongPress1Shift 0
-#define TCH_ChannelJumpToShort1                 21      // uint16_t
-#define TCH_ChannelJumpToLong1                  22      // uint16_t
+#define TCH_ChannelJumpToShort1                 21      // uint8_t
+#define TCH_ChannelJumpToLong1                  22      // uint8_t
 #define TCH_ChannelDevicePageType1              23      // 4 Bits, Bit 7-4
 #define     TCH_ChannelDevicePageType1Mask 0xF0
 #define     TCH_ChannelDevicePageType1Shift 4
@@ -477,8 +477,8 @@
 #define TCH_ChannelLongPress2                   25      // 4 Bits, Bit 3-0
 #define     TCH_ChannelLongPress2Mask 0x0F
 #define     TCH_ChannelLongPress2Shift 0
-#define TCH_ChannelJumpToShort2                 26      // uint16_t
-#define TCH_ChannelJumpToLong2                  27      // uint16_t
+#define TCH_ChannelJumpToShort2                 26      // uint8_t
+#define TCH_ChannelJumpToLong2                  27      // uint8_t
 #define TCH_ChannelDevicePageType2              28      // 4 Bits, Bit 7-4
 #define     TCH_ChannelDevicePageType2Mask 0xF0
 #define     TCH_ChannelDevicePageType2Shift 4
@@ -489,8 +489,8 @@
 #define TCH_ChannelLongPress3                   30      // 4 Bits, Bit 3-0
 #define     TCH_ChannelLongPress3Mask 0x0F
 #define     TCH_ChannelLongPress3Shift 0
-#define TCH_ChannelJumpToShort3                 31      // uint16_t
-#define TCH_ChannelJumpToLong3                  32      // uint16_t
+#define TCH_ChannelJumpToShort3                 31      // uint8_t
+#define TCH_ChannelJumpToLong3                  32      // uint8_t
 #define TCH_ChannelDevicePageType3              33      // 4 Bits, Bit 7-4
 #define     TCH_ChannelDevicePageType3Mask 0xF0
 #define     TCH_ChannelDevicePageType3Shift 4
@@ -501,8 +501,8 @@
 #define TCH_ChannelLongPress4                   35      // 4 Bits, Bit 3-0
 #define     TCH_ChannelLongPress4Mask 0x0F
 #define     TCH_ChannelLongPress4Shift 0
-#define TCH_ChannelJumpToShort4                 36      // uint16_t
-#define TCH_ChannelJumpToLong4                  37      // uint16_t
+#define TCH_ChannelJumpToShort4                 36      // uint8_t
+#define TCH_ChannelJumpToLong4                  37      // uint8_t
 #define TCH_ChannelDevicePageType4              38      // 4 Bits, Bit 7-4
 #define     TCH_ChannelDevicePageType4Mask 0xF0
 #define     TCH_ChannelDevicePageType4Shift 4
@@ -518,9 +518,9 @@
 // Langer Druck
 #define ParamTCH_ChannelLongPress1                   (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelLongPress1)) & TCH_ChannelLongPress1Mask)
 // Absprung zu
-#define ParamTCH_ChannelJumpToShort1                 (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToShort1)))
+#define ParamTCH_ChannelJumpToShort1                 (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToShort1)))
 // Absprung zu
-#define ParamTCH_ChannelJumpToLong1                  (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToLong1)))
+#define ParamTCH_ChannelJumpToLong1                  (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToLong1)))
 // Darstellung
 #define ParamTCH_ChannelDevicePageType1              ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType1)) & TCH_ChannelDevicePageType1Mask) >> TCH_ChannelDevicePageType1Shift)
 // Funktion
@@ -530,9 +530,9 @@
 // Langer Druck
 #define ParamTCH_ChannelLongPress2                   (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelLongPress2)) & TCH_ChannelLongPress2Mask)
 // Absprung zu
-#define ParamTCH_ChannelJumpToShort2                 (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToShort2)))
+#define ParamTCH_ChannelJumpToShort2                 (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToShort2)))
 // Absprung zu
-#define ParamTCH_ChannelJumpToLong2                  (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToLong2)))
+#define ParamTCH_ChannelJumpToLong2                  (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToLong2)))
 // Darstellung
 #define ParamTCH_ChannelDevicePageType2              ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType2)) & TCH_ChannelDevicePageType2Mask) >> TCH_ChannelDevicePageType2Shift)
 // Funktion
@@ -542,9 +542,9 @@
 // Langer Druck
 #define ParamTCH_ChannelLongPress3                   (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelLongPress3)) & TCH_ChannelLongPress3Mask)
 // Absprung zu
-#define ParamTCH_ChannelJumpToShort3                 (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToShort3)))
+#define ParamTCH_ChannelJumpToShort3                 (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToShort3)))
 // Absprung zu
-#define ParamTCH_ChannelJumpToLong3                  (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToLong3)))
+#define ParamTCH_ChannelJumpToLong3                  (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToLong3)))
 // Darstellung
 #define ParamTCH_ChannelDevicePageType3              ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType3)) & TCH_ChannelDevicePageType3Mask) >> TCH_ChannelDevicePageType3Shift)
 // Funktion
@@ -554,9 +554,9 @@
 // Langer Druck
 #define ParamTCH_ChannelLongPress4                   (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelLongPress4)) & TCH_ChannelLongPress4Mask)
 // Absprung zu
-#define ParamTCH_ChannelJumpToShort4                 (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToShort4)))
+#define ParamTCH_ChannelJumpToShort4                 (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToShort4)))
 // Absprung zu
-#define ParamTCH_ChannelJumpToLong4                  (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelJumpToLong4)))
+#define ParamTCH_ChannelJumpToLong4                  (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelJumpToLong4)))
 // Darstellung
 #define ParamTCH_ChannelDevicePageType4              ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType4)) & TCH_ChannelDevicePageType4Mask) >> TCH_ChannelDevicePageType4Shift)
 
@@ -3511,8 +3511,8 @@
 #define BTN_bDynamicStatus                       1      // 1 Bit, Bit 2
 #define     BTN_bDynamicStatusMask 0x04
 #define     BTN_bDynamicStatusShift 2
-#define BTN_bInA                                 2      // 16 Bits, Bit 15-0
-#define BTN_bInB                                 4      // 16 Bits, Bit 15-0
+#define BTN_bInA                                 2      // 8 Bits, Bit 7-0
+#define BTN_bInB                                 4      // 8 Bits, Bit 7-0
 #define BTN_bReactionTimeMultiClick              6      // 8 Bits, Bit 7-0
 #define BTN_bReactionTimeLong                    7      // 8 Bits, Bit 7-0
 #define BTN_bReactionTimeExtraLong               8      // 8 Bits, Bit 7-0
@@ -3696,9 +3696,9 @@
 // Dynamische Richtung
 #define ParamBTN_bDynamicStatus                      ((bool)(knx.paramByte(BTN_ParamCalcIndex(BTN_bDynamicStatus)) & BTN_bDynamicStatusMask))
 //    1. Taster
-#define ParamBTN_bInA                                (knx.paramWord(BTN_ParamCalcIndex(BTN_bInA)))
+#define ParamBTN_bInA                                (knx.paramByte(BTN_ParamCalcIndex(BTN_bInA)))
 //    2. Taster
-#define ParamBTN_bInB                                (knx.paramWord(BTN_ParamCalcIndex(BTN_bInB)))
+#define ParamBTN_bInB                                (knx.paramByte(BTN_ParamCalcIndex(BTN_bInB)))
 // Mehrfach-Klick
 #define ParamBTN_bReactionTimeMultiClick             (knx.paramByte(BTN_ParamCalcIndex(BTN_bReactionTimeMultiClick)))
 // Langer Tastendruck

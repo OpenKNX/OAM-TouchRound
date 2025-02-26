@@ -28,30 +28,16 @@
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-BTNInputs" Name="BTNInputs">
-                <TypeRestriction Base="Value" SizeInBit="16">
+                <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Externes KO" Value="0" Id="%ENID%" />
                   <Enumeration Text="Touch-Front: Taste links" Value="71" Id="%ENID%" />
                   <Enumeration Text="Touch-Front: Taste rechts" Value="72" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-TCHNumChannels" Name="TCHNumChannels">
-                <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1" maxInclusive="%N%" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="%N%" />
               </ParameterType>
-              <ParameterType Id="%AID%_PT-ChannelActive" Name="ChannelActive">
-                <TypeRestriction Base="Value" SizeInBit="2">
-                  <Enumeration Text="Inaktiv" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Aktiv" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Funktionslos" Value="2" Id="%ENID%" />
-                </TypeRestriction>
-              </ParameterType>
-              <ParameterType Id="%AID%_PT-PageType" Name="PageType">
-                <TypeRestriction Base="Value" SizeInBit="2">
-                  <Enumeration Text="Schalten" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Dimmen" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Farbe" Value="2" Id="%ENID%" />
-                  <Enumeration Text="Rolladen" Value="3" Id="%ENID%" />
-                </TypeRestriction>
-              </ParameterType>
+            
               <ParameterType Id="%AID%_PT-TCHNumberOfFields" Name="TCHNumberOfFields">
                 <TypeRestriction Base="Value" SizeInBit="4">
                   <Enumeration Text="Nicht aktiv" Value="0" Id="%ENID%" />

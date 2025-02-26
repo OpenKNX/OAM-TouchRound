@@ -46,6 +46,7 @@ public:
 	void activePage(uint8_t channel);
 	void nextPage();
 	void previousPage();
+	void showErrorPage(const char* message);
 
 	void processInputKo(GroupObject &ko) override;
 };

@@ -10,5 +10,7 @@ const std::string WidgetFactory::name()
 
 SwitchBridge* WidgetFactory::createSwitch(KnxChannelSwitch& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
-    return new WidgetSwitch(*currentDeviceCell);
+    auto result = new WidgetSwitch(*currentDeviceCell);
+    channel.add(result);
+    return result;
 }

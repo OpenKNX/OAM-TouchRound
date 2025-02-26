@@ -14,20 +14,29 @@ const std::string Cell::logPrefix()
 
 void Cell::init(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height)
 {
+    _name = cellType();
+    _name += "Cell";
+    _name += channelIndex + 1;
+    _name += "/";
+    _name += cellIndex + 1;
     _channelIndex = channelIndex;
     _cellIndex = cellIndex;
     _top = top;
     _left = left;
     _width = width;
     _height = height;
-    logDebugP("Init %d %s of page %d", (int) _cellIndex, cellType(), (int) _channelIndex);
+ 
+    logDebugP("Initialized");
 }
    
+
+
 Cell* Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height)
 {
     uint8_t _channelIndex = channelIndex; // Used in parameter macros
     uint8_t _cellIndex = cellIndex; // Used in parameter macros
     Cell* result = nullptr;
+
     switch(ParamTCH_ChannelDeviceSelection1)   
     {
 
@@ -41,7 +50,7 @@ Cell* Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uin
             result = new DeactivatedCell();
             break;
         default:
-            uint8_t deviceIndex = ParamTCH_ChannelDeviceSelection1;
+            uint8_t deviceIndex = ParamTCH_ChannelDeviceSelection1 - 1;
             if (ParamTCH_ChannelNumFields == 1)
             {
                 auto deviceCell = new DeviceCell();

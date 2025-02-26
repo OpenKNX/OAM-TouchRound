@@ -16,14 +16,7 @@ const std::string TouchDisplayModule::version()
 }
 
 void TouchDisplayModule::setup()
-{
-    logDebugP("TouchDisplayModule setup");
-    logDebugP("ParamTCH_DefaultPage %d", (int) ParamTCH_DefaultPage);
-    logDebugP("ParamTCH_DefaultPageKO %d", (int) ParamTCH_DefaultPageKO);
-    logDebugP("ParamTCH_VisibleChannels %d", (int) ParamTCH_VisibleChannels);
-    logDebugP("ParamTCH_ChannelNavigation %d", (int) ParamTCH_ChannelNavigation);
-    logDebugP("ParamTCH_ChannelDeviceSelection1 %d", (int) ParamTCH_ChannelDeviceSelection1);
-    logDebugP("ParamTCH_ChannelNumFields %d", (int) ParamTCH_ChannelNumFields);
+{  
     _defaultPage = ParamTCH_DefaultPage;
     if (ParamTCH_DefaultPageKO)
     {
@@ -32,6 +25,7 @@ void TouchDisplayModule::setup()
         else
             KoTCH_DefaultPage.requestObjectRead();
     }
+    logDebugP("Default Page: %d", _defaultPage);
     activePage(_defaultPage);
 }
 
@@ -63,9 +57,10 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     }
 }
 
-void TouchDisplayModule::activePage(uint8_t channel)
+void TouchDisplayModule::activePage(uint8_t page)
 {
-   _channelIndex = channel;
+    logDebugP("Active Page: %d", page);
+    _channelIndex = page - 1;
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
     if (_currentPage != nullptr)
         delete _currentPage;
@@ -136,10 +131,16 @@ void TouchDisplayModule::setup(bool configured)
 
     if (!configured)
     {
-        logErrorP("No start Page found");
-        lv_disp_load_scr(ui_Message);
+        showErrorPage("OpenKNX Touch Round\nBitte uebertragen Sie die\nETS Applikation");
     }
     Module::setup(configured);
+}
+
+void TouchDisplayModule::showErrorPage(const char *message)
+{
+    logErrorP("Error Screen: %s", message);
+    lv_label_set_text(ui_Label3, message);
+    lv_disp_load_scr(ui_Message);
 }
 
 void TouchDisplayModule::lv_log(const char *buf)
