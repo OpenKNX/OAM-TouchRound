@@ -13,7 +13,7 @@
 					</op:part>
           <op:part href="TouchRoundModule.FieldDefinition.xml" name="FieldDefinition" instances="4">
 				    <op:param name="%N%" value="1" />
-            <op:param name="%OFFSET%" value="19" increment="5"/>
+            <op:param name="%OFFSET%" value="2" increment="5"/>
 					</op:part>
           
           <Static>

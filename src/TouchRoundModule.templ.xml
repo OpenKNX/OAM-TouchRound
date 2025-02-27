@@ -9,7 +9,7 @@
             <Parameters>
               <!-- Channel Description -->
               <Parameter Id="%AID%_P-%TT%%CC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" />
-              <Union SizeInBit="16">
+              <Union SizeInBit="16">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="2" increment="5"/> -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <!-- Number Of Fields -->
                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumFields" ParameterType="%AID%_PT-TCHNumberOfFields" Text="Feldanzahl" Value="1" />

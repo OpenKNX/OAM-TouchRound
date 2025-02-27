@@ -10,14 +10,17 @@ class Page;
 
 class TouchDisplayModule : public OpenKNX::Module
 {
-	uint8_t _channelIndex = 255; // current active channel, do not ranme, because var name is used in macros
+	uint8_t _channelIndex = 255; // current active channel, do not rename, because var name is used in macros
 	uint8_t _defaultPage = 0;
+	uint16_t _displayTimeoutMs = 0;
+	uint16_t _pageTimeout = 0;
+	unsigned long _lastTimeoutReset = 0;
+	bool _displayOn = false;
 public:
 	void loop(bool configured) override;
 	void setup() override;
 	void loop1(bool configured) override;
 	void setup(bool configured) override;
-	void processAfterStartupDelay() override;
 	
 	const std::string name() override;
 	const std::string version() override;
@@ -28,27 +31,27 @@ public:
 private:
 	
 	static void lv_log(const char *buf);
-	static void handleGesture(lv_event_t *event);
-	static void handleValues(lv_event_t *event);
-	static void resetDisplayTimeout();
-	static void display_pressed();
+	bool isTouched();
+	void handleGesture(lv_event_t *event);
+	void resetDisplayTimeout();
+	void display_pressed();
 	static void loadPage(int channel);
 	
-	inline static lv_obj_t *currentScreen;
-	inline static int currentScreenIndex = 0;
-
-	inline static bool displayOn;
-	inline static unsigned long lastPressed;
 	
 private:
 	Page* _currentPage = nullptr;
 public:
+	void touched();
 	void activePage(uint8_t channel);
+	void display(bool on);
 	void nextPage();
 	void previousPage();
 	void showErrorPage(const char* message);
 
 	void processInputKo(GroupObject &ko) override;
+	bool processCommand(const std::string cmd, bool diagnoseKo) override;
+	void showHelp() override;
+#
 };
 
 extern TouchDisplayModule openknxTouchDisplayModule;

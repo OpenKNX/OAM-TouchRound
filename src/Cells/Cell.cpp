@@ -16,17 +16,15 @@ void Cell::init(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t le
 {
     _name = cellType();
     _name += "Cell";
-    _name += channelIndex + 1;
+    _name += std::to_string(channelIndex + 1);
     _name += "/";
-    _name += cellIndex + 1;
+    _name += std::to_string(cellIndex + 1);
     _channelIndex = channelIndex;
     _cellIndex = cellIndex;
     _top = top;
     _left = left;
     _width = width;
     _height = height;
- 
-    logDebugP("Initialized");
 }
    
 
