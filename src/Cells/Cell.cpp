@@ -4,7 +4,6 @@
 #include "JumpCell.h"
 #include "DateTimeCell.h"
 #include "DeactivatedCell.h"
-#include "DeviceCell.h"
 #include "DeviceMainFunctionCell.h"
    
 const std::string Cell::logPrefix()
@@ -49,18 +48,9 @@ Cell* Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uin
             break;
         default:
             uint8_t deviceIndex = ParamTCH_ChannelDeviceSelection1 - 1;
-            if (ParamTCH_ChannelNumFields == 1)
-            {
-                auto deviceCell = new DeviceCell();
-                deviceCell->init(deviceIndex);
-                result = deviceCell;
-            }
-            else
-            {
-                auto deviceCell = new DeviceMainFunctionCell();
-                deviceCell->init(deviceIndex);
-                result = deviceCell;   
-            }
+            auto deviceCell = new DeviceMainFunctionCell();
+            deviceCell->init(deviceIndex);
+            result = deviceCell;   
             break;
 
     }

@@ -19,7 +19,7 @@ protected:
 public:
     void init(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height);
     virtual ~Cell() {};
-    virtual void setupCell() {};
+    virtual void setup() {};
 
     static Cell* createCell(uint8_t channelIndex, uint8_t cellIndex, uint8_t top, uint8_t left, uint8_t width, uint8_t height);
 };

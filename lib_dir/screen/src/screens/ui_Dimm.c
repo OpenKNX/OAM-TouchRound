@@ -23,7 +23,7 @@ lv_obj_set_height( ui_LabelName, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_LabelName, 0 );
 lv_obj_set_y( ui_LabelName, 63 );
 lv_obj_set_align( ui_LabelName, LV_ALIGN_CENTER );
-lv_label_set_text(ui_LabelName,"Deckenlicht");
+lv_label_set_text(ui_LabelName,"");
 
 ui_LabelValue = lv_label_create(ui_Dimm);
 lv_obj_set_width( ui_LabelValue, LV_SIZE_CONTENT);  /// 1

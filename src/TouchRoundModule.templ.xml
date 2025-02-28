@@ -19,10 +19,10 @@
             
               </Union>
               <!-- Next Id="%AID%_UP-%TT%%CC%008" -->
-              <!-- Next Offset must be set to  <op:part href="TouchRoundModule.FieldDefinition.xml" name="FieldDefinition" instances="4"> in shared -->
+              <!-- Next Offset must be set to  <op:part href="TouchRoundModule.CellDefintion.xml" name="CellDefintion" instances="4"> in shared -->
              
-              <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
-              <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/Parameters/*" /> 
+              <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+              <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/Parameters/*" /> 
                 
 
               <!-- Next Id "%AID%_UP-%TT%%CC%006" -->
@@ -35,8 +35,8 @@
               <!-- Page Reachable -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_UP-%TT%%CC%005" />
            
-              <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
-              <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
+              <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+              <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
           
             </ParameterRefs>
             <ComObjectTable>
@@ -69,8 +69,8 @@
                     </choose>
                    
            
-                    <!-- TouchRoundModule.TouchRoundModule.FieldDefinition.xml will be included here -->
-                    <op:usePart name="FieldDefinition" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
+                    <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+                    <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
               
                   </ParameterBlock>
                 </when>

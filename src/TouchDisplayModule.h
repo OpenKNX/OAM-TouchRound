@@ -31,8 +31,11 @@ public:
 private:
 	
 	static void lv_log(const char *buf);
-	bool isTouched();
+	//bool isTouched();
 	void handleGesture(lv_event_t *event);
+	void touched(lv_event_t *event);
+	void addGlobalEvents(lv_obj_t* sreen);
+
 	void resetDisplayTimeout();
 	void display_pressed();
 	static void loadPage(int channel);
@@ -41,7 +44,6 @@ private:
 private:
 	Page* _currentPage = nullptr;
 public:
-	void touched();
 	void activePage(uint8_t channel);
 	void display(bool on);
 	void nextPage();

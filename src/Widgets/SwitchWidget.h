@@ -1,15 +1,15 @@
 #pragma once
-#include "../Cells/DeviceCell.h"
+#include "../Pages/DetailDevicePage.h"
 #include "Switch/KnxChannelSwitch.h"
 
 
-class WidgetSwitch : public SwitchBridge
+class SwitchWidget : public SwitchBridge
 {
     _lv_event_dsc_t* _buttonPressedEvent = nullptr;
-    DeviceCell& _deviceCell;
+    DetailDevicePage& _detailDevicePage;
 public:
-    WidgetSwitch(DeviceCell& deviceCell);
-    virtual ~WidgetSwitch() override;
+    SwitchWidget(DetailDevicePage& detailDevicePage);
+    virtual ~SwitchWidget() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setPower(bool on) override;
     void buttonClicked();
