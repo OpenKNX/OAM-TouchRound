@@ -16,7 +16,7 @@ lv_obj_set_height( ui_SwitchLabel, LV_SIZE_CONTENT);   /// 1
 lv_obj_set_x( ui_SwitchLabel, 0 );
 lv_obj_set_y( ui_SwitchLabel, 80 );
 lv_obj_set_align( ui_SwitchLabel, LV_ALIGN_CENTER );
-
+lv_obj_add_flag(ui_SwitchValue, LV_OBJ_FLAG_CHECKABLE);
 
 ui_SwitchValue = lv_btn_create(ui_Switch);
 lv_obj_set_width( ui_SwitchValue, 100);

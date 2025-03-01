@@ -133,6 +133,7 @@ void TouchDisplayModule::previousPage()
 void TouchDisplayModule::addGlobalEvents(lv_obj_t *sreen)
 {
     lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
+    lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_LONG_PRESSED_REPEAT, this);
 }  
 
 void TouchDisplayModule::setup(bool configured)
@@ -148,7 +149,7 @@ void TouchDisplayModule::setup(bool configured)
     lv_xiao_touch_init();
 
     lv_disp_t *dispp = lv_disp_get_default();
-    lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), false, LV_FONT_DEFAULT);
+    lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), LV_THEME_DEFAULT_DARK, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_Switch_screen_init();
     ui_Dimm_screen_init();
@@ -194,7 +195,6 @@ void TouchDisplayModule::touched(lv_event_t *event)
     {
         lv_event_stop_bubbling(event);
     }
-    logDebugP("Touched");
     display(true);
 }
 

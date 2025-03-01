@@ -15,6 +15,7 @@ extern lv_obj_t *ui_Dimm;
 extern lv_obj_t *ui_DimmValue;
 extern lv_obj_t *ui_DimmLabel;
 extern lv_obj_t *ui_DimmLabelValue;
+extern lv_obj_t *ui_DimmSwitch;
 // ui_Color
 void ui_Color_screen_init(void);
 extern lv_obj_t *ui_Color;
