@@ -13,15 +13,15 @@ const std::string Page::logPrefix()
 
 void Page::errorInSetup(const char* message)
 {
-    lv_label_set_text(ui_Label3, message);
+    lv_label_set_text(ui_MessageLabel, message);
     lv_disp_load_scr(ui_Message);
 }
 
-Page* Page::createErrorPage(const char* message)
+Page* Page::createErrorPage(const char* message, uint8_t channelIndex)
 {
     ErrorPage* result = new ErrorPage();
     result->setMessage(message);
-    result->init(0);
+    result->init(channelIndex);
     return result;
 }
 
@@ -33,9 +33,7 @@ Page* Page::createPage(uint8_t channelIndex)
     auto numberOfCells = ParamTCH_ChannelNumFields;
     if (numberOfCells == 0)
     {
-        auto errorPage = new ErrorPage();
-        errorPage->setMessage("Seite ist deaktiviert");
-        result = errorPage;
+        return createErrorPage("Seite hat keine Felder", channelIndex);
     }
     else if (numberOfCells == 1)
     {

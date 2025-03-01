@@ -64,9 +64,11 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     }
 }
 
-void TouchDisplayModule::activePage(uint8_t page)
+void TouchDisplayModule::activePage(uint8_t page, bool displayOn)
 {
-    display(true);
+    if (displayOn)
+        display(true);  
+
     _lastTimeoutReset = millis();
     if (_channelIndex == page - 1)
     {
@@ -89,7 +91,7 @@ void TouchDisplayModule::showErrorPage(const char *message)
     logErrorP("Error Screen: %s", message);
     if (_currentPage != nullptr)
         delete _currentPage;
-    _currentPage = Page::createErrorPage(message);
+    _currentPage = Page::createErrorPage(message, _channelIndex);
 }
 
 void TouchDisplayModule::nextPage()
@@ -130,12 +132,8 @@ void TouchDisplayModule::previousPage()
 
 void TouchDisplayModule::addGlobalEvents(lv_obj_t *sreen)
 {
-    //   lv_obj_t *touch_area = lv_obj_create(sreen); 
-    // lv_obj_set_size(touch_area, LV_HOR_RES, LV_VER_RES); // full display size
-    // lv_obj_add_flag(touch_area, LV_OBJ_FLAG_CLICKABLE);  // clickable
     lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
-    lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
-}
+}  
 
 void TouchDisplayModule::setup(bool configured)
 {
@@ -157,39 +155,35 @@ void TouchDisplayModule::setup(bool configured)
     ui_Color_screen_init();
     ui_Message_screen_init();
 
-    ui____initial_actions0 = lv_obj_create(NULL);
+    addGlobalEvents(ui_Switch);
+    addGlobalEvents(ui_Dimm);
+    addGlobalEvents(ui_Color);
+    addGlobalEvents(ui_Message);
 
+    ui_screen = lv_obj_create(nullptr); // create screen
+   
     if (configured)
     {
-        addGlobalEvents(ui_Switch);
-        addGlobalEvents(ui_Dimm);
-        addGlobalEvents(ui_Color);
-        addGlobalEvents(ui_Message);
-       // lv_obj_t *touch_area = lv_obj_create(lv_scr_act()); // Neues Objekt auf dem aktiven Bildschirm
-        // lv_obj_set_size(touch_area, LV_HOR_RES, LV_VER_RES); // Volle Bildschirmgröße
-        // lv_obj_add_flag(touch_area, LV_OBJ_FLAG_CLICKABLE);  // Mach das Objekt berührbar
-        // lv_obj_add_event_cb(touch_area, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->touched();  }, LV_EVENT_PRESSED, this); // Event setzen
-     
-        // lv_obj_add_event_cb(touch_area, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->handleGesture(e);  }, LV_EVENT_GESTURE, this); // Event setzen
-    
-    //     lv_obj_add_event_cb(ui_Switch, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
-    //     lv_obj_add_event_cb(ui_Dimm, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
-    //     lv_obj_add_event_cb(ui_Color, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
-    //     lv_obj_add_event_cb(ui_Message, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
-
-    //     lv_obj_add_event_cb(ui_Switch, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_HIT_TEST, this);
-    //     lv_obj_add_event_cb(ui_Dimm, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_HIT_TEST, this);
-    //     lv_obj_add_event_cb(ui_Color, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_HIT_TEST, this);
-    //     lv_obj_add_event_cb(ui_Message, [](lv_event_t *e) { ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_HIT_TEST, this);
+        auto gestureLayer = lv_obj_create(lv_layer_top());
+        const int gestureLayerHeight = 50;
+        lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_SCROLLABLE );  
+        lv_obj_set_y(gestureLayer, LV_VER_RES - gestureLayerHeight);
+        lv_obj_set_size(gestureLayer, LV_HOR_RES, gestureLayerHeight) ;
+        lv_obj_set_style_border_width(gestureLayer, 0, 0);
+        lv_obj_set_style_opa(gestureLayer, LV_OPA_0, 0);
+        lv_obj_set_style_bg_color(gestureLayer, lv_color_make(0, 255, 0), 0);
+        lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_GESTURE_BUBBLE);
+        lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
     }
-    _ui_flag_modify(ui_DimmValue, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
-    _ui_flag_modify(ui_Color, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
-    _ui_flag_modify(ui_Dimm, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
-    _ui_flag_modify(ui_Switch, LV_OBJ_FLAG_GESTURE_BUBBLE, _UI_MODIFY_FLAG_REMOVE);
-
+    _displayOffRectangle = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
+    lv_obj_set_style_bg_color(_displayOffRectangle, lv_color_black(), 0);
+    lv_obj_set_style_border_width(_displayOffRectangle, 0, 0);
+    lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
+    addGlobalEvents(_displayOffRectangle);
     if (!configured)
     {
-        showErrorPage("OpenKNX Touch Round\nBitte uebertragen Sie die\nETS Applikation");
+        showErrorPage("OpenKNX Touch Round\nBitte übertragen Sie die\nETS Applikation");
     }
     Module::setup(configured);
 }
@@ -231,11 +225,13 @@ void TouchDisplayModule::display(bool on)
         logDebug("Display", "Turn display on.");
         _displayOn = true;
         digitalWrite(XIAO_BL, HIGH);
+        lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
     }
     else
     {
         logDebug("Display", "Turn display off.");
         _displayOn = false;
+        lv_obj_clear_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
         digitalWrite(XIAO_BL, LOW);
     }
     KoTCH_DisplayOnOffState.value(_displayOn, DPT_State);
@@ -243,6 +239,14 @@ void TouchDisplayModule::display(bool on)
 
 void TouchDisplayModule::handleGesture(lv_event_t *event)
 {
+    logDebugP("Gesture event");
+    if (!_displayOn)
+    {
+        lv_event_stop_bubbling(event);
+        lv_indev_wait_release(lv_indev_get_act());
+        display(true);
+        return;
+    }
     TouchDisplayModule::resetDisplayTimeout();
 
     if (lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT)
@@ -261,27 +265,9 @@ void TouchDisplayModule::handleGesture(lv_event_t *event)
     }
 }
 
-// bool TouchDisplayModule::isTouched() 
-// {
-//     lv_indev_t *indev = lv_indev_get_next(NULL); // Erstes Eingabegerät abrufen
-//     while (indev) {
-//         if (lv_indev_get_type(indev) == LV_INDEV_TYPE_POINTER) { // Ist es ein Touchscreen?
-//             lv_point_t point;
-//             lv_indev_get_point(indev, &point); // Touch-Koordinaten abrufen
-//             return true; // Falls eine Berührung erkannt wurde
-//         }
-//         indev = lv_indev_get_next(indev); // Nächstes Eingabegerät prüfen
-//     }
-//     return false; // Keine Berührung erkannt
-// }
-
 void TouchDisplayModule::loop(bool configured)
 {
     lv_timer_handler(); // let the GUI do its work
-    // if (isTouched())
-    // {
-    //     display(true);
-    // }
     if (_currentPage != nullptr)
         _currentPage->loop();
 
@@ -295,7 +281,7 @@ void TouchDisplayModule::loop(bool configured)
         }
         if (_pageTimeout && _defaultPage != _channelIndex && now - _lastTimeoutReset > _pageTimeout)
         {
-            activePage(_defaultPage);
+            activePage(_defaultPage, false);
         }
         if (!_displayOn && _defaultPage == _channelIndex)
         {

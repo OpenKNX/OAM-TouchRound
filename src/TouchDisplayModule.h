@@ -16,6 +16,7 @@ class TouchDisplayModule : public OpenKNX::Module
 	uint16_t _pageTimeout = 0;
 	unsigned long _lastTimeoutReset = 0;
 	bool _displayOn = false;
+	lv_obj_t* _displayOffRectangle = nullptr;
 public:
 	void loop(bool configured) override;
 	void setup() override;
@@ -44,7 +45,7 @@ private:
 private:
 	Page* _currentPage = nullptr;
 public:
-	void activePage(uint8_t channel);
+	void activePage(uint8_t channel, bool displayOn = true);
 	void display(bool on);
 	void nextPage();
 	void previousPage();

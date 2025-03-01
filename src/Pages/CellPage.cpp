@@ -32,7 +32,7 @@ void CellPage::setup()
     //     _cells[cellIndex]->setup();
     // }
 
-    lv_label_set_text(ui_Label3, "Noch nicht implementiert");
+    lv_label_set_text(ui_MessageLabel, "Noch nicht implementiert");
     lv_disp_load_scr(ui_Message);
 }
 

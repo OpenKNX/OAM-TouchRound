@@ -27,13 +27,13 @@ void DateTimePage::updateTimeMessage(bool force)
         {
             char buffer[50];
             sprintf(buffer, "%s\n%02d.%02d.%04d\n\n%02d:%02d:%02d", dayOfWeekString(localTime.dayOfWeek), (int)localTime.day, (int)localTime.month, (int)localTime.year, (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
-            lv_label_set_text(ui_Label3, buffer);
+            lv_label_set_text(ui_MessageLabel, buffer);
         }
     }
     else
     {
         if (force)
-            lv_label_set_text(ui_Label3, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
+            lv_label_set_text(ui_MessageLabel, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
     }
 }
 

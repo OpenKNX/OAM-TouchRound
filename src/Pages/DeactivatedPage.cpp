@@ -7,6 +7,6 @@ const char* DeactivatedPage::pageType()
 
 void DeactivatedPage::setup()
 {
-    lv_label_set_text(ui_Label3, "Seite ist deaktiviert");
+    lv_label_set_text(ui_MessageLabel, "Seite ist deaktiviert");
     lv_disp_load_scr(ui_Message);
 }
