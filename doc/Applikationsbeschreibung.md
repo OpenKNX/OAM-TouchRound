@@ -39,6 +39,15 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
 #### Standardseite nach Zeitbasis 
 
 <!-- DOC -->
+### Seitentyp
+
+<!-- DOC -->
+### Seite verfügbar
+
+<!-- DOC -->
+### Gerät
+
+<!-- DOC -->
 ### Seite über Blaettern erreichbar
 
 <!-- DOC -->

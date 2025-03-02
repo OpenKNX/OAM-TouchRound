@@ -11,13 +11,16 @@
               <Parameter Id="%AID%_P-%TT%%CC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" />
               <Union SizeInBit="16">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="2" increment="5"/> -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
-                <!-- Number Of Fields -->
-                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumFields" ParameterType="%AID%_PT-TCHNumberOfFields" Text="Feldanzahl" Value="1" />
+                <!-- Page Type -->
+                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="Channel%C%PageType" ParameterType="%AID%_PT-TCHPageType" Text="Seitentyp" Value="1" />
                 <!-- Page Reachable -->  
-                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%005" Name="Channel%C%Navigation" ParameterType="%AID%_PT-OnOffYesNo" Text="Seite über Blättern erreichbar" Value="1" />
+                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%002" Name="Channel%C%Navigation" ParameterType="%AID%_PT-OnOffYesNo" Text="Seite über Blättern erreichbar" Value="1" />
+                <!-- Page Available -->
+                <Parameter Offset="1" BitOffset="1" Id="%AID%_UP-%TT%%CC%003" Name="Channel%C%Available" ParameterType="%AID%_PT-TCHPageAvailable" Text="Seite verfügbar" Value="0" />
                 <!--7 bits free --> 
             
               </Union>
+              
               <!-- Next Id="%AID%_UP-%TT%%CC%008" -->
               <!-- Next Offset must be set to  <op:part href="TouchRoundModule.CellDefintion.xml" name="CellDefintion" instances="4"> in shared -->
              
@@ -30,18 +33,26 @@
             <ParameterRefs>
               <!-- Channel Description -->
               <ParameterRef Id="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_P-%TT%%CC%000" />
-              <!-- Number Of Fields -->
-              <ParameterRef Id="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_UP-%TT%%CC%004" />
+              <!-- Page Type -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_UP-%TT%%CC%001" />   
               <!-- Page Reachable -->
-              <ParameterRef Id="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" RefId="%AID%_UP-%TT%%CC%005" />
+              <ParameterRef Id="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_UP-%TT%%CC%002" />
+              <!-- Page Available -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_UP-%TT%%CC%003" />
            
               <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
               <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
           
             </ParameterRefs>
             <ComObjectTable>
+              <!-- Page Enabled -->
+              <ComObject Id="%AID%_O-%TT%%CC%000" Number="%K00%" Name="CH%C%PageEnabled" ObjectSize="1 Bit" DatapointType="DPST-1-3" Text="Seite Freigegen" FunctionText="Seite Freigeben" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
             </ComObjectTable>
             <ComObjectRefs>
+              <!-- Page Enabled -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" DatapointType="DPST-1-3" Text="Seite %C% Freigegen" FunctionText="Seite %C% {{0: ...}} Freigeben" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" />
+              <!-- Page Lock -->
+              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00011" RefId="%AID%_O-%TT%%CC%000" DatapointType="DPST-1-1" Text="Seite %C% Sperren" FunctionText="Seite %C% {{0: ...}} Sperren" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" />
             </ComObjectRefs>
           </Static>
           <Dynamic>
@@ -59,15 +70,26 @@
                     <ParameterSeparator Id="%AID%_PS-nnn" Text="Seitendefinition" UIHint="Headline" />
           
           
-                    <!-- Number Of Fields -->
-                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" HelpContext="%DOC%" />
-                    <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">
+                    <!-- Page Type -->
+                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" IndentLevel="1" HelpContext="%DOC%" />
+                    <choose ParamRefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101">
                       <when test="&gt;0">
                         <!-- Page Reachable -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="1" HelpContext="%DOC%" />   
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" HelpContext="%DOC%" />  
+                        <!-- Page Available -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1" HelpContext="%DOC%" /> 
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301">
+                          <when test="1">
+                            <!-- Page Enabled -->
+                            <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" />
+                          </when>
+                           <when test="2">
+                            <!-- Page Lock -->
+                            <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00011" />
+                          </when>
+                        </choose>
                       </when>
                     </choose>
-                   
            
                     <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
                     <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 

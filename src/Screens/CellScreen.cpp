@@ -8,8 +8,8 @@ void CellScreen2::init()
 }
 
 CellScreen2::CellScreen2() :
-cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2),
-cellObject2(*this, LV_HOR_RES, LV_VER_RES / 2)
+cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
+cellObject2(*this, LV_HOR_RES, LV_VER_RES / 2, true)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -41,9 +41,9 @@ void CellScreen3::init()
 }
 
 CellScreen3::CellScreen3() :
-cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2),
-cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2),
-cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2)
+cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
+cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true),
+cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -81,10 +81,10 @@ void CellScreen4::init()
 }
 
 CellScreen4::CellScreen4() :
-cellObject1(*this, LV_HOR_RES / 2, LV_VER_RES / 2),
-cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2),
-cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2), 
-cellObject4(*this, LV_HOR_RES / 2, LV_VER_RES / 2)
+cellObject1(*this, LV_HOR_RES / 2, LV_VER_RES / 2, false),
+cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, false),
+cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true), 
+cellObject4(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -120,7 +120,7 @@ CellObject& CellScreen4::getCell(uint8_t index)
     }
 }
 
-CellObject::CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height) :
+CellObject::CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop) :
 _cellPage(cellPage),
 _width(width),
 _height(height)
@@ -128,6 +128,11 @@ _height(height)
     cell = lv_obj_create(cellPage.screen);
     lv_obj_set_size(cell, width, height);
     lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); /// Flags
-    lv_obj_set_style_bg_color(cell, lv_color_make(0, 255, 0), LV_PART_MAIN);
+    label = lv_label_create(cell);
+    lv_label_set_text(label, "Test");
+    if (labelTop)
+        lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
+    else
+        lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
 }
 

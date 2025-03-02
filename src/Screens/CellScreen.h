@@ -15,7 +15,8 @@ class CellObject
     lv_coord_t _height;
 public:
     lv_obj_t* cell;
-    CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height);
+    lv_obj_t* label;
+    CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop);
 };
 
 

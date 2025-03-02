@@ -18,15 +18,33 @@
           
           <Static>
             <ParameterTypes>
+              <ParameterType Id="%AID%_PT-TCHPageType" Name="TCHPageType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
+                  <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
+                  <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
+                  <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
+                  <Enumeration Text="Zeit / Datum" Value="100" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
              <ParameterType Id="%AID%_PT-TCHDeviceSelection" Name="TCHDeviceSelection">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Deaktiviert" Value="254" Id="%ENID%" />
-                  <Enumeration Text="Absprung zu andere Seite" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Zeit / Datum" Value="255" Id="%ENID%" />
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
                   	<!-- TouchRoundModule.DeviceEnumValue.xml will be included here -->
 									  <op:usePart name="DeviceEnumValue" xpath="//TypeRestriction/*" />
                 </TypeRestriction>
               </ParameterType>
+
+              <ParameterType Id="%AID%_PT-TCHCellType" Name="TCHCellType">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Leer" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Sprung zu Seite" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
               <ParameterType Id="%AID%_PT-BTNInputs" Name="BTNInputs">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Externes KO" Value="0" Id="%ENID%" />
@@ -38,15 +56,7 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="1" maxInclusive="%N%" />
               </ParameterType>
             
-              <ParameterType Id="%AID%_PT-TCHNumberOfFields" Name="TCHNumberOfFields">
-                <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="Nicht aktiv" Value="0" Id="%ENID%" />
-                  <Enumeration Text="1 Feld" Value="1" Id="%ENID%" />
-                  <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
-                  <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
-                  <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
-                </TypeRestriction>
-              </ParameterType>
+          
               <ParameterType Id="%AID%_PT-Text16Byte" Name="Text16Byte">
                 <TypeText SizeInBit="128" />
               </ParameterType>
@@ -63,14 +73,38 @@
                   <Enumeration Text="Detailseite" Value="1" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
+
+              <ParameterType Id="%AID%_PT-TCHTheme" Name="TCHTheme">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Light" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Dark" Value="1" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-TCHDayNightObject" Name="TCHDayNightObject">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Umschaltobjekt Nacht EIN" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Umschaltobjekt Tag EIN" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+
+              <ParameterType Id="%AID%_PT-TCHPageAvailable" Name="TCHPageAvailable">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Immer" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Über Objekt aktivierbar" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Über Objekt deaktivierbar" Value="2" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
             </ParameterTypes>
             <Parameters>
-              <Union SizeInBit="64">
+              <Union SizeInBit="72">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <!-- Visible Channels -->
                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%00000" Name="VisibleChannels" ParameterType="%AID%_PT-TCHNumChannels"  Text="Verfügbare Seiten" Value="1" SuffixText=" von %N%" />
                 <!-- Default Page -->
-                <Parameter Offset="1" BitOffset="0"  Id="%AID%_UP-%TT%00001" Name="DefaultPage" ParameterType="%AID%_PT-TCHNumChannels" Text="Standard Seite" Value="1" />
+                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%00001" Name="DefaultPage" ParameterType="%AID%_PT-TCHNumChannels" Text="Standard Seite" Value="1" />
                 <!-- Default Page Fallback Time DelayBase -->
                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%00002" Name="DefaultPageDelayBase"   ParameterType="%AID%_PT-DelayBase" Text="Standardseite nach Zeitbasis" Value="1" />
                 <!-- Default Page Fallback Timeg DelayTime -->
@@ -78,15 +112,21 @@
                 <!-- ^^^  Need 2 Bytes ^^^ -->       
                 <!-- Default Page KO -->
                 <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%00004" Name="DefaultPageKO" ParameterType="%AID%_PT-OnOffYesNo"  Text="Gruppenobjekt für Standard Seitenauswahl" Value="0" />
-                <!-- 7 bits free -->
+                <!-- Day/Night Objekt -->
+                <Parameter Offset="4" BitOffset="1" Id="%AID%_UP-%TT%00009" Name="DayNightObject" ParameterType="%AID%_PT-TCHDayNightObject" Text="Bei Nacht anders" Value="0" />
+                <!-- 6 bits free -->
+
                 <!-- Switch Off Time DelayBase -->
                 <Parameter Offset="5" BitOffset="0" Id="%AID%_UP-%TT%00005" Name="SwitchOffDeleayBase" ParameterType="%AID%_PT-DelayBase" Text="Anzeige aus nach Zeitbasis" Value="1" />
                 <!-- Switch Off Fallback Timeg DelayTime -->
                 <Parameter Offset="6" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="0" />
-                <!-- ^^^  Need 2 Bytes ^^^ -->       
-              
+                <!-- ^^^  Need 2 Bytes ^^^ -->             
+                <!-- Theme Day -->
+                <Parameter Offset="8" BitOffset="0"  Id="%AID%_UP-%TT%00007" Name="ThemeDay" ParameterType="%AID%_PT-TCHTheme" Text="Standard" Value="0" />
+                <!-- Theme Night -->
+                <Parameter Offset="8" BitOffset="4"  Id="%AID%_UP-%TT%00008" Name="ThemeNight" ParameterType="%AID%_PT-TCHTheme" Text="Nacht" Value="1" />
               </Union>
-              <!-- Next Id="%AID%_UP-%TT%00007" -->
+              <!-- Next Id="%AID%_UP-%TT%00010" -->
             </Parameters>
             <ParameterRefs>
               <!-- Visible Channels -->
@@ -103,7 +143,12 @@
               <ParameterRef Id="%AID%_UP-%TT%00005_R-%TT%0000501" RefId="%AID%_UP-%TT%00005" />
               <!-- Switch Off DelayTime -->
               <ParameterRef Id="%AID%_UP-%TT%00006_R-%TT%0000601" RefId="%AID%_UP-%TT%00006" />
-
+              <!-- Theme Day -->
+              <ParameterRef Id="%AID%_UP-%TT%00007_R-%TT%0000701" RefId="%AID%_UP-%TT%00007" />
+              <!-- Theme Night -->
+              <ParameterRef Id="%AID%_UP-%TT%00008_R-%TT%0000801" RefId="%AID%_UP-%TT%00008" />
+              <!-- Day/Night Object -->
+              <ParameterRef Id="%AID%_UP-%TT%00009_R-%TT%0000901" RefId="%AID%_UP-%TT%00009" />
             </ParameterRefs>
             <ComObjectTable>
             	<!-- Display On/Off -->
@@ -118,7 +163,9 @@
 							<ComObject Number="4" Id="%AID%_O-%TT%00004" ObjectSize="1 Bit" DatapointType="DPST-1-8" Name="PrevNext" Text="Blättern" FunctionText="Zurück / Vor" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
 					    <!-- Default Page -->
 							<ComObject Number="5" Id="%AID%_O-%TT%00005" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="DefaultPage" Text="Standardseite" FunctionText="Standardseite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
-	         
+	           	<!-- Display Tag Nacht -->
+							<ComObject Number="6" Id="%AID%_O-%TT%00006" ObjectSize="1 Bit" DatapointType="DPST-1-24" Name="DayNight" Text="Tag/Nacht" FunctionText="Nacht EIN" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" Priority="Low" />
+				  
             </ComObjectTable>
             <ComObjectRefs>
               <!-- Display On/Off -->
@@ -133,7 +180,11 @@
               <ComObjectRef Id="%AID%_O-%TT%00004_R-%TT%0000401" RefId="%AID%_O-%TT%00004" />
               <!-- Default Page -->
               <ComObjectRef Id="%AID%_O-%TT%00005_R-%TT%0000501" RefId="%AID%_O-%TT%00005" />
-          
+              <!-- Display Tag = 0 Nacht = 1 -->
+              <ComObjectRef Id="%AID%_O-%TT%00006_R-%TT%0000601" RefId="%AID%_O-%TT%00006" /> 
+              <!-- Display Tag = 1 Nacht =0 -->
+							<ComObjectRef Id="%AID%_O-%TT%00006_R-%TT%0000611" RefId="%AID%_O-%TT%00006" DatapointType="DPST-1-1" Name="DayNight" Text="Nacht/Tag" FunctionText="Tag EIN" />
+				    
             </ComObjectRefs>
             <Extension>
               <Baggage RefId="%FILE-HELP-de%" />
@@ -179,8 +230,7 @@
                 <ComObjectRefRef RefId="%AID%_O-%TT%00003_R-%TT%0000301" />
                 <!-- Next/Previous Page -->
                 <ComObjectRefRef RefId="%AID%_O-%TT%00004_R-%TT%0000401" />
-              
-
+            
 
                 <!-- Default Page -->
                 <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00001_R-%TT%0000101" />
@@ -210,7 +260,30 @@
                     <ComObjectRefRef RefId="%AID%_O-%TT%00005_R-%TT%0000501" />
                   </when>
                 </choose>
-          
+
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="%AID%_PS-nnn" Text="Anzeigemodus" UIHint="Headline" />
+
+                <!-- Theme Day -->
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00007_R-%TT%0000701" />
+                <!-- Day/Night Object -->
+                <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00009_R-%TT%0000901" />
+                <choose ParamRefId="%AID%_UP-%TT%00009_R-%TT%0000901">
+                  <when test="1">
+                    <!-- Display Tag = 0 Nacht = 1 -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000601" />                    
+                    <!-- Theme Night -->
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" />
+                  </when>
+                   <when test="2">
+                    <!-- Display Tag = 1 Nacht = 0 -->
+                    <ComObjectRefRef RefId="%AID%_O-%TT%00006_R-%TT%0000611" />
+                    <!-- Theme Night -->
+                    <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" />
+                  </when>   
+                </choose>
+
+     					  <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalauswahl" UIHint="Headline" />
                 <!-- Visible Channels -->
                 <ParameterRefRef RefId="%AID%_UP-%TT%00000_R-%TT%0000001" HelpContext="BASE-Verfuegbare-Kanaele" IndentLevel="1" />

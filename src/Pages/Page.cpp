@@ -30,32 +30,26 @@ Page* Page::createPage(uint8_t channelIndex)
 {
     uint8_t _channelIndex = channelIndex; // Used in parameter macros
     Page* result = nullptr;
-    auto numberOfCells = ParamTCH_ChannelNumFields;
-    if (numberOfCells == 0)
+    // <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+    // <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
+    // <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
+    // <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
+    // <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
+    // <Enumeration Text="Zeit / Datum" Value="100" Id="%ENID%" />
+    switch (ParamTCH_ChannelPageType)
     {
-        return createErrorPage("Seite hat keine Felder", channelIndex);
-    }
-    else if (numberOfCells == 1)
-    {
-        switch (ParamTCH_ChannelDeviceSelection1)
-        {
-        case 0: // Jump cell
-            result = new CellPage();
-            break;
-        case 255: // Date time cell   
-            result = new DateTimePage();
-            break;
-        case 254:
-            result = new DeactivatedPage();
-            break;
-        default:
-            result = new DetailDevicePage();
-            break;
-        }
-    }
-    else
-    {
+    case 0:
+        result = new DeactivatedPage();
+        break;
+    case 1:
+        result = new DetailDevicePage();
+        break;
+    case 100:
+        result = new DateTimePage();
+        break;
+   default: 
         result = new CellPage();
+        break;
     }
     result->init(channelIndex);
     return result;
@@ -68,7 +62,7 @@ void Page::init(uint8_t channelIndex)
     _name = pageType();
     _name += "Page";
     _name += std::to_string(page);
-    logInfoP("setup %d", ParamTCH_ChannelDevicePageType1 );
+    logInfoP("setup");
     setup();
 }
 
