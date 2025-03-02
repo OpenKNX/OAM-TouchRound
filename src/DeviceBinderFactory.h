@@ -4,7 +4,7 @@
 
 class DetailDevicePage;
 
-class WidgetFactory : BridgeBase
+class DeviceBinderFactory : BridgeBase
 {
     friend class DetailDevicePage;
     DetailDevicePage* _currentDevicePage;

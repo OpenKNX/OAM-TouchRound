@@ -1,20 +1,20 @@
 #pragma once
 #include "OpenKNX.h"
 #include "Page.h"
-#include "../WidgetFactory.h"
+#include "../DeviceBinderFactory.h"
 
 class ChannelBridge;
 
 class DetailDevicePage : public Page
 {
-    static WidgetFactory* _widgetFactory;
+    static DeviceBinderFactory* _widgetFactory;
 protected:
     ChannelBridge* _device;
     virtual const char* pageType() override;
 
 public:
     virtual ~DetailDevicePage() override;
-    virtual void createWidget();
+    virtual void createDeviceBinder();
 
     void setup() override;
 };

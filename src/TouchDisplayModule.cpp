@@ -273,17 +273,20 @@ void TouchDisplayModule::loop(bool configured)
 
     if (_lastTimeoutReset != 0)
     {
-        auto now = millis();
-        if (_displayTimeoutMs && _displayOn && now - _lastTimeoutReset > _displayTimeoutMs)
+        unsigned int now = millis();
+        unsigned int pastMs = now - _lastTimeoutReset;
+        
+        if (_displayTimeoutMs && _displayOn && pastMs > _displayTimeoutMs)
         {
             logDebugP("Display timeout %d", _displayTimeoutMs);
             display(false);
         }
-        if (_pageTimeout && _defaultPage != _channelIndex && now - _lastTimeoutReset > _pageTimeout)
+        if (_pageTimeout && _defaultPage != _channelIndex && pastMs > _pageTimeout)
         {
+            logDebugP("Default page timeout %d", _pageTimeout);
             activePage(_defaultPage, false);
         }
-        if (!_displayOn && _defaultPage == _channelIndex)
+        if (pastMs > _pageTimeout && pastMs > _displayTimeoutMs)
         {
             _lastTimeoutReset = 0;
         }

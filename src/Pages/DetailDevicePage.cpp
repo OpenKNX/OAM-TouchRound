@@ -1,9 +1,9 @@
 #include "DetailDevicePage.h"
 #include "../TouchDisplayModule.h"
 #include "SmartHomeBridgeModule.h"
-#include "../WidgetFactory.h"
+#include "../DeviceBinderFactory.h"
 
-WidgetFactory* DetailDevicePage::_widgetFactory = nullptr;
+DeviceBinderFactory* DetailDevicePage::_widgetFactory = nullptr;
 
 const char* DetailDevicePage::pageType()
 {
@@ -20,10 +20,10 @@ DetailDevicePage::~DetailDevicePage()
 }
 
 
-void DetailDevicePage::createWidget()  
+void DetailDevicePage::createDeviceBinder()  
 {
     if (_widgetFactory == nullptr)
-        _widgetFactory = new WidgetFactory();
+        _widgetFactory = new DeviceBinderFactory();
     if (_channelIndex >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
     {
         // std::ostringstream message;
@@ -51,5 +51,5 @@ void DetailDevicePage::createWidget()
 
 void DetailDevicePage::setup()
 {
-    createWidget();
+    createDeviceBinder();
 }
