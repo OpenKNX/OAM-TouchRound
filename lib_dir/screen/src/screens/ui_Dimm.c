@@ -16,47 +16,33 @@ void ui_Dimm_screen_init(void)
     lv_obj_set_align(ui_DimmValue, LV_ALIGN_CENTER);
     lv_arc_set_value(ui_DimmValue, 0);
     lv_arc_set_bg_angles(ui_DimmValue, 160, 20);
-    lv_arc_set_value(ui_DimmValue, 0);  
-
+    lv_arc_set_value(ui_DimmValue, 0);
     lv_obj_set_style_arc_width(ui_DimmValue, 20, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
-    ui_DimmLabel = lv_label_create(ui_Dimm);
-    lv_obj_set_width(ui_DimmLabel, LV_SIZE_CONTENT);  /// 1
-    lv_obj_set_height(ui_DimmLabel, LV_SIZE_CONTENT); /// 1
-    lv_obj_set_x(ui_DimmLabel, 0);
-    lv_obj_set_y(ui_DimmLabel, 63);
-    lv_obj_set_align(ui_DimmLabel, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_DimmLabel, "");
-
-
+    
     ui_DimmSwitch = lv_btn_create(ui_Dimm);
-    lv_obj_set_width( ui_DimmSwitch, 100);
-    lv_obj_set_height( ui_DimmSwitch, 50);
-    lv_obj_set_align( ui_DimmSwitch, LV_ALIGN_CENTER );
-    lv_obj_add_flag( ui_DimmSwitch, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
-    lv_obj_clear_flag( ui_DimmSwitch, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
-    lv_obj_set_style_bg_color(ui_DimmSwitch, lv_color_hex(0xFF7D00), LV_PART_MAIN | LV_STATE_CHECKED );
-    lv_obj_set_style_bg_opa(ui_DimmSwitch, 255, LV_PART_MAIN| LV_STATE_CHECKED);
+    lv_obj_set_width(ui_DimmSwitch, 100);
+    lv_obj_set_height(ui_DimmSwitch, 50);
+    lv_obj_set_align(ui_DimmSwitch, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_DimmSwitch, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
+    lv_obj_clear_flag(ui_DimmSwitch, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
+    lv_obj_set_style_bg_color(ui_DimmSwitch, lv_color_hex(0xFF7D00), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_DimmSwitch, 255, LV_PART_MAIN | LV_STATE_CHECKED);
     lv_obj_add_flag(ui_DimmSwitch, LV_OBJ_FLAG_CHECKABLE);
-
 
     ui_DimmLabelValue = lv_label_create(ui_Dimm);
     lv_obj_set_width(ui_DimmLabelValue, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_DimmLabelValue, LV_SIZE_CONTENT); /// 1
-    lv_obj_align(ui_DimmLabel, LV_ALIGN_CENTER, 0, 0);
-    //lv_obj_set_x(ui_DimmLabelValue, 0);
-    //lv_obj_set_y(ui_DimmLabelValue, 97);
+    lv_obj_align(ui_DimmLabelValue, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_align(ui_DimmLabelValue, LV_ALIGN_CENTER);
+  
+    ui_DimmLabel = lv_label_create(ui_Dimm);
+    lv_obj_set_width(ui_DimmLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(ui_DimmLabel, LV_SIZE_CONTENT); /// 1
+    lv_obj_set_x(ui_DimmLabel, 0);
+    lv_obj_set_y(ui_DimmLabel, 80);
+    lv_obj_set_align(ui_DimmLabel, LV_ALIGN_CENTER);
     
-    lv_obj_add_event_cb(ui_DimmValue, ui_event_DimmValue, LV_EVENT_VALUE_CHANGED, NULL);
-    ui_event_DimmValue(NULL);
-
-   
-
 }
 
-
-void ui_event_DimmValue(lv_event_t *e)
-{
-    lv_label_set_text_fmt(ui_DimmLabelValue, "%" LV_PRId32 "%%", lv_arc_get_value(ui_DimmValue));
-}
+ 

@@ -26,19 +26,26 @@ DimmerWidget::~DimmerWidget()
 void DimmerWidget::setBrightness(uint8_t brightness)
 {
     lv_arc_set_value(ui_DimmValue, brightness);  
-    if (brightness = 0)
-        lv_obj_add_state(ui_SwitchValue, LV_STATE_CHECKED);
+    if (brightness != 0)
+        lv_obj_add_state(ui_DimmSwitch, LV_STATE_CHECKED);
     else
-        lv_obj_clear_state(ui_SwitchValue, LV_STATE_CHECKED);      
+        lv_obj_clear_state(ui_DimmSwitch, LV_STATE_CHECKED);   
+    updateText(); 
+}
+
+void DimmerWidget::updateText()
+{
+    lv_label_set_text_fmt(ui_DimmLabelValue, "%" LV_PRId32 "%%", lv_arc_get_value(ui_DimmValue));
 }
 
 void DimmerWidget::released()
 {    
     auto value = lv_arc_get_value(ui_DimmValue);
     _channel->commandBrightness(this,  value);
+    updateText();
 }
 
 void DimmerWidget::buttonClicked()
 {    
-    _channel->commandPower(this,  lv_obj_has_state(ui_DimmSwitch, LV_STATE_CHECKED));
+    _channel->commandPower(this, lv_obj_has_state(ui_DimmSwitch, LV_STATE_CHECKED));
 }

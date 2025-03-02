@@ -15,4 +15,5 @@ public:
     virtual void setBrightness(uint8_t brightness) override;
     void released();
     void buttonClicked();
+    void updateText();
 };  

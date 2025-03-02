@@ -148,9 +148,9 @@ void TouchDisplayModule::setup(bool configured)
     lv_xiao_disp_init();
     lv_xiao_touch_init();
 
-    lv_disp_t *dispp = lv_disp_get_default();
-    lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), LV_THEME_DEFAULT_DARK, LV_FONT_DEFAULT);
-    lv_disp_set_theme(dispp, theme);
+    lv_disp_t *display = lv_disp_get_default();
+    lv_theme_t *theme = lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
+    lv_disp_set_theme(display, theme);
     ui_Switch_screen_init();
     ui_Dimm_screen_init();
     ui_Color_screen_init();

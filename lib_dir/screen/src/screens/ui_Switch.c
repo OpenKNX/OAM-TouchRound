@@ -7,24 +7,23 @@
 
 void ui_Switch_screen_init(void)
 {
-ui_Switch = lv_obj_create(NULL);
-lv_obj_clear_flag( ui_Switch, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+    ui_Switch = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_Switch, LV_OBJ_FLAG_SCROLLABLE); /// Flags
 
-ui_SwitchLabel = lv_label_create(ui_Switch);
-lv_obj_set_width( ui_SwitchLabel, LV_SIZE_CONTENT);  /// 1
-lv_obj_set_height( ui_SwitchLabel, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_x( ui_SwitchLabel, 0 );
-lv_obj_set_y( ui_SwitchLabel, 80 );
-lv_obj_set_align( ui_SwitchLabel, LV_ALIGN_CENTER );
-lv_obj_add_flag(ui_SwitchValue, LV_OBJ_FLAG_CHECKABLE);
+    ui_SwitchLabel = lv_label_create(ui_Switch);
+    lv_obj_set_width(ui_SwitchLabel, LV_SIZE_CONTENT);  /// 1
+    lv_obj_set_height(ui_SwitchLabel, LV_SIZE_CONTENT); /// 1
+    lv_obj_set_x(ui_SwitchLabel, 0);
+    lv_obj_set_y(ui_SwitchLabel, 80);
+    lv_obj_set_align(ui_SwitchLabel, LV_ALIGN_CENTER);
 
-ui_SwitchValue = lv_btn_create(ui_Switch);
-lv_obj_set_width( ui_SwitchValue, 100);
-lv_obj_set_height( ui_SwitchValue, 50);
-lv_obj_set_align( ui_SwitchValue, LV_ALIGN_CENTER );
-lv_obj_add_flag( ui_SwitchValue, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
-lv_obj_clear_flag( ui_SwitchValue, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
-lv_obj_set_style_bg_color(ui_SwitchValue, lv_color_hex(0xFF7D00), LV_PART_MAIN | LV_STATE_CHECKED );
-lv_obj_set_style_bg_opa(ui_SwitchValue, 255, LV_PART_MAIN| LV_STATE_CHECKED);
-
+    ui_SwitchValue = lv_btn_create(ui_Switch);
+    lv_obj_set_width(ui_SwitchValue, 100);
+    lv_obj_set_height(ui_SwitchValue, 50);
+    lv_obj_set_align(ui_SwitchValue, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_SwitchValue, LV_OBJ_FLAG_SCROLL_ON_FOCUS); /// Flags
+    lv_obj_clear_flag(ui_SwitchValue, LV_OBJ_FLAG_SCROLLABLE);    /// Flags
+    lv_obj_set_style_bg_color(ui_SwitchValue, lv_color_hex(0xFF7D00), LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_set_style_bg_opa(ui_SwitchValue, 255, LV_PART_MAIN | LV_STATE_CHECKED);
+    lv_obj_add_flag(ui_SwitchValue, LV_OBJ_FLAG_CHECKABLE);
 }
