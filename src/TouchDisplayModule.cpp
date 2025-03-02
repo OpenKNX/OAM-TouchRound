@@ -4,6 +4,7 @@
 #include "lv_xiao_round_screen.h"
 #include "knxprod.h"
 #include "./Pages/Page.h"
+#include "./Screens/CellScreen.h"
 
 
 const std::string TouchDisplayModule::name()
@@ -155,11 +156,17 @@ void TouchDisplayModule::setup(bool configured)
     ui_Dimm_screen_init();
     ui_Color_screen_init();
     ui_Message_screen_init();
+    CellScreen2::init();
+    CellScreen3::init();
+    CellScreen4::init();
 
     addGlobalEvents(ui_Switch);
     addGlobalEvents(ui_Dimm);
     addGlobalEvents(ui_Color);
     addGlobalEvents(ui_Message);
+    addGlobalEvents(CellScreen2::instance->screen);
+    addGlobalEvents(CellScreen3::instance->screen);
+    addGlobalEvents(CellScreen4::instance->screen);
 
     ui_screen = lv_obj_create(nullptr); // create screen
    

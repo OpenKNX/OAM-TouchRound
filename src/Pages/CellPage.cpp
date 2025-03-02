@@ -1,5 +1,6 @@
 #include "CellPage.h"
 #include "../Cells/Cell.h"
+#include "../Screens/CellScreen.h"
 
 const char* CellPage::pageType()
 {
@@ -8,6 +9,7 @@ const char* CellPage::pageType()
 
 void CellPage::setup()
 {
+    logDebugP("Init page with %d cells", (int) _numberOfCells);
      _numberOfCells = ParamTCH_ChannelNumFields;
     if (_numberOfCells == 0)
     {
@@ -20,7 +22,23 @@ void CellPage::setup()
         return;
     }
    
-    // logDebugP("Init page with %d cells", (int) _numberOfCells);
+    switch (_numberOfCells)
+    {
+    case 2:
+        _screen = CellScreen2::instance;
+        break;
+    case 3:
+        _screen = CellScreen3::instance;
+        break;
+    case 4:
+        _screen = CellScreen4::instance;
+        break;
+    default:
+        errorInSetup("Zellenanzahl nicht unterstützt");
+        break;
+    }
+    _screen->show();
+
     // _cells = new Cell*[_numberOfCells];    
     // for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
     // {
@@ -31,18 +49,15 @@ void CellPage::setup()
     //     logDebugP("Setup cell");
     //     _cells[cellIndex]->setup();
     // }
-
-    lv_label_set_text(ui_MessageLabel, "Noch nicht implementiert");
-    lv_disp_load_scr(ui_Message);
 }
 
 CellPage::~CellPage()
 {
-    if (_cells == nullptr)
-        return;
-    for (uint8_t i = 0; i < _numberOfCells; i++)
-    {
-        delete _cells[i];
-    }
-    delete[] _cells;
+    // if (_cells == nullptr)
+    //     return;
+    // for (uint8_t i = 0; i < _numberOfCells; i++)
+    // {
+    //     delete _cells[i];
+    // }
+    // delete[] _cells;
 }

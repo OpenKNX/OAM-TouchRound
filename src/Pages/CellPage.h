@@ -1,15 +1,16 @@
 #pragma once
 #include "Page.h"
 class Cell;
+class Screen;
 
 class CellPage : public Page
 {
-    uint8_t _numberOfCells;
-    Cell** _cells;
- 
 protected:
+    uint8_t _numberOfCells;
+    Screen* _screen;
     virtual const char* pageType() override; 
     virtual void setup() override;
 public:
     virtual ~CellPage();
 };
+
