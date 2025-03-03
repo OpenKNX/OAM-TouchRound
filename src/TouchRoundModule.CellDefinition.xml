@@ -42,80 +42,47 @@
                     </Static>
                     <Dynamic>
                         <ChannelIndependentBlock>
-                            <!-- Page Definition -->
-                            <choose ParamRefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101">
-                                <when test="&gt;=%N%" >
-                                    <choose ParamRefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101">
-                                        <when test="1" >
-                                            <!-- Device Page -->
-                                            <!-- Device Selection -->
-                                            <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
-                                            <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
-                                                <when test="&gt;0" >
-                                                    <!-- Short Press -->
-                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
-                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
-                                                        <when test="2" >
-                                                            <!-- Jump To Short Press -->
-                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
-                                                        </when>
-                                                    </choose>
-                                                    <!-- Long Press -->
-                                                    <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
-                                                    <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
-                                                        <when test="2" >
-                                                            <!-- Jump To Long Press -->
-                                                            <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
-                                                        </when>
-                                                    </choose>    
-                                                </when>
-                                            </choose>
+                            <!-- Number of fields-->
+                            <choose ParamRefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401">          
+                                <when test="&gt;=%N%" >  
+                                    <ParameterBlock  Id="%AID%_PB-nnn" Name="Field%N%" Text="Feld %N%" HelpContext="TCH-Felddefintion" Inline="true">
+                                        <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Feld %N%" UIHint="Headline" />
+                    
+                                        <!-- Cell Type -->
+                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501" IndentLevel="1" HelpContext="%DOC%" />      
+                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
+                                
+                                            <when test="1" >
+                                                <!-- Device Cell -->
 
-                                        </when>
-                                        <when test="&gt;1" >
-                                            <!-- Cell -->
-                                            <ParameterBlock  Id="%AID%_PB-nnn" Name="Field%N%" Text="Feld %N%" HelpContext="TCH-Felddefintion" Inline="true">
-                                                <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                                                <ParameterSeparator Id="%AID%_PS-nnn" Text="Feld %N%" UIHint="Headline" />
+                                                <!-- Device -->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
                             
-                                                <!-- Cell Type -->
-                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
-                                        
-                                                    <when test="1" >
-                                                        <!-- Device Cell -->
-
-                                                        <!-- Device -->
-                                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%00_R-%TT%%CC%%N%0001" IndentLevel="1" HelpContext="%DOC%" />
-                                    
-                                                      
-                                                        <!-- Short Press -->
-                                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
-                                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
-                                                            <when test="2" >
-                                                                <!-- Jump To Short Press -->
-                                                                <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
-                                                            </when>
-                                                        </choose>
-                                                        <!-- Long Press -->
-                                                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
-                                                        <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
-                                                            <when test="2" >
-                                                                <!-- Jump To Long Press -->
-                                                                <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
-                                                            </when>
-                                                        </choose>
-                                                    </when>
-                                                    <when test="1" >
-                                                        <!-- Date Time Cell -->
+                                                
+                                                <!-- Short Press -->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
+                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
+                                                    <when test="2" >
+                                                        <!-- Jump To Short Press -->
+                                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
                                                     </when>
                                                 </choose>
-                                         
-                                            </ParameterBlock>    
-
-                                        </when>
-                                   
+                                                <!-- Long Press -->
+                                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
+                                                <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
+                                                    <when test="2" >
+                                                        <!-- Jump To Long Press -->
+                                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
+                                                    </when>
+                                                </choose>
+                                            </when>
+                                            <when test="1" >
+                                                <!-- Date Time Cell -->
+                                            </when>
+                                        </choose>
                                     
-                                    </choose>
+                                    </ParameterBlock>    
                                 </when>                    
                             </choose>
                         </ChannelIndependentBlock>

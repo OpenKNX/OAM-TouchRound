@@ -9,16 +9,19 @@
             <Parameters>
               <!-- Channel Description -->
               <Parameter Id="%AID%_P-%TT%%CC%000" Name="Channel%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" />
-              <Union SizeInBit="16">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="2" increment="5"/> -->
+              <Union SizeInBit="24">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="??" increment="5"/> -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <!-- Page Type -->
-                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="Channel%C%PageType" ParameterType="%AID%_PT-TCHPageType" Text="Seitentyp" Value="1" />
+                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="Channel%C%PageType" ParameterType="%AID%_PT-TCHPageType" Text="Seitentyp" Value="1" />          
                 <!-- Page Reachable -->  
                 <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%002" Name="Channel%C%Navigation" ParameterType="%AID%_PT-OnOffYesNo" Text="Seite über Blättern erreichbar" Value="1" />
                 <!-- Page Available -->
                 <Parameter Offset="1" BitOffset="1" Id="%AID%_UP-%TT%%CC%003" Name="Channel%C%Available" ParameterType="%AID%_PT-TCHPageAvailable" Text="Seite verfügbar" Value="0" />
                 <!--7 bits free --> 
-            
+                <!-- Number of fields -->
+                <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumbeOfFields" ParameterType="%AID%_PT-TCHNumbeOfFields" Text="Layout" Value="2" />
+                
+                <!-- Next Id AID%_UP-%TT%%CC%005 -->
               </Union>
               
               <!-- Next Id="%AID%_UP-%TT%%CC%008" -->
@@ -39,6 +42,8 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_UP-%TT%%CC%002" />
               <!-- Page Available -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_UP-%TT%%CC%003" />
+              <!-- Number of Fields -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_UP-%TT%%CC%004" />
            
               <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
               <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
@@ -89,11 +94,45 @@
                           </when>
                         </choose>
                       </when>
+                      <when test="1">
+                        <!-- Device Page -->
+                        <!-- Device Selection -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%100_R-%TT%%CC%10001" IndentLevel="1" HelpContext="%DOC%" />
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%105_R-%TT%%CC%10501">
+                            <when test="&gt;0" >
+                                <!-- Short Press -->
+                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101" IndentLevel="1" HelpContext="%DOC%" />
+                                <choose ParamRefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101">
+                                    <when test="2" >
+                                        <!-- Jump To Short Press -->
+                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%103_R-%TT%%CC%10301" HelpContext="%DOC%" />                                   
+                                    </when>
+                                </choose>
+                                <!-- Long Press -->
+                                <ParameterRefRef RefId="%AID%_UP-%TT%%CC%102_R-%TT%%CC%10201" IndentLevel="1" HelpContext="%DOC%" />
+                                <choose ParamRefId="%AID%_UP-%TT%%CC%102_R-%TT%%CC%10201">
+                                    <when test="2" >
+                                        <!-- Jump To Long Press -->
+                                        <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%104_R-%TT%%CC%10401" HelpContext="%DOC%" />
+                                    </when>
+                                </choose>    
+                            </when>
+                        </choose>
+                      </when>
+                      <when test="2">
+                        <!-- Cells Page -->
+                        <!-- Number of fields-->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" HelpContext="%DOC%" />          
+                          
+                        <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+                        <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
+                      </when>
+                      <when test="3">
+                        <!-- Date Time Page -->
+                      </when>
                     </choose>
            
-                    <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
-                    <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
-              
+                
                   </ParameterBlock>
                 </when>
               </choose>

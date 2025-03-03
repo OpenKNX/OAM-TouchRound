@@ -32,10 +32,8 @@ Page* Page::createPage(uint8_t channelIndex)
     Page* result = nullptr;
     // <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
     // <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
-    // <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
-    // <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
-    // <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
-    // <Enumeration Text="Zeit / Datum" Value="100" Id="%ENID%" />
+    // <Enumeration Text="Mehrere Felder" Value="2" Id="%ENID%" />
+    // <Enumeration Text="Zeit / Datum" Value="3" Id="%ENID%" />
     switch (ParamTCH_ChannelPageType)
     {
     case 0:
@@ -44,12 +42,18 @@ Page* Page::createPage(uint8_t channelIndex)
     case 1:
         result = new DetailDevicePage();
         break;
-    case 100:
-        result = new DateTimePage();
-        break;
-   default: 
+    case 2: 
         result = new CellPage();
         break;
+    case 3:
+        result = new DateTimePage();
+        break;
+    default:
+        auto errorPage = new ErrorPage();
+        errorPage->setMessage("Unbekannte Seitentype");
+        result = errorPage;
+        break;
+
     }
     result->init(channelIndex);
     return result;

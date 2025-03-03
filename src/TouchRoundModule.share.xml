@@ -13,7 +13,7 @@
 					</op:part>
           <op:part href="TouchRoundModule.CellDefinition.xml" name="CellDefintion" instances="4">
 				    <op:param name="%N%" value="1" />
-            <op:param name="%OFFSET%" value="2" increment="5"/>
+            <op:param name="%OFFSET%" value="3" increment="5"/>
 					</op:part>
           
           <Static>
@@ -22,12 +22,19 @@
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
                   <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Mehrere Felder" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Zeit / Datum" Value="3" Id="%ENID%" />
+                </TypeRestriction>
+              </ParameterType>
+
+              <ParameterType Id="%AID%_PT-TCHNumbeOfFields" Name="TCHNumbeOfFields">
+                <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="2 Felder" Value="2" Id="%ENID%" />
                   <Enumeration Text="3 Felder" Value="3" Id="%ENID%" />
                   <Enumeration Text="4 Felder" Value="4" Id="%ENID%" />
-                  <Enumeration Text="Zeit / Datum" Value="100" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
+
 
              <ParameterType Id="%AID%_PT-TCHDeviceSelection" Name="TCHDeviceSelection">
                 <TypeRestriction Base="Value" SizeInBit="8">

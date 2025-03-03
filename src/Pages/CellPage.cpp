@@ -10,7 +10,7 @@ const char* CellPage::pageType()
 void CellPage::setup()
 {
     logDebugP("Init page with %d cells", (int) _numberOfCells);
-     _numberOfCells = ParamTCH_ChannelPageType;
+     _numberOfCells = ParamTCH_ChannelNumbeOfFields;
     if (_numberOfCells == 0)
     {
         errorInSetup("Seite hat keine Felder");

@@ -103,7 +103,7 @@ void TouchDisplayModule::nextPage()
     {
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = 0;
-        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelNumFields > 0)
+        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelNumbeOfFields > 0)
         {
             newPage = _channelIndex + 1;
             break;
@@ -121,7 +121,7 @@ void TouchDisplayModule::previousPage()
     {
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = ParamTCH_VisibleChannels - 1;
-        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelNumFields > 0)
+        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelNumbeOfFields > 0)
         {
             newPage = _channelIndex + 1;
             break;
