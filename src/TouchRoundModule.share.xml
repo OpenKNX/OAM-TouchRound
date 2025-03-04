@@ -115,7 +115,7 @@
                 <!-- Default Page Fallback Time DelayBase -->
                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%00002" Name="DefaultPageDelayBase"   ParameterType="%AID%_PT-DelayBase" Text="Standardseite nach Zeitbasis" Value="1" />
                 <!-- Default Page Fallback Timeg DelayTime -->
-                <Parameter Offset="2" BitOffset="2" Id="%AID%_UP-%TT%00003" Name="DefaultPageDelayTime"   ParameterType="%AID%_PT-DelayTime"    Text="Standardseite nach Zeit" Value="1" />
+                <Parameter Offset="2" BitOffset="2" Id="%AID%_UP-%TT%00003" Name="DefaultPageDelayTime"   ParameterType="%AID%_PT-DelayTime"    Text="Standardseite nach Zeit" Value="2" />
                 <!-- ^^^  Need 2 Bytes ^^^ -->       
                 <!-- Default Page KO -->
                 <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%00004" Name="DefaultPageKO" ParameterType="%AID%_PT-OnOffYesNo"  Text="Gruppenobjekt für Standard Seitenauswahl" Value="0" />
@@ -126,7 +126,7 @@
                 <!-- Switch Off Time DelayBase -->
                 <Parameter Offset="5" BitOffset="0" Id="%AID%_UP-%TT%00005" Name="SwitchOffDeleayBase" ParameterType="%AID%_PT-DelayBase" Text="Anzeige aus nach Zeitbasis" Value="1" />
                 <!-- Switch Off Fallback Timeg DelayTime -->
-                <Parameter Offset="6" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="0" />
+                <Parameter Offset="6" BitOffset="2" Id="%AID%_UP-%TT%00006" Name="SwitchOffDelayTime" ParameterType="%AID%_PT-DelayTime"    Text="Anzeige aus nach Zeit" Value="2" />
                 <!-- ^^^  Need 2 Bytes ^^^ -->             
                 <!-- Theme Day -->
                 <Parameter Offset="8" BitOffset="0"  Id="%AID%_UP-%TT%00007" Name="ThemeDay" ParameterType="%AID%_PT-TCHTheme" Text="Standard" Value="0" />
