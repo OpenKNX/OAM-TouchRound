@@ -241,7 +241,8 @@ void TouchDisplayModule::display(bool on)
         lv_obj_clear_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
         digitalWrite(XIAO_BL, LOW);
     }
-    KoTCH_DisplayOnOffState.value(_displayOn, DPT_State);
+    if (knx.configured())
+        KoTCH_DisplayOnOffState.value(_displayOn, DPT_State);
 }
 
 void TouchDisplayModule::handleGesture(lv_event_t *event)
