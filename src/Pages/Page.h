@@ -22,6 +22,7 @@ public:
    
     static Page* createPage(uint8_t channelIndex);
     static Page* createErrorPage(const char* message, uint8_t channelIndex);
+    static Page* createDeactivatedPage(uint8_t channelIndex);
 };
 
 

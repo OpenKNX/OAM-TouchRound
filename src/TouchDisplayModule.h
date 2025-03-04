@@ -11,6 +11,7 @@ class Page;
 class TouchDisplayModule : public OpenKNX::Module
 {
 	uint8_t _channelIndex = 255; // current active channel, do not rename, because var name is used in macros
+	bool _currentPageActivated = true;
 	uint8_t _defaultPage = 0;
 	uint16_t _displayTimeoutMs = 0;
 	uint16_t _pageTimeout = 0;
@@ -38,7 +39,7 @@ private:
 
 	void resetDisplayTimeout();
 	void display_pressed();
-	static void loadPage(int channel);
+	bool pageActivated();
 	
 	
 private:

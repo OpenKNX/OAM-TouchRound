@@ -6,7 +6,6 @@
 #include "./Pages/Page.h"
 #include "./Screens/CellScreen.h"
 
-
 const std::string TouchDisplayModule::name()
 {
     return "TouchRound";
@@ -18,7 +17,7 @@ const std::string TouchDisplayModule::version()
 }
 
 void TouchDisplayModule::setup()
-{  
+{
     _displayTimeoutMs = ParamTCH_SwitchOffDelayTimeMS;
     _pageTimeout = ParamTCH_DefaultPageDelayTimeMS;
     _defaultPage = ParamTCH_DefaultPage;
@@ -31,6 +30,8 @@ void TouchDisplayModule::setup()
     }
     if (ParamTCH_DayNightObject > 0 && !KoTCH_DayNight.initialized())
         KoTCH_DayNight.requestObjectRead();
+    if (ParamTCH_ChannelAvailable > 0 && !KoTCH_CHPageEnabled.initialized())
+        KoTCH_CHPageEnabled.requestObjectRead();
     logDebugP("Default Page: %d", _defaultPage);
     activePage(_defaultPage);
 }
@@ -39,33 +40,49 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
 {
     switch (ko.asap())
     {
-        case TCH_KoPage:
-        {
-            activePage(ko.value(DPT_SceneNumber));
-        }
+    case TCH_KoPage:
+    {
+        activePage(ko.value(DPT_SceneNumber));
+    }
+    break;
+    case TCH_KoPrevNext:
+    {
+        if (ko.value(DPT_UpDown))
+            nextPage();
+        else
+            previousPage();
+    }
+    break;
+    case TCH_KoDefaultPage:
+    {
+        bool isDefaultPageActive = _defaultPage != _channelIndex;
+        _defaultPage = ko.value(DPT_SceneNumber);
+        if (isDefaultPageActive)
+            activePage(_defaultPage);
+    }
+    case TCH_KoDisplayOnOff:
+    {
+        display(ko.value(DPT_Switch));
         break;
-        case TCH_KoPrevNext:
+    }
+    case TCH_KoDayNight:
+    {
+        updateTheme();
+        break;
+    }
+    }
+    switch (TCH_KoCalcIndex(ko.asap()))
+    {
+        case TCH_KoCHPageEnabled:
         {
-            if (ko.value(DPT_UpDown))
-                nextPage();
+            if (pageActivated())
+            {
+                activePage(_channelIndex + 1);
+            }
             else
-                previousPage();
-        }
-        break;
-        case TCH_KoDefaultPage:
-        {
-            bool isDefaultPageActive = _defaultPage != _channelIndex;
-            _defaultPage = ko.value(DPT_SceneNumber);
-            if (isDefaultPageActive)
-                activePage(_defaultPage);
-        }
-        case TCH_KoDisplayOnOff:
-        {
-            display(ko.value(DPT_Switch));
-        }
-        case TCH_KoDayNight:
-        {
-            updateTheme();
+            {
+                nextPage();
+            }
         }
         break;
     }
@@ -74,22 +91,27 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
 void TouchDisplayModule::activePage(uint8_t page, bool displayOn)
 {
     if (displayOn)
-        display(true);  
+        display(true);
 
     _lastTimeoutReset = millis();
-    if (_channelIndex == page - 1)
+    auto current = _channelIndex;
+    _channelIndex = page - 1;
+    bool activated = pageActivated();
+    if (current == _channelIndex && _currentPageActivated == activated)
     {
         logDebugP("Page: %d already activ", page);
         return;
     }
     logDebugP("Active Page: %d", page);
-    _channelIndex = page - 1;
+    _currentPageActivated = activated;
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
     if (_currentPage != nullptr)
         delete _currentPage;
-    _currentPage = Page::createPage(_channelIndex);  
+    if (activated)
+        _currentPage = Page::createPage(_channelIndex);
+    else
+        _currentPage = Page::createDeactivatedPage(_channelIndex);
 }
-
 
 void TouchDisplayModule::showErrorPage(const char *message)
 {
@@ -105,11 +127,12 @@ void TouchDisplayModule::nextPage()
 {
     uint8_t currentChannel = _channelIndex;
     uint8_t newPage = _channelIndex + 1;
-    while(currentChannel != ++_channelIndex)
+    while (currentChannel != ++_channelIndex)
     {
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = 0;
-        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelPageType > 0)
+
+        if (ParamTCH_ChannelNavigation && pageActivated())
         {
             newPage = _channelIndex + 1;
             break;
@@ -119,15 +142,39 @@ void TouchDisplayModule::nextPage()
     activePage(newPage);
 }
 
+bool TouchDisplayModule::pageActivated()
+{
+    if (ParamTCH_ChannelPageType == 0)
+        return false;
+    //     <Enumeration Text="Immer" Value="0" Id="%ENID%" />
+    //     <Enumeration Text="Über Objekt aktivierbar" Value="1" Id="%ENID%" />
+    //     <Enumeration Text="Über Objekt deaktivierbar" Value="2" Id="%ENID%" />
+    if (KoTCH_CHPageEnabled.initialized())
+    {
+        switch (ParamTCH_ChannelAvailable)
+        {
+        case 1:
+            if (!KoTCH_CHPageEnabled.value(DPT_Switch))
+                return false;
+            break;
+        case 2:
+            if (KoTCH_CHPageEnabled.value(DPT_Switch))
+                return false;
+            break;
+        }
+    }
+    return true;
+}
+
 void TouchDisplayModule::previousPage()
 {
     uint8_t currentChannel = _channelIndex;
     uint8_t newPage = _channelIndex + 1;
-    while(currentChannel != --_channelIndex)
+    while (currentChannel != --_channelIndex)
     {
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = ParamTCH_VisibleChannels - 1;
-        if (ParamTCH_ChannelNavigation && ParamTCH_ChannelPageType > 0)
+        if (ParamTCH_ChannelNavigation && pageActivated())
         {
             newPage = _channelIndex + 1;
             break;
@@ -139,9 +186,11 @@ void TouchDisplayModule::previousPage()
 
 void TouchDisplayModule::addGlobalEvents(lv_obj_t *sreen)
 {
-    lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
-    lv_obj_add_event_cb(sreen, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_LONG_PRESSED_REPEAT, this);
-}  
+    lv_obj_add_event_cb(sreen, [](lv_event_t *e)
+                        { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
+    lv_obj_add_event_cb(sreen, [](lv_event_t *e)
+                        { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_LONG_PRESSED_REPEAT, this);
+}
 
 void TouchDisplayModule::setup(bool configured)
 {
@@ -173,19 +222,20 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(CellScreen4::instance->screen);
 
     ui_screen = lv_obj_create(nullptr); // create screen
-   
+
     if (configured)
     {
         auto gestureLayer = lv_obj_create(lv_layer_top());
         const int gestureLayerHeight = 50;
-        lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_SCROLLABLE );  
+        lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_SCROLLABLE);
         lv_obj_set_y(gestureLayer, LV_VER_RES - gestureLayerHeight);
-        lv_obj_set_size(gestureLayer, LV_HOR_RES, gestureLayerHeight) ;
+        lv_obj_set_size(gestureLayer, LV_HOR_RES, gestureLayerHeight);
         lv_obj_set_style_border_width(gestureLayer, 0, 0);
         lv_obj_set_style_opa(gestureLayer, LV_OPA_0, 0);
         lv_obj_set_style_bg_color(gestureLayer, lv_color_make(0, 255, 0), 0);
         lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_GESTURE_BUBBLE);
-        lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e) { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
+        lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e)
+                            { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
     }
     _displayOffRectangle = lv_obj_create(lv_layer_top());
     lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
@@ -230,7 +280,6 @@ void TouchDisplayModule::updateTheme()
         {
             setTheme(ParamTCH_ThemeDay);
         }
-      
     }
 }
 
@@ -259,12 +308,10 @@ void TouchDisplayModule::touched(lv_event_t *event)
     display(true);
 }
 
-
 void TouchDisplayModule::lv_log(const char *buf)
 {
     //     logDebug("lvgl", buf);
 }
-
 
 void TouchDisplayModule::resetDisplayTimeout()
 {
@@ -337,7 +384,7 @@ void TouchDisplayModule::loop(bool configured)
     {
         unsigned int now = millis();
         unsigned int pastMs = now - _lastTimeoutReset;
-        
+
         if (_displayTimeoutMs && _displayOn && pastMs > _displayTimeoutMs)
         {
             logDebugP("Display timeout %d", _displayTimeoutMs);
@@ -352,13 +399,11 @@ void TouchDisplayModule::loop(bool configured)
         {
             _lastTimeoutReset = 0;
         }
-
     }
 }
 void TouchDisplayModule::loop1(bool configured)
 {
 }
-
 
 bool TouchDisplayModule::processCommand(const std::string cmd, bool diagnoseKo)
 {

@@ -25,6 +25,13 @@ Page* Page::createErrorPage(const char* message, uint8_t channelIndex)
     return result;
 }
 
+Page* Page::createDeactivatedPage(uint8_t channelIndex)
+{
+    DeactivatedPage* result = new DeactivatedPage();
+    result->init(channelIndex);
+    return result;
+}
+
 
 Page* Page::createPage(uint8_t channelIndex)
 {
