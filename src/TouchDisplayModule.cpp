@@ -20,7 +20,9 @@ const std::string TouchDisplayModule::version()
 void TouchDisplayModule::setup()
 {  
     _displayTimeoutMs = ParamTCH_SwitchOffDelayTimeMS;
+    logDebugP("Display Timeout: %d", _displayTimeoutMs);
     _pageTimeout = ParamTCH_DefaultPageDelayTimeMS;
+    logDebugP("Page Timeout: %d", _pageTimeout);
     _defaultPage = ParamTCH_DefaultPage;
     if (ParamTCH_DefaultPageKO)
     {
@@ -151,7 +153,7 @@ void TouchDisplayModule::setup(bool configured)
 
     lv_disp_t *display = lv_disp_get_default();
     lv_theme_t *theme = lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
-    lv_disp_set_theme(display, theme);
+    //lv_disp_set_theme(display, theme);
     ui_Switch_screen_init();
     ui_Dimm_screen_init();
     ui_Color_screen_init();
