@@ -180,9 +180,9 @@ void chsc6x_read(lv_indev_t * indev, lv_indev_data_t * data)
     lv_coord_t touchX, touchY;
     if( !chsc6x_is_pressed() )
     {
-        data->state = LV_INDEV_STATE_REL;
+        data->state = LV_INDEV_STATE_RELEASED;
     } else {
-        data->state = LV_INDEV_STATE_PR;
+        data->state = LV_INDEV_STATE_PRESSED;
         chsc6x_get_xy(&touchX, &touchY);
         /*Set the coordinates*/
         data->point.x = touchX;
