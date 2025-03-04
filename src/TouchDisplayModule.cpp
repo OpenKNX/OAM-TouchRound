@@ -29,6 +29,8 @@ void TouchDisplayModule::setup()
         else
             KoTCH_DefaultPage.requestObjectRead();
     }
+    if (ParamTCH_DayNightObject > 0 && !KoTCH_DayNight.initialized())
+        KoTCH_DayNight.requestObjectRead();
     logDebugP("Default Page: %d", _defaultPage);
     activePage(_defaultPage);
 }
