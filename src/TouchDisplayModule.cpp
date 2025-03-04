@@ -20,9 +20,7 @@ const std::string TouchDisplayModule::version()
 void TouchDisplayModule::setup()
 {  
     _displayTimeoutMs = ParamTCH_SwitchOffDelayTimeMS;
-    logDebugP("Display Timeout: %d", _displayTimeoutMs);
     _pageTimeout = ParamTCH_DefaultPageDelayTimeMS;
-    logDebugP("Page Timeout: %d", _pageTimeout);
     _defaultPage = ParamTCH_DefaultPage;
     if (ParamTCH_DefaultPageKO)
     {
@@ -62,6 +60,10 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
         case TCH_KoDisplayOnOff:
         {
             display(ko.value(DPT_Switch));
+        }
+        case TCH_KoDayNight:
+        {
+            updateTheme();
         }
         break;
     }
@@ -151,9 +153,7 @@ void TouchDisplayModule::setup(bool configured)
     lv_xiao_disp_init();
     lv_xiao_touch_init();
 
-    lv_disp_t *display = lv_disp_get_default();
-    lv_theme_t *theme = lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
-    //lv_disp_set_theme(display, theme);
+    updateTheme();
     ui_Switch_screen_init();
     ui_Dimm_screen_init();
     ui_Color_screen_init();
@@ -196,6 +196,56 @@ void TouchDisplayModule::setup(bool configured)
         showErrorPage("OpenKNX Touch Round\nBitte übertragen Sie die\nETS Applikation");
     }
     Module::setup(configured);
+}
+
+void TouchDisplayModule::updateTheme()
+{
+    if (!knx.configured())
+        setTheme(0);
+    else
+    {
+        // <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+        // <Enumeration Text="Umschaltobjekt Nacht EIN" Value="1" Id="%ENID%" />
+        // <Enumeration Text="Umschaltobjekt Tag EIN" Value="2" Id="%ENID%" />
+        if (ParamTCH_DayNightObject > 0 && KoTCH_DayNight.initialized())
+        {
+            if (KoTCH_DayNight.value(DPT_Switch))
+            {
+                if (ParamTCH_DayNightObject == 1)
+                    setTheme(ParamTCH_ThemeNight);
+                else
+                    setTheme(ParamTCH_ThemeDay);
+            }
+            else
+            {
+                if (ParamTCH_DayNightObject == 1)
+                    setTheme(ParamTCH_ThemeDay);
+                else
+                    setTheme(ParamTCH_ThemeNight);
+            }
+        }
+        else
+        {
+            setTheme(ParamTCH_ThemeDay);
+        }
+      
+    }
+}
+
+void TouchDisplayModule::setTheme(uint8_t theme)
+{
+    lv_disp_t *display = lv_disp_get_default();
+    // <Enumeration Text="Light" Value="0" Id="%ENID%" />
+    // <Enumeration Text="Dark" Value="1" Id="%ENID%" />
+    switch (theme)
+    {
+    case 0:
+        lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 0, LV_FONT_DEFAULT);
+        break;
+    case 1:
+        lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
+        break;
+    }
 }
 
 void TouchDisplayModule::touched(lv_event_t *event)
@@ -339,6 +389,16 @@ bool TouchDisplayModule::processCommand(const std::string cmd, bool diagnoseKo)
         openknxTouchDisplayModule.display(false);
         return true;
     }
+    if (cmd == "t0")
+    {
+        openknxTouchDisplayModule.setTheme(0);
+        return true;
+    }
+    if (cmd == "t1")
+    {
+        openknxTouchDisplayModule.setTheme(1);
+        return true;
+    }
     return false;
 }
 
@@ -351,6 +411,8 @@ void TouchDisplayModule::showHelp()
     openknx.console.printHelpLine("p<nn>", "Show page <nn>");
     openknx.console.printHelpLine("d1", "Turn display on");
     openknx.console.printHelpLine("d0", "Turn display off");
+    openknx.console.printHelpLine("t0", "Set theme to light");
+    openknx.console.printHelpLine("t1", "Set theme to dark");
 }
 
 // void TouchDisplayModule::writeFlash()

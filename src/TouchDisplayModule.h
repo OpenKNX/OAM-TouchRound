@@ -32,7 +32,6 @@ public:
 private:
 	
 	static void lv_log(const char *buf);
-	//bool isTouched();
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
 	void addGlobalEvents(lv_obj_t* sreen);
@@ -54,7 +53,10 @@ public:
 	void processInputKo(GroupObject &ko) override;
 	bool processCommand(const std::string cmd, bool diagnoseKo) override;
 	void showHelp() override;
+	void updateTheme();
+	void setTheme(uint8_t theme);
 #
 };
+
 
 extern TouchDisplayModule openknxTouchDisplayModule;

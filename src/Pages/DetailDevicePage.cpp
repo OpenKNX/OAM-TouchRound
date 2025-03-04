@@ -37,7 +37,7 @@ void DetailDevicePage::createDeviceBinder()
     KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
     if (channel == nullptr)
     {
-        errorInSetup("Gerät ist deaktivier");
+        errorInSetup("Gerät ist deaktiviert");
         return;
     }
     _widgetFactory->_currentDevicePage = this;
