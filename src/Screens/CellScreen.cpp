@@ -143,6 +143,5 @@ _height(height)
    // lv_obj_set_style_img_recolor(image, lv_color_make(255,255,255), 0);
 
     lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);  
-    lv_obj_align(image, LV_ALIGN_BOTTOM_MID, 0, 0);
 }
 
