@@ -73,6 +73,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "lvgl.h": "c"
+        "lvgl.h": "c",
+        "lamp-outline.c": "cpp"
     }
 }

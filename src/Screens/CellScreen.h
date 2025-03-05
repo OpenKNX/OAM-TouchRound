@@ -16,6 +16,7 @@ class CellObject
 public:
     lv_obj_t* cell;
     lv_obj_t* label;
+    lv_obj_t* image;
     CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop);
 };
 

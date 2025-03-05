@@ -120,6 +120,8 @@ CellObject& CellScreen4::getCell(uint8_t index)
     }
 }
 
+#include "../Images/lamp-outline.c"
+
 CellObject::CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop) :
 _cellPage(cellPage),
 _width(width),
@@ -134,5 +136,9 @@ _height(height)
         lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
     else
         lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
+
+    image = lv_img_create(lv_scr_act());  
+    lv_img_set_src(image, &lamp_outline);       
+    lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);  
 }
 

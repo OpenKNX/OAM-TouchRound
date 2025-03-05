@@ -310,7 +310,7 @@ void TouchDisplayModule::touched(lv_event_t *event)
 
 void TouchDisplayModule::lv_log(const char *buf)
 {
-    //     logDebug("lvgl", buf);
+         logDebug("lvgl", buf);
 }
 
 void TouchDisplayModule::resetDisplayTimeout()
