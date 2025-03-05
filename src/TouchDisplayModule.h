@@ -18,6 +18,7 @@ class TouchDisplayModule : public OpenKNX::Module
 	unsigned long _lastTimeoutReset = 0;
 	bool _displayOn = false;
 	lv_obj_t* _displayOffRectangle = nullptr;
+	uint8_t _theme = 0;
 public:
 	void loop(bool configured) override;
 	void setup() override;

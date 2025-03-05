@@ -291,9 +291,11 @@ void TouchDisplayModule::setTheme(uint8_t theme)
     switch (theme)
     {
     case 0:
+        _theme = theme;
         lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 0, LV_FONT_DEFAULT);
         break;
     case 1:
+        _theme = theme;
         lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
         break;
     }

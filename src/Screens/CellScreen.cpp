@@ -137,8 +137,12 @@ _height(height)
     else
         lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
 
-    image = lv_img_create(lv_scr_act());  
+    image = lv_img_create(cell);  
     lv_img_set_src(image, &lamp_outline);       
+   // lv_obj_set_style_img_recolor_opa(image, 255, 0);
+   // lv_obj_set_style_img_recolor(image, lv_color_make(255,255,255), 0);
+
     lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);  
+    lv_obj_align(image, LV_ALIGN_BOTTOM_MID, 0, 0);
 }
 
