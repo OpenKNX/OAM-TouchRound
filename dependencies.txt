@@ -8,5 +8,5 @@ a6c49a6 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.
 42a073b v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 1ce7a13 v1 lib/OFM-UsbExchange https://github.com/OpenKNX/OFM-UsbExchange.git
 e39365e v1 lib/OFM-VirtualButton https://github.com/OpenKNX/OFM-VirtualButton
-05117e1 timeLEDsupport lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
+84c4db5 v1dev lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 5793878 master lib/TFT_eSPI https://github.com/Bodmer/TFT_eSPI
