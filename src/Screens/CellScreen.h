@@ -25,9 +25,6 @@ class CellScreen2: public CellScreen
 {
 public:
     static CellScreen2* instance;
-public:
-    static void init();
-public: 
     CellObject cellObject1;
     CellObject cellObject2;
     CellScreen2();
@@ -36,11 +33,8 @@ public:
 
 class CellScreen3 : public CellScreen
 {
-    public:
-    static CellScreen3* instance;
 public:
-    static void init();
-public: 
+    static CellScreen3* instance;
     CellObject cellObject1;
     CellObject cellObject2;
     CellObject cellObject3;
@@ -50,11 +44,8 @@ public:
 
 class CellScreen4: public CellScreen
 {
-    public:
-    static CellScreen4* instance;
 public:
-    static void init();
-public: 
+    static CellScreen4* instance;
     CellObject cellObject1;
     CellObject cellObject2;
     CellObject cellObject3;

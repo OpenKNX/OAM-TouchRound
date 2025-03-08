@@ -4,6 +4,7 @@
 #include "DeactivatedPage.h"
 #include "DateTimePage.h"
 #include "ErrorPage.h"
+#include "MainFunctionPage.h"
 #include "../TouchDisplayModule.h"
 
 const std::string Page::logPrefix()
@@ -47,7 +48,10 @@ Page* Page::createPage(uint8_t channelIndex)
         result = new DeactivatedPage();
         break;
     case 1:
-        result = new DetailDevicePage();
+        if (ParamTCH_ChannelDevicePageType)
+            result = new MainFunctionPage();
+        else
+            result = new DetailDevicePage();
         break;
     case 2: 
         result = new CellPage();

@@ -2,10 +2,6 @@
 
 CellScreen2* CellScreen2::instance = nullptr;
 
-void CellScreen2::init()
-{
-    instance = new CellScreen2();
-}
 
 CellScreen2::CellScreen2() :
 cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
@@ -34,11 +30,6 @@ CellObject& CellScreen2::getCell(uint8_t index)
 }
 
 CellScreen3* CellScreen3::instance = nullptr;
-
-void CellScreen3::init()
-{
-    instance = new CellScreen3();
-}
 
 CellScreen3::CellScreen3() :
 cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
@@ -75,10 +66,6 @@ CellObject& CellScreen3::getCell(uint8_t index)
 
 CellScreen4* CellScreen4::instance = nullptr;
 
-void CellScreen4::init()
-{
-    instance = new CellScreen4();
-}
 
 CellScreen4::CellScreen4() :
 cellObject1(*this, LV_HOR_RES / 2, LV_VER_RES / 2, false),

@@ -27,15 +27,26 @@
                 <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="Channel%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Symbol-Bild" Value="20" />
                 <!-- Custom Icon -->
                 <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="Channel%C%Number" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
-                 <!-- ^^^ 2 bytes ^^^ --> 
-                
+                <!-- ^^^ 2 bytes ^^^ --> 
+
                 <!-- Next Id AID%_UP-%TT%%CC%008 -->
               </Union>
+              <!-- Next Offset must be set to:
+                <op:part href="TouchRoundModule.CellDefintion.xml" name="CellDefintion" instances="4"> in shared 
+                All other page types
+                -->
+                
               
-              <!-- Next Id="%AID%_UP-%TT%%CC%008" -->
-              <!-- Next Offset must be set to  <op:part href="TouchRoundModule.CellDefintion.xml" name="CellDefintion" instances="4"> in shared -->
-             
-              <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+              <!-- Device Page -->
+              <Union SizeInBit="8">
+                <Memory CodeSegment="%AID%_RS-04-00000" Offset="32" BitOffset="0" />      
+                
+                <!-- Device Page Type -->
+                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%017" Name="Channel%C%DevicePageType" ParameterType="%AID%_PT-TCHDevicePageType" Text="Anzeige" Value="1" />
+                <!-- 4 bits free --> 
+              </Union>
+              
+              <!-- Cell page -->
               <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/Parameters/*" /> 
                 
 
@@ -58,7 +69,12 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601" RefId="%AID%_UP-%TT%%CC%006" />
               <!-- Custom Icon -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%007_R-%TT%%CC%00701" RefId="%AID%_UP-%TT%%CC%007" />
-           
+
+              <!-- Device Page -->
+              <!-- Device Page Type -->
+              <ParameterRef Id="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" RefId="%AID%_UP-%TT%%CC%017" />
+              
+              <!-- Cell Page -->
               <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
               <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Static/ParameterRefs/*" /> 
           
@@ -112,8 +128,9 @@
                         <!-- Device Page -->
                         <!-- Device Selection -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%100_R-%TT%%CC%10001" IndentLevel="1" HelpContext="%DOC%" />
-                        <choose ParamRefId="%AID%_UP-%TT%%CC%105_R-%TT%%CC%10501">
-                            <when test="&gt;0" >
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701" IndentLevel="1" HelpContext="%DOC%" />         
+                        <choose ParamRefId="%AID%_UP-%TT%%CC%017_R-%TT%%CC%01701">
+                            <when test="0" >
                                 <!-- Short Press -->
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101" IndentLevel="1" HelpContext="%DOC%" />
                                 <choose ParamRefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101">

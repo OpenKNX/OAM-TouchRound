@@ -481,6 +481,9 @@
 #define TCH_ChannelPageName                      3      // char*, 25 Byte
 #define TCH_ChannelIconSelection                29      // 8 Bits, Bit 7-0
 #define TCH_ChannelNumber                       30      // uint16_t
+#define TCH_ChannelDevicePageType               32      // 4 Bits, Bit 7-4
+#define     TCH_ChannelDevicePageTypeMask 0xF0
+#define     TCH_ChannelDevicePageTypeShift 4
 #define TCH_ChannelDeviceSelection1             32      // 8 Bits, Bit 7-0
 #define TCH_ChannelShortPress1                  33      // 4 Bits, Bit 7-4
 #define     TCH_ChannelShortPress1Mask 0xF0
@@ -536,6 +539,8 @@
 #define ParamTCH_ChannelIconSelection                (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelIconSelection)))
 // Bilddatei
 #define ParamTCH_ChannelNumber                       (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelNumber)))
+// Anzeige
+#define ParamTCH_ChannelDevicePageType               ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType)) & TCH_ChannelDevicePageTypeMask) >> TCH_ChannelDevicePageTypeShift)
 // Gerät
 #define ParamTCH_ChannelDeviceSelection1             (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDeviceSelection1)))
 // Kurzer Druck

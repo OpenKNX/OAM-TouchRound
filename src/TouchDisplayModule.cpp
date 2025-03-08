@@ -5,6 +5,7 @@
 #include "knxprod.h"
 #include "./Pages/Page.h"
 #include "./Screens/CellScreen.h"
+#include "./Screens/MainFunctionScreen.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -209,14 +210,16 @@ void TouchDisplayModule::setup(bool configured)
     ui_Dimm_screen_init();
     ui_Color_screen_init();
     ui_Message_screen_init();
-    CellScreen2::init();
-    CellScreen3::init();
-    CellScreen4::init();
+    MainFunctionScreen::instance = new MainFunctionScreen();
+    CellScreen2::instance = new CellScreen2();
+    CellScreen3::instance = new CellScreen3();
+    CellScreen4::instance = new CellScreen4();
 
     addGlobalEvents(ui_Switch);
     addGlobalEvents(ui_Dimm);
     addGlobalEvents(ui_Color);
     addGlobalEvents(ui_Message);
+    addGlobalEvents(MainFunctionScreen::instance->screen);
     addGlobalEvents(CellScreen2::instance->screen);
     addGlobalEvents(CellScreen3::instance->screen);
     addGlobalEvents(CellScreen4::instance->screen);
