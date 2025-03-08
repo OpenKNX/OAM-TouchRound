@@ -13,7 +13,7 @@
 					</op:part>
           <op:part href="TouchRoundModule.CellDefinition.xml" name="CellDefintion" instances="4">
 				    <op:param name="%N%" value="1" />
-            <op:param name="%OFFSET%" value="3" increment="5"/>
+            <op:param name="%OFFSET%" value="32" increment="5"/>
 					</op:part>
           
           <Static>
@@ -104,7 +104,41 @@
                   <Enumeration Text="Über Objekt deaktivierbar" Value="2" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
-            </ParameterTypes>
+
+              <ParameterType Id="%AID%_PT-TCHPageName" Name="TCHPageName" >
+                <TypeText  SizeInBit="200" />
+              </ParameterType>
+         
+              <ParameterType Id="%AID%_PT-TCHIcon" Name="TCHIcon">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                    <Enumeration Value="0"  Id="%ENID%" Text="Benutzerdefiniert"  />
+                    <Enumeration Value="10" Id="%ENID%" Text="Ein-/Ausschaltbares Gerät" Icon="light-switch-off" />
+                    <Enumeration Value="11" Id="%ENID%" Text="Steckdose" Icon="power-socket-eu" />
+                    <Enumeration Value="20" Id="%ENID%" Text="Lampe" Icon="lamp-outline"   />
+                    <Enumeration Value="30" Id="%ENID%" Text="Jalousie" Icon="window-shutter" />
+                    <Enumeration Value="31" Id="%ENID%" Text="Rolladen" Icon="roller-shade-closed" />
+                    <Enumeration Value="32" Id="%ENID%" Text="Markise" Icon="storefront-outline" />
+                    <Enumeration Value="50" Id="%ENID%" Text="Thermostat" Icon="thermostat" />
+                    <Enumeration Value="60" Id="%ENID%" Text="Anzeige" Icon="card-text-outline" />
+                    <Enumeration Value="70" Id="%ENID%" Text="Kontakt" Icon="electric-switch"/>
+                    <Enumeration Value="71" Id="%ENID%" Text="Bewegungsmelder" Icon="walk" />
+                    <Enumeration Value="72" Id="%ENID%" Text="Präsensmelder" Icon="human-male-female"/>
+                    <Enumeration Value="73" Id="%ENID%" Text="Leckmelder" Icon="water-alert-outline" />
+                    <Enumeration Value="74" Id="%ENID%" Text="Rauchmelder" Icon="smoke" />
+                    <Enumeration Value="75" Id="%ENID%" Text="Kohlendioxidmelder (CO2)" Icon="molecule-co2"  />
+                    <Enumeration Value="76" Id="%ENID%" Text="Kohlenmonoxidmelder (CO)" Icon="molecule-co" />
+                    <Enumeration Value="80" Id="%ENID%" Text="Lüfter" Icon="fan" />
+                    <Enumeration Value="90" Id="%ENID%" Text="Fenster" Icon="window-closed-variant" />
+                    <Enumeration Value="91" Id="%ENID%" Text="Tür" Icon="door" />
+                    <Enumeration Value="92" Id="%ENID%" Text="Garagentor" Icon="garage-open-variant" />
+                  </TypeRestriction>
+                </ParameterType>
+
+                <ParameterType Id="%AID%_PT-TCHIconNumber" Name="TCHIconNumber">
+                  <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1" maxInclusive="65535" />
+                </ParameterType>
+              </ParameterTypes>
+
             <Parameters>
               <Union SizeInBit="64">
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
