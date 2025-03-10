@@ -41,7 +41,7 @@ void MainFunctionPage::setup()
 
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
-    lv_label_set_text(_screen.label, channel.currentValueAsString().c_str());
+    lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
     if (channel.mainFunctionValue())
     {
         lv_obj_set_style_img_recolor_opa(_screen.image, 255, 0);
