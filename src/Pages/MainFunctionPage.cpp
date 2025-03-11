@@ -1,8 +1,11 @@
 #include "MainFunctionPage.h"
 #include "SmartHomeBridgeModule.h"
+#include "TouchDisplayModule.h"
 
 MainFunctionPage::~MainFunctionPage()
 {
+    destroyed = true;
+    logErrorP("MainFunctionPage destructor %d", (int) this);
     if (_channel != nullptr)
     {
         _channel->removeChangedHandler(_handler);
@@ -10,7 +13,9 @@ MainFunctionPage::~MainFunctionPage()
     if (_eventPressed != nullptr)
         lv_obj_remove_event_dsc(_screen.screen, _eventPressed);
     if (_eventLongPressed != nullptr)
+    {
         lv_obj_remove_event_dsc(_screen.screen, _eventLongPressed);
+    }
 }
 
 const char* MainFunctionPage::pageType()
@@ -32,7 +37,7 @@ void MainFunctionPage::setup()
        channelValueChanged(channel);
     };
     _channel->addChangedHandler(_handler);
-    _eventPressed = lv_obj_add_event_cb(_screen.screen, [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->pressed(); }, LV_EVENT_PRESSED, this);
+    _eventPressed = lv_obj_add_event_cb(_screen.screen, [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->shortClicked(); }, LV_EVENT_SHORT_CLICKED, this);
     _eventLongPressed = lv_obj_add_event_cb(_screen.screen, [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->longPressed(); }, LV_EVENT_LONG_PRESSED, this);
   
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
@@ -54,20 +59,39 @@ void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
     }
 }
 
-void MainFunctionPage::pressed()
+void MainFunctionPage::shortClicked()
 {
-    // <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
-    // <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
-    // <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
-    //  ParamTCH_ChannelShortPress1
-
-    logDebug("MainFunctionPage", "pressed");
-    if (_channel->supportMainFunctionClick())
-        _channel->commandMainFunctionClick();
+    logErrorP("MainFunctionPage shortClicked %d", (int) this);
+    if (destroyed)
+    {
+        logErrorP("MainFunctionPage already destroyed");
+        return;
+    }
+    handleClick(ParamTCH_ChannelShortPress1, ParamTCH_ChannelJumpToShort1);
 }
 
 void MainFunctionPage::longPressed()
 {
-    logDebug("MainFunctionPage", "longPressed");
-  
+    logErrorP("MainFunctionPage longPressed %d", (int) this);
+    handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
+}
+
+void MainFunctionPage::handleClick(int function, int jumpToPage)
+{
+    // <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
+    // <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
+    // <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
+    switch(function)
+    {
+    case 0:      
+        if (_channel->supportMainFunctionClick())
+            _channel->commandMainFunctionClick();
+        break;
+    case 1:
+        openknxTouchDisplayModule.showDetailDevicePage();
+        break;
+    case 2:
+        openknxTouchDisplayModule.activatePage(jumpToPage);
+        break;
+    }
 }

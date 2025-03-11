@@ -1,4 +1,5 @@
 #include "DateTimePage.h"
+#include "../Screens/DateTimeScreen.h"
 
 const char* DateTimePage::pageType()
 {
@@ -8,11 +9,12 @@ const char* DateTimePage::pageType()
 void DateTimePage::setup()
 {
     updateTimeMessage(true);
-    lv_disp_load_scr(ui_Message);
+    lv_disp_load_scr(DateTimeScreen::instance->screen);
 }
 
 void DateTimePage::updateTimeMessage(bool force)
 {
+    auto& instance = *DateTimeScreen::instance;
     bool timeValid = openknx.time.isValid();
     if (timeValid != _lastValid)
     {
@@ -25,15 +27,20 @@ void DateTimePage::updateTimeMessage(bool force)
         auto time = localTime.toTime_t();
         if (time != _lastTime || force)
         {
+            lv_label_set_text(instance.weekday, dayOfWeekString(localTime.dayOfWeek));
+
             char buffer[50];
-            sprintf(buffer, "%s\n%02d.%02d.%04d\n\n%02d:%02d:%02d", dayOfWeekString(localTime.dayOfWeek), (int)localTime.day, (int)localTime.month, (int)localTime.year, (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
-            lv_label_set_text(ui_MessageLabel, buffer);
+            sprintf(buffer, "%02d.%02d.%04d", (int)localTime.day, (int)localTime.month, (int)localTime.year);
+            lv_label_set_text(instance.date, buffer);
+       
+            sprintf(buffer, "%02d:%02d:%02d", (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
+            lv_label_set_text(instance.time, buffer);
         }
     }
     else
     {
         if (force)
-            lv_label_set_text(ui_MessageLabel, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
+            lv_label_set_text(instance.message, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
     }
 }
 

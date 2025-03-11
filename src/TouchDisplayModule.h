@@ -45,12 +45,15 @@ private:
 	
 private:
 	Page* _currentPage = nullptr;
+	bool _detailDevicePageActive = false;
 public:
-	void activePage(uint8_t channel, bool displayOn = true);
+	void activatePage(uint8_t channel, bool displayOn = true);
 	void display(bool on);
 	void nextPage();
 	void previousPage();
 	void showErrorPage(const char* message);
+	void showDetailDevicePage();
+	void showMainFunctionDevicePage();
 
 	void processInputKo(GroupObject &ko) override;
 	bool processCommand(const std::string cmd, bool diagnoseKo) override;

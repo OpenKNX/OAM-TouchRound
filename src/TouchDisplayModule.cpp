@@ -6,6 +6,7 @@
 #include "./Pages/Page.h"
 #include "./Screens/CellScreen.h"
 #include "./Screens/MainFunctionScreen.h"
+#include "./Screens/DateTimeScreen.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -34,7 +35,7 @@ void TouchDisplayModule::setup()
     if (ParamTCH_ChannelAvailable > 0 && !KoTCH_CHPageEnabled.initialized())
         KoTCH_CHPageEnabled.requestObjectRead();
     logDebugP("Default Page: %d", _defaultPage);
-    activePage(_defaultPage);
+    activatePage(_defaultPage);
 }
 
 void TouchDisplayModule::processInputKo(GroupObject &ko)
@@ -43,7 +44,7 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     {
     case TCH_KoPage:
     {
-        activePage(ko.value(DPT_SceneNumber));
+        activatePage(ko.value(DPT_SceneNumber));
     }
     break;
     case TCH_KoPrevNext:
@@ -59,7 +60,7 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
         bool isDefaultPageActive = _defaultPage != _channelIndex;
         _defaultPage = ko.value(DPT_SceneNumber);
         if (isDefaultPageActive)
-            activePage(_defaultPage);
+            activatePage(_defaultPage);
     }
     case TCH_KoDisplayOnOff:
     {
@@ -78,7 +79,7 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
         {
             if (pageActivated())
             {
-                activePage(_channelIndex + 1);
+                activatePage(_channelIndex + 1);
             }
             else
             {
@@ -89,7 +90,7 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     }
 }
 
-void TouchDisplayModule::activePage(uint8_t page, bool displayOn)
+void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
 {
     if (displayOn)
         display(true);
@@ -98,21 +99,32 @@ void TouchDisplayModule::activePage(uint8_t page, bool displayOn)
     auto current = _channelIndex;
     _channelIndex = page - 1;
     bool activated = pageActivated();
-    if (current == _channelIndex && _currentPageActivated == activated)
+    if (current == _channelIndex && _currentPageActivated == activated && _currentPage != nullptr && !_detailDevicePageActive)
     {
         logDebugP("Page: %d already activ", page);
         return;
     }
     logDebugP("Active Page: %d", page);
     _currentPageActivated = activated;
+    _detailDevicePageActive = false;
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
     if (_currentPage != nullptr)
         delete _currentPage;
+
     if (activated)
         _currentPage = Page::createPage(_channelIndex);
     else
         _currentPage = Page::createDeactivatedPage(_channelIndex);
 }
+
+void TouchDisplayModule::showDetailDevicePage()
+{
+    _detailDevicePageActive = true;
+    if (_currentPage != nullptr)
+        delete _currentPage;
+    _currentPage = Page::createDetailDevicePage(_channelIndex);
+}
+
 
 void TouchDisplayModule::showErrorPage(const char *message)
 {
@@ -140,7 +152,7 @@ void TouchDisplayModule::nextPage()
         }
     }
     _channelIndex = currentChannel; // restore current channel
-    activePage(newPage);
+    activatePage(newPage);
 }
 
 bool TouchDisplayModule::pageActivated()
@@ -169,6 +181,11 @@ bool TouchDisplayModule::pageActivated()
 
 void TouchDisplayModule::previousPage()
 {
+    if (_detailDevicePageActive)
+    {
+        activatePage(_channelIndex + 1);
+        return;
+    }
     uint8_t currentChannel = _channelIndex;
     uint8_t newPage = _channelIndex + 1;
     while (currentChannel != --_channelIndex)
@@ -182,7 +199,7 @@ void TouchDisplayModule::previousPage()
         }
     }
     _channelIndex = currentChannel;
-    activePage(newPage);
+    activatePage(newPage);
 }
 
 void TouchDisplayModule::addGlobalEvents(lv_obj_t *sreen)
@@ -211,6 +228,7 @@ void TouchDisplayModule::setup(bool configured)
     ui_Color_screen_init();
     ui_Message_screen_init();
     MainFunctionScreen::instance = new MainFunctionScreen();
+    DateTimeScreen::instance = new DateTimeScreen();
     CellScreen2::instance = new CellScreen2();
     CellScreen3::instance = new CellScreen3();
     CellScreen4::instance = new CellScreen4();
@@ -223,6 +241,7 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(CellScreen2::instance->screen);
     addGlobalEvents(CellScreen3::instance->screen);
     addGlobalEvents(CellScreen4::instance->screen);
+    addGlobalEvents(DateTimeScreen::instance->screen);
 
     ui_screen = lv_obj_create(nullptr); // create screen
 
@@ -398,7 +417,7 @@ void TouchDisplayModule::loop(bool configured)
         if (_pageTimeout && _defaultPage != _channelIndex && pastMs > _pageTimeout)
         {
             logDebugP("Default page timeout %d", _pageTimeout);
-            activePage(_defaultPage, false);
+            activatePage(_defaultPage, false);
         }
         if (pastMs > _pageTimeout && pastMs > _displayTimeoutMs)
         {
@@ -426,7 +445,7 @@ bool TouchDisplayModule::processCommand(const std::string cmd, bool diagnoseKo)
     {
         int page = atoi(cmd.substr(1).c_str());
         if (page > 0 && page <= ParamTCH_VisibleChannels)
-            openknxTouchDisplayModule.activePage(page);
+            openknxTouchDisplayModule.activatePage(page);
         else
             logErrorP("Page %d not available", page);
         return true;

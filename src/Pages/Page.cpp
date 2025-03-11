@@ -48,7 +48,7 @@ Page* Page::createPage(uint8_t channelIndex)
         result = new DeactivatedPage();
         break;
     case 1:
-        if (ParamTCH_ChannelDevicePageType)
+        if (ParamTCH_ChannelDevicePageType == 0)
             result = new MainFunctionPage();
         else
             result = new DetailDevicePage();
@@ -68,6 +68,13 @@ Page* Page::createPage(uint8_t channelIndex)
     }
     result->init(channelIndex);
     return result;
+}
+
+Page* Page::createDetailDevicePage(uint8_t channelIndex)
+{
+    auto page = new DetailDevicePage();
+    page->init(channelIndex);
+    return page;
 }
 
 void Page::init(uint8_t channelIndex)
