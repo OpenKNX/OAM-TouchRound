@@ -5,7 +5,7 @@
 
 class SwitchDisplayBridge : public SwitchBridge
 {
-    _lv_event_dsc_t* _eventButtonPressed = nullptr;
+    lv_event_cb_t _eventButtonPressed = nullptr;
     DetailDevicePage& _detailDevicePage;
 public:
     SwitchDisplayBridge(DetailDevicePage& detailDevicePage);

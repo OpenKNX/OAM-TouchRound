@@ -9,8 +9,10 @@ void DimmerDisplayBridge::setup(uint8_t _channelIndex)
 {
     const char* label = _channel->getNameInUTF8(); 
     lv_label_set_text(ui_DimmLabel, label);
-    _eventReleased = lv_obj_add_event_cb(ui_DimmValue, [](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->released(); }, LV_EVENT_RELEASED, this);
-    _eventButtonPressed = lv_obj_add_event_cb(ui_DimmSwitch, [](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->buttonClicked(); }, LV_EVENT_CLICKED, this);
+    _eventReleased =[](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->released(); };
+    lv_obj_add_event_cb(ui_DimmValue, _eventReleased, LV_EVENT_RELEASED, this);
+    _eventButtonPressed = [](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->buttonClicked(); };
+    lv_obj_add_event_cb(ui_DimmSwitch, _eventButtonPressed , LV_EVENT_CLICKED, this);
   
     lv_scr_load(ui_Dimm);
 }
@@ -18,9 +20,9 @@ void DimmerDisplayBridge::setup(uint8_t _channelIndex)
 DimmerDisplayBridge::~DimmerDisplayBridge()
 {
     if (_eventReleased != nullptr)
-        lv_obj_remove_event_dsc(ui_DimmValue, _eventReleased);
+        lv_obj_remove_event_cb_with_user_data(ui_DimmValue, _eventReleased, this);
     if (_eventButtonPressed != nullptr)
-        lv_obj_remove_event_dsc(ui_DimmSwitch, _eventButtonPressed);
+        lv_obj_remove_event_cb_with_user_data(ui_DimmSwitch, _eventButtonPressed, this);
 }
 
 void DimmerDisplayBridge::setBrightness(uint8_t brightness)

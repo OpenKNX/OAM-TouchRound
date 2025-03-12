@@ -5,8 +5,8 @@
 
 class DimmerDisplayBridge : public DimmerBridge
 {
-    _lv_event_dsc_t* _eventReleased = nullptr;
-    _lv_event_dsc_t* _eventButtonPressed = nullptr;
+    lv_event_cb_t _eventReleased = nullptr;
+    lv_event_cb_t _eventButtonPressed = nullptr;
     DetailDevicePage& _detailDevicePage;
 public:
     DimmerDisplayBridge(DetailDevicePage& detailDevicePage);

@@ -6,12 +6,11 @@
 class MainFunctionPage : public Page
 {
 private:
-    bool destroyed = false;
     MainFunctionScreen& _screen = *MainFunctionScreen::instance;
     MainFunctionChangedHandler _handler;
     virtual const char* pageType() override;
-    _lv_event_dsc_t* _eventPressed = nullptr;
-    _lv_event_dsc_t* _eventLongPressed = nullptr;
+    lv_event_cb_t _eventPressed = nullptr;
+    lv_event_cb_t _eventLongPressed = nullptr;
     KnxChannelBase* _channel;
 
 public:

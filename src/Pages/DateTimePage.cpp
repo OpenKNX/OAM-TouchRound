@@ -35,12 +35,18 @@ void DateTimePage::updateTimeMessage(bool force)
        
             sprintf(buffer, "%02d:%02d:%02d", (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
             lv_label_set_text(instance.time, buffer);
+            lv_label_set_text(instance.message, "");
         }
     }
     else
     {
         if (force)
+        {
+            lv_label_set_text(instance.weekday, "");
+            lv_label_set_text(instance.date, "");
+            lv_label_set_text(instance.time, "");
             lv_label_set_text(instance.message, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
+        }
     }
 }
 

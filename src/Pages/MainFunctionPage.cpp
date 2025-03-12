@@ -4,18 +4,13 @@
 
 MainFunctionPage::~MainFunctionPage()
 {
-    destroyed = true;
-    logErrorP("MainFunctionPage destructor %d", (int) this);
     if (_channel != nullptr)
-    {
         _channel->removeChangedHandler(_handler);
-    }
+   
     if (_eventPressed != nullptr)
-        lv_obj_remove_event_dsc(_screen.screen, _eventPressed);
+        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventPressed, this);
     if (_eventLongPressed != nullptr)
-    {
-        lv_obj_remove_event_dsc(_screen.screen, _eventLongPressed);
-    }
+        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventLongPressed, this);  
 }
 
 const char* MainFunctionPage::pageType()
@@ -37,8 +32,10 @@ void MainFunctionPage::setup()
        channelValueChanged(channel);
     };
     _channel->addChangedHandler(_handler);
-    _eventPressed = lv_obj_add_event_cb(_screen.screen, [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->shortClicked(); }, LV_EVENT_SHORT_CLICKED, this);
-    _eventLongPressed = lv_obj_add_event_cb(_screen.screen, [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->longPressed(); }, LV_EVENT_LONG_PRESSED, this);
+    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->shortClicked(); };
+    lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_SHORT_CLICKED, this);
+    _eventLongPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->longPressed(); };
+    lv_obj_add_event_cb(_screen.screen, _eventLongPressed, LV_EVENT_LONG_PRESSED, this);
   
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
     _screen.show();
@@ -61,18 +58,13 @@ void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 
 void MainFunctionPage::shortClicked()
 {
-    logErrorP("MainFunctionPage shortClicked %d", (int) this);
-    if (destroyed)
-    {
-        logErrorP("MainFunctionPage already destroyed");
-        return;
-    }
+    logDebugP("MainFunctionPage shortClicked %d", (int) this);
     handleClick(ParamTCH_ChannelShortPress1, ParamTCH_ChannelJumpToShort1);
 }
 
 void MainFunctionPage::longPressed()
 {
-    logErrorP("MainFunctionPage longPressed %d", (int) this);
+    logDebugP("MainFunctionPage longPressed %d", (int) this);
     handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
 }
 
