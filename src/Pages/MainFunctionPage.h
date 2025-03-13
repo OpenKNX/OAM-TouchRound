@@ -10,8 +10,9 @@ private:
     MainFunctionChangedHandler _handler;
     virtual const char* pageType() override;
     lv_event_cb_t _eventPressed = nullptr;
-    lv_event_cb_t _eventLongPressed = nullptr;
+    lv_event_cb_t _eventReleased = nullptr;
     KnxChannelBase* _channel;
+    unsigned long _clickStarted = 0;
 
 public:
     virtual ~MainFunctionPage() override;
@@ -20,5 +21,6 @@ public:
     void channelValueChanged(KnxChannelBase& channel);
     void shortClicked();
     void longPressed();
+    void buttonReleased();
     void handleClick(int function, int jumpToPage);
 };

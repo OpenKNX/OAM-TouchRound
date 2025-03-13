@@ -9,8 +9,8 @@ MainFunctionPage::~MainFunctionPage()
    
     if (_eventPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventPressed, this);
-    if (_eventLongPressed != nullptr)
-        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventLongPressed, this);  
+    if (_eventReleased != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventReleased, this);  
 }
 
 const char* MainFunctionPage::pageType()
@@ -32,10 +32,10 @@ void MainFunctionPage::setup()
        channelValueChanged(channel);
     };
     _channel->addChangedHandler(_handler);
-    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->shortClicked(); };
-    lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_SHORT_CLICKED, this);
-    _eventLongPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->longPressed(); };
-    lv_obj_add_event_cb(_screen.screen, _eventLongPressed, LV_EVENT_LONG_PRESSED, this);
+    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = max(1l, millis()); };
+    lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
+    _eventReleased = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->buttonReleased(); };
+    lv_obj_add_event_cb(_screen.screen, _eventReleased, LV_EVENT_RELEASED, this);
   
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
     _screen.show();
@@ -58,13 +58,23 @@ void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 
 void MainFunctionPage::shortClicked()
 {
-    logDebugP("MainFunctionPage shortClicked %d", (int) this);
     handleClick(ParamTCH_ChannelShortPress1, ParamTCH_ChannelJumpToShort1);
+}
+
+void MainFunctionPage::buttonReleased()
+{
+    if (_clickStarted == 0)
+        return;
+    auto clickTime = millis() - _clickStarted;
+    _clickStarted = 0;
+    if (clickTime < 500)
+        shortClicked();
+    else
+        longPressed();
 }
 
 void MainFunctionPage::longPressed()
 {
-    logDebugP("MainFunctionPage longPressed %d", (int) this);
     handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
 }
 
