@@ -7,6 +7,7 @@
 #include "./Screens/CellScreen.h"
 #include "./Screens/MainFunctionScreen.h"
 #include "./Screens/DateTimeScreen.h"
+#include "./Screens/SwitchScreen.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -119,6 +120,7 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
 
 void TouchDisplayModule::showDetailDevicePage()
 {
+    logDebugP("Show Detail Device Page %d", _channelIndex + 1);
     _detailDevicePageActive = true;
     if (_currentPage != nullptr)
         delete _currentPage;
@@ -138,6 +140,7 @@ void TouchDisplayModule::showErrorPage(const char *message)
 
 void TouchDisplayModule::nextPage()
 {
+    _detailDevicePageActive = false;
     uint8_t currentChannel = _channelIndex;
     uint8_t newPage = _channelIndex + 1;
     while (currentChannel != ++_channelIndex)
@@ -223,7 +226,6 @@ void TouchDisplayModule::setup(bool configured)
     lv_xiao_touch_init();
 
     updateTheme();
-    ui_Switch_screen_init();
     ui_Dimm_screen_init();
     ui_Color_screen_init();
     ui_Message_screen_init();
@@ -232,8 +234,8 @@ void TouchDisplayModule::setup(bool configured)
     CellScreen2::instance = new CellScreen2();
     CellScreen3::instance = new CellScreen3();
     CellScreen4::instance = new CellScreen4();
+    SwitchScreen::instance = new SwitchScreen();
 
-    addGlobalEvents(ui_Switch);
     addGlobalEvents(ui_Dimm);
     addGlobalEvents(ui_Color);
     addGlobalEvents(ui_Message);
@@ -242,6 +244,7 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(CellScreen3::instance->screen);
     addGlobalEvents(CellScreen4::instance->screen);
     addGlobalEvents(DateTimeScreen::instance->screen);
+    addGlobalEvents(SwitchScreen::instance->screen);
 
     ui_screen = lv_obj_create(nullptr); // create screen
 

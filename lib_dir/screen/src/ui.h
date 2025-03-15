@@ -21,11 +21,6 @@ void ui_Color_screen_init(void);
 extern lv_obj_t *ui_Color;
 extern lv_obj_t *ui_ColorValue;
 extern lv_obj_t *ui_ColorLabel;
-// ui_Switch
-void ui_Switch_screen_init(void);
-extern lv_obj_t *ui_Switch;
-extern lv_obj_t *ui_SwitchLabel;
-extern lv_obj_t *ui_SwitchValue;
 // ui_Message
 void ui_Message_screen_init(void);
 extern lv_obj_t *ui_Message;

@@ -24,7 +24,8 @@ void DetailDevicePage::createDeviceBinder()
 {
     if (_widgetFactory == nullptr)
         _widgetFactory = new DeviceBinderFactory();
-    if (_channelIndex >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
+    auto deviceNumber = ParamTCH_ChannelDeviceSelection1;
+    if (deviceNumber >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
     {
         // std::ostringstream message;
         // message << "Gerät " << _channelIndex + 1 << " nicht verfügbar\nIn der ETS unter Geräte|Allgemein\ndie Verfügbare Geräte prüfen";
@@ -32,9 +33,9 @@ void DetailDevicePage::createDeviceBinder()
         openknxTouchDisplayModule.showErrorPage("Gerät nicht verfügbar");
         return;
     }
-    logDebugP("Create device widget %d", ParamTCH_ChannelDeviceSelection1);
+    logDebugP("Create device widget %d", deviceNumber);
    
-    KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+    KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(deviceNumber - 1);
     if (channel == nullptr)
     {
         errorInSetup("Gerät ist deaktiviert");
