@@ -41,6 +41,21 @@ void MainFunctionPage::setup()
     _screen.show();
 }
 
+void MainFunctionPage::loop()
+{
+    Page::loop();
+    if (_shortPressed)
+    {
+        _shortPressed = false;
+        shortClicked();
+    }
+    if (_longPressed)
+    {
+        _longPressed = false;
+        longPressed();
+    }
+}
+
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
     lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
@@ -68,9 +83,9 @@ void MainFunctionPage::buttonReleased()
     auto clickTime = millis() - _clickStarted;
     _clickStarted = 0;
     if (clickTime < 500)
-        shortClicked();
+        _shortPressed = true;
     else
-        longPressed();
+        _longPressed = true;
 }
 
 void MainFunctionPage::longPressed()
