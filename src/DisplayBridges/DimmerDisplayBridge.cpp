@@ -7,47 +7,46 @@ DimmerDisplayBridge::DimmerDisplayBridge(DetailDevicePage& detailDevicePage)
 
 void DimmerDisplayBridge::setup(uint8_t _channelIndex)
 {
-    const char* label = _channel->getNameInUTF8(); 
-    lv_label_set_text(ui_DimmLabel, label);
+    lv_label_set_text(_screen.label, _channel->getNameInUTF8());
     _eventReleased =[](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->released(); };
-    lv_obj_add_event_cb(ui_DimmValue, _eventReleased, LV_EVENT_RELEASED, this);
+    lv_obj_add_event_cb(_screen.value, _eventReleased, LV_EVENT_RELEASED, this);
     _eventButtonPressed = [](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->buttonClicked(); };
-    lv_obj_add_event_cb(ui_DimmSwitch, _eventButtonPressed , LV_EVENT_CLICKED, this);
-  
-    lv_scr_load(ui_Dimm);
+    lv_obj_add_event_cb(_screen.button, _eventButtonPressed , LV_EVENT_CLICKED, this);
+
+    lv_scr_load(_screen.screen);
 }
 
 DimmerDisplayBridge::~DimmerDisplayBridge()
 {
     if (_eventReleased != nullptr)
-        lv_obj_remove_event_cb_with_user_data(ui_DimmValue, _eventReleased, this);
+        lv_obj_remove_event_cb_with_user_data(_screen.value, _eventReleased, this);
     if (_eventButtonPressed != nullptr)
-        lv_obj_remove_event_cb_with_user_data(ui_DimmSwitch, _eventButtonPressed, this);
+        lv_obj_remove_event_cb_with_user_data(_screen.button, _eventButtonPressed, this);
 }
 
 void DimmerDisplayBridge::setBrightness(uint8_t brightness)
 {
-    lv_arc_set_value(ui_DimmValue, brightness);  
+    lv_arc_set_value(_screen.value, brightness);  
     if (brightness != 0)
-        lv_obj_add_state(ui_DimmSwitch, LV_STATE_CHECKED);
+        lv_obj_add_state(_screen.button, LV_STATE_CHECKED);
     else
-        lv_obj_clear_state(ui_DimmSwitch, LV_STATE_CHECKED);   
+        lv_obj_clear_state(_screen.button, LV_STATE_CHECKED);   
     updateText(); 
 }
 
 void DimmerDisplayBridge::updateText()
 {
-    lv_label_set_text_fmt(ui_DimmLabelValue, "%" LV_PRId32 "%%", lv_arc_get_value(ui_DimmValue));
+    lv_label_set_text_fmt(_screen.labelValue, "%" LV_PRId32 "%%", lv_arc_get_value(_screen.value));
 }
 
 void DimmerDisplayBridge::released()
 {    
-    auto value = lv_arc_get_value(ui_DimmValue);
+    auto value = lv_arc_get_value(_screen.value);
     _channel->commandBrightness(this,  value);
     updateText();
 }
 
 void DimmerDisplayBridge::buttonClicked()
 {    
-    _channel->commandPower(this, lv_obj_has_state(ui_DimmSwitch, LV_STATE_CHECKED));
+    _channel->commandMainFunctionClick();   
 }

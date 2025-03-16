@@ -8,6 +8,9 @@
 #include "./Screens/MainFunctionScreen.h"
 #include "./Screens/DateTimeScreen.h"
 #include "./Screens/SwitchScreen.h"
+#include "./Screens/DimmerScreen.h"
+#include "./Screens/MessageScreen.h"
+#include "./Pages/ProgButtonPage.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -127,6 +130,14 @@ void TouchDisplayModule::showDetailDevicePage()
     _currentPage = Page::createDetailDevicePage(_channelIndex);
 }
 
+void TouchDisplayModule::showProgButtonPage()
+{
+    display(true);
+    _lastTimeoutReset = 0;
+    if (_currentPage != nullptr)
+        delete _currentPage;
+    _currentPage = Page::createProgButtonPage();
+}
 
 void TouchDisplayModule::showErrorPage(const char *message)
 {
@@ -226,25 +237,25 @@ void TouchDisplayModule::setup(bool configured)
     lv_xiao_touch_init();
 
     updateTheme();
-    ui_Dimm_screen_init();
-    ui_Color_screen_init();
-    ui_Message_screen_init();
+    MessageScreen::instance = new MessageScreen();
     MainFunctionScreen::instance = new MainFunctionScreen();
     DateTimeScreen::instance = new DateTimeScreen();
     CellScreen2::instance = new CellScreen2();
     CellScreen3::instance = new CellScreen3();
     CellScreen4::instance = new CellScreen4();
     SwitchScreen::instance = new SwitchScreen();
+    DimmerScreen::instance = new DimmerScreen();
+    ButtonMessageScreen::instance = new ButtonMessageScreen();
 
-    addGlobalEvents(ui_Dimm);
-    addGlobalEvents(ui_Color);
-    addGlobalEvents(ui_Message);
     addGlobalEvents(MainFunctionScreen::instance->screen);
     addGlobalEvents(CellScreen2::instance->screen);
     addGlobalEvents(CellScreen3::instance->screen);
     addGlobalEvents(CellScreen4::instance->screen);
     addGlobalEvents(DateTimeScreen::instance->screen);
     addGlobalEvents(SwitchScreen::instance->screen);
+    addGlobalEvents(DimmerScreen::instance->screen);
+    addGlobalEvents(MessageScreen::instance->screen);
+    addGlobalEvents(ButtonMessageScreen::instance->screen);
 
     ui_screen = lv_obj_create(nullptr); // create screen
 
@@ -270,7 +281,7 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(_displayOffRectangle);
     if (!configured)
     {
-        showErrorPage("OpenKNX Touch Round\nBitte übertragen Sie die\nETS Applikation");
+        showProgButtonPage();
     }
     Module::setup(configured);
 }

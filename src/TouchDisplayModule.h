@@ -52,6 +52,7 @@ public:
 	void nextPage();
 	void previousPage();
 	void showErrorPage(const char* message);
+	void showProgButtonPage();
 	void showDetailDevicePage();
 	void showMainFunctionDevicePage();
 

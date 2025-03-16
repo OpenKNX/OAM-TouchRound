@@ -5,7 +5,9 @@
 #include "DateTimePage.h"
 #include "ErrorPage.h"
 #include "MainFunctionPage.h"
+#include "ProgButtonPage.h"
 #include "../TouchDisplayModule.h"
+#include "../Screens/MessageScreen.h"
 
 const std::string Page::logPrefix()
 {
@@ -14,8 +16,9 @@ const std::string Page::logPrefix()
 
 void Page::errorInSetup(const char* message)
 {
-    lv_label_set_text(ui_MessageLabel, message);
-    lv_disp_load_scr(ui_Message);
+    MessageScreen& screen = *MessageScreen::instance;
+    lv_label_set_text(screen.message, message);
+    lv_disp_load_scr(screen.screen);
 }
 
 Page* Page::createErrorPage(const char* message, uint8_t channelIndex)
@@ -26,6 +29,12 @@ Page* Page::createErrorPage(const char* message, uint8_t channelIndex)
     return result;
 }
 
+Page* Page::createProgButtonPage()
+{
+    auto result = new ProgButtonPage();
+    result->init(0);
+    return result;
+}
 Page* Page::createDeactivatedPage(uint8_t channelIndex)
 {
     DeactivatedPage* result = new DeactivatedPage();

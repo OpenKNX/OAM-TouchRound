@@ -1,6 +1,7 @@
 #pragma once
 #include "../Pages/DetailDevicePage.h"
 #include "Dimmer/KnxChannelDimmer.h"
+#include "../Screens/DimmerScreen.h"
 
 
 class DimmerDisplayBridge : public DimmerBridge
@@ -8,6 +9,7 @@ class DimmerDisplayBridge : public DimmerBridge
     lv_event_cb_t _eventReleased = nullptr;
     lv_event_cb_t _eventButtonPressed = nullptr;
     DetailDevicePage& _detailDevicePage;
+    DimmerScreen& _screen = *DimmerScreen::instance;
 public:
     DimmerDisplayBridge(DetailDevicePage& detailDevicePage);
     virtual ~DimmerDisplayBridge() override;
