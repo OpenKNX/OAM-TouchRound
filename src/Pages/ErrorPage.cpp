@@ -1,5 +1,4 @@
 #include "ErrorPage.h"
-#include "ui.h"
 
 const char* ErrorPage::pageType()
 {

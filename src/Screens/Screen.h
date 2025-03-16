@@ -1,5 +1,5 @@
 #pragma once
-#include "../ui.h"
+#include "lvgl.h"
 
 class Screen
 {

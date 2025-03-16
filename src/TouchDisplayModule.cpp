@@ -1,6 +1,6 @@
 #include <TouchDisplayModule.h>
 #include <Arduino.h>
-#include <ui.h>
+#include "lvgl.h"
 #include "lv_xiao_round_screen.h"
 #include "knxprod.h"
 #include "./Pages/Page.h"
@@ -111,14 +111,23 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     logDebugP("Active Page: %d", page);
     _currentPageActivated = activated;
     _detailDevicePageActive = false;
+    logDebugP("Set KO: %d", _channelIndex);
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
     if (_currentPage != nullptr)
+    {
+        logDebugP("Delete Page: %d", page);
         delete _currentPage;
-
+    }
     if (activated)
+    {
+        logDebugP("Create Page: %d", page);
         _currentPage = Page::createPage(_channelIndex);
+    }
     else
+    {  
+         logDebugP("Deativated Page: %d", page);
         _currentPage = Page::createDeactivatedPage(_channelIndex);
+    }
 }
 
 void TouchDisplayModule::showDetailDevicePage()
@@ -256,8 +265,6 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(DimmerScreen::instance->screen);
     addGlobalEvents(MessageScreen::instance->screen);
     addGlobalEvents(ButtonMessageScreen::instance->screen);
-
-    ui_screen = lv_obj_create(nullptr); // create screen
 
     if (configured)
     {
