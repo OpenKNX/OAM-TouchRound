@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 3
-#define MAIN_ApplicationVersion 2
+#define MAIN_ApplicationVersion 3
 #define MAIN_ParameterSize 11023
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -535,7 +535,7 @@
 #define ParamTCH_ChannelNumbeOfFields                (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelNumbeOfFields)))
 // Seitename
 #define ParamTCH_ChannelPageName                     (knx.paramData(TCH_ParamCalcIndex(TCH_ChannelPageName)))
-// Symbol-Bild
+// Bild für Absprung-Link auf diese Seite
 #define ParamTCH_ChannelIconSelection                (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelIconSelection)))
 // Bilddatei
 #define ParamTCH_ChannelNumber                       (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelNumber)))

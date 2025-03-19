@@ -10,6 +10,6 @@ protected:
     virtual const char* pageType() override;
     virtual void setup() override;
     virtual void loop() override;
-    void updateTimeMessage(bool forceUpdate);
+    void updateTime(bool forceUpdate);
     const char* dayOfWeekString(uint8_t dayOfWeek);
 };

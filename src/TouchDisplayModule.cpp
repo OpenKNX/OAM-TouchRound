@@ -11,6 +11,7 @@
 #include "./Screens/DimmerScreen.h"
 #include "./Screens/MessageScreen.h"
 #include "./Pages/ProgButtonPage.h"
+#include "./ImageLoader.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -238,13 +239,14 @@ void TouchDisplayModule::setup(bool configured)
     if (configured)
         _lastTimeoutReset = millis();
 
-    lv_log_register_print_cb(lv_log);
-
     lv_init();
-
+    lv_log_register_print_cb(lv_log);
+    ImageLoader::connectLittleFSwithLVGL();
+  
     lv_xiao_disp_init();
     lv_xiao_touch_init();
 
+   
     updateTheme();
     MessageScreen::instance = new MessageScreen();
     MainFunctionScreen::instance = new MainFunctionScreen();
@@ -355,7 +357,7 @@ void TouchDisplayModule::touched(lv_event_t *event)
 
 void TouchDisplayModule::lv_log(const char *buf)
 {
-         logDebug("lvgl", buf);
+    logInfo("lvgl", "%s", buf);
 }
 
 void TouchDisplayModule::resetDisplayTimeout()

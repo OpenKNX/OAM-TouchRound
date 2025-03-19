@@ -24,7 +24,7 @@
                 <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%005" Name="Channel%C%PageName" ParameterType="%AID%_PT-TCHPageName" Text="Seitename" Value="Seite %C%" />
                 <!-- 25 chars + '\0' = 26 byes -->
                 <!-- Icon Selection -->
-                <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="Channel%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Symbol-Bild" Value="20" />
+                <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="Channel%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Bild für Absprung-Link auf diese Seite" Value="20" />
                 <!-- Custom Icon -->
                 <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="Channel%C%Number" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
                 <!-- ^^^ 2 bytes ^^^ --> 

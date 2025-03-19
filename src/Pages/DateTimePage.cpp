@@ -8,24 +8,24 @@ const char* DateTimePage::pageType()
 
 void DateTimePage::setup()
 {
-    updateTimeMessage(true);
+    updateTime(true);
     lv_disp_load_scr(DateTimeScreen::instance->screen);
 }
 
-void DateTimePage::updateTimeMessage(bool force)
+void DateTimePage::updateTime(bool forceUpdate)
 {
     auto& instance = *DateTimeScreen::instance;
     bool timeValid = openknx.time.isValid();
     if (timeValid != _lastValid)
     {
         _lastValid = timeValid;
-        force = true;
+        forceUpdate = true;
     }
     if (timeValid)
     {
         auto localTime = openknx.time.getLocalTime();
         auto time = localTime.toTime_t();
-        if (time != _lastTime || force)
+        if (time != _lastTime || forceUpdate)
         {
             lv_label_set_text(instance.weekday, dayOfWeekString(localTime.dayOfWeek));
 
@@ -40,12 +40,12 @@ void DateTimePage::updateTimeMessage(bool force)
     }
     else
     {
-        if (force)
+        if (forceUpdate)
         {
             lv_label_set_text(instance.weekday, "");
             lv_label_set_text(instance.date, "");
             lv_label_set_text(instance.time, "");
-            lv_label_set_text(instance.message, "Zeit nicht vorhande.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
+            lv_label_set_text(instance.message, "Zeit nicht vorhanden.\nBitte prüfen ob Uhrzeit/Datum\nin der ETS korrekt verbunden ist");
         }
     }
 }
@@ -76,5 +76,5 @@ const char* DateTimePage::dayOfWeekString(uint8_t dayOfWeek)
 
 void DateTimePage::loop()
 {
-   updateTimeMessage(false);
+   updateTime(false);
 }

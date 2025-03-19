@@ -4,6 +4,7 @@ class CellObject;
 
 class CellScreen: public Screen
 {
+public:
     virtual CellObject& getCell(uint8_t index) = 0;
 };
 

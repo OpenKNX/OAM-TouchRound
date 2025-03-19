@@ -49,6 +49,8 @@
                   <Enumeration Text="Leer" Value="0" Id="%ENID%" />
                   <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
                   <Enumeration Text="Sprung zu Seite" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Zeit" Value="3" Id="%ENID%" />
+                  <Enumeration Text="Datum" Value="4" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 

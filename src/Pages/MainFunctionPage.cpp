@@ -1,11 +1,13 @@
 #include "MainFunctionPage.h"
 #include "SmartHomeBridgeModule.h"
-#include "TouchDisplayModule.h"
+#include "../TouchDisplayModule.h"
+#include "../ImageLoader.h"
+
 
 MainFunctionPage::~MainFunctionPage()
 {
-    if (_channel != nullptr)
-        _channel->removeChangedHandler(_handler);
+    if (_device != nullptr)
+        _device->removeChangedHandler(_handler);
    
     if (_eventPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventPressed, this);
@@ -21,23 +23,26 @@ const char* MainFunctionPage::pageType()
 void MainFunctionPage::setup()
 {
 
-    _channel = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
-    if (_channel == nullptr)
+    _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+    if (_device == nullptr)
     {
         errorInSetup("Gerät ist deaktiviert");
         return;
     }
+    auto& device = *_device;
     _handler = [this](KnxChannelBase& channel)
     {
        channelValueChanged(channel);
     };
-    _channel->addChangedHandler(_handler);
+    device.addChangedHandler(_handler);
     _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = max(1l, millis()); };
     lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
     _eventReleased = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->buttonReleased(); };
     lv_obj_add_event_cb(_screen.screen, _eventReleased, LV_EVENT_RELEASED, this);
   
-    lv_label_set_text(_screen.label, _channel->getNameInUTF8());
+    lv_label_set_text(_screen.label, device.getNameInUTF8());
+    ImageLoader::loadImage(_screen.image, device.mainFunctionImage());
+    
     _screen.show();
 }
 
@@ -101,8 +106,8 @@ void MainFunctionPage::handleClick(int function, int jumpToPage)
     switch(function)
     {
     case 0:      
-        if (_channel->supportMainFunctionClick())
-            _channel->commandMainFunctionClick();
+        if (_device->supportMainFunctionClick())
+            _device->commandMainFunctionClick();
         break;
     case 1:
         openknxTouchDisplayModule.showDetailDevicePage();

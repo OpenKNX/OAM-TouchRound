@@ -37,27 +37,40 @@ void CellPage::setup()
         errorInSetup("Zellenanzahl nicht unterstützt");
         break;
     }
+  
+    _cells = new Cell*[_numberOfCells];    
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        CellObject& cellObject =  _screen->getCell(cellIndex);
+        _cells[cellIndex] = Cell::createCell(_channelIndex, cellIndex, cellObject);
+    }
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        logDebugP("Setup cell");
+        _cells[cellIndex]->setup();
+    }
     _screen->show();
 
-    // _cells = new Cell*[_numberOfCells];    
-    // for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
-    // {
-    //     _cells[cellIndex] = Cell::createCell(_channelIndex, cellIndex, 0, 0, 0, 0);
-    // }
-    // for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
-    // {
-    //     logDebugP("Setup cell");
-    //     _cells[cellIndex]->setup();
-    // }
+}
+
+void CellPage::loop()
+{
+    Page::loop();
+    if (_cells == nullptr)
+        return;
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        _cells[cellIndex]->loop();
+    }
 }
 
 CellPage::~CellPage()
 {
-    // if (_cells == nullptr)
-    //     return;
-    // for (uint8_t i = 0; i < _numberOfCells; i++)
-    // {
-    //     delete _cells[i];
-    // }
-    // delete[] _cells;
+    if (_cells == nullptr)
+        return;
+    for (uint8_t i = 0; i < _numberOfCells; i++)
+    {
+        delete _cells[i];
+    }
+    delete[] _cells;
 }

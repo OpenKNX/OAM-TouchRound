@@ -52,7 +52,9 @@
                                         <!-- Cell Type -->
                                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501" IndentLevel="1" HelpContext="%DOC%" />      
                                         <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
-                                
+                                            <when test="0">
+                                                <!-- Empty Cell -->
+                                            </when>
                                             <when test="1" >
                                                 <!-- Device Cell -->
 
@@ -77,8 +79,18 @@
                                                     </when>
                                                 </choose>
                                             </when>
-                                            <when test="1" >
-                                                <!-- Date Time Cell -->
+                                            <when test="2" >
+                                                <!--Jump to page -->
+
+                                                <!-- Jump To Short Press -->
+                                                <ParameterRefRef  IndentLevel="1" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%"  />
+                   
+                                            </when>
+                                            <when test="3" >
+                                                <!-- Time  -->
+                                            </when>
+                                            <when test="4" >
+                                                <!-- Date -->
                                             </when>
                                         </choose>
                                     
