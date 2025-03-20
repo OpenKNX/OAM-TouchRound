@@ -1,5 +1,4 @@
 #include "MainFunctionScreen.h"
-#include "../Images/lamp-outline.c"
 
 MainFunctionScreen* MainFunctionScreen::instance = nullptr;
 

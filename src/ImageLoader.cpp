@@ -1,8 +1,25 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
-#include "./Images/lamp-outline.c"
-#include "./Images/light-switch-off.c"
-#include "./Images/power-socket-eu.c"
+#include "../Images/Type10.c"
+#include "../Images/Type11.c"
+#include "../Images/Type20.c"
+#include "../Images/Type30.c"
+#include "../Images/Type31.c"
+#include "../Images/Type32.c"
+#include "../Images/Type50.c"
+#include "../Images/Type60.c"
+#include "../Images/Type70.c"
+#include "../Images/Type71.c"
+#include "../Images/Type72.c"
+#include "../Images/Type73.c"
+#include "../Images/Type74.c"
+#include "../Images/Type75.c"
+#include "../Images/Type76.c"
+#include "../Images/Type80.c"
+#include "../Images/Type90.c"
+#include "../Images/Type91.c"
+#include "../Images/Type92.c"
+#include "../Images/missing_file.c"
 
 
 #include "lvgl.h"
@@ -34,7 +51,7 @@ public:
     }
 };
 
-static void* fs_open(_lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode) {
+void* ImageLoader::fs_open(_lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode) {
     const char *flags = (mode == LV_FS_MODE_WR) ? "w" : "r";
    
     auto result = new FileHelper();
@@ -46,26 +63,26 @@ static void* fs_open(_lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode) {
     return result;
 }
 
-static lv_fs_res_t fs_read(lv_fs_drv_t *drv, void *file_p, void *buf, uint32_t btr, uint32_t *br) {
+lv_fs_res_t ImageLoader::fs_read(lv_fs_drv_t *drv, void *file_p, void *buf, uint32_t btr, uint32_t *br) {
     FileHelper *fileHelper = (FileHelper*)file_p;
     auto read = fileHelper->readBytes((char*)buf, btr);
     *br = read;
     return (*br > 0) ? LV_FS_RES_OK : LV_FS_RES_UNKNOWN;
 }
 
-static lv_fs_res_t fs_close(lv_fs_drv_t *drv, void *file_p) {
+lv_fs_res_t ImageLoader::fs_close(lv_fs_drv_t *drv, void *file_p) {
     FileHelper *fileHelper = (FileHelper*)file_p;
     delete fileHelper;
     return LV_FS_RES_OK;
 }
 
-static lv_fs_res_t fs_seek(lv_fs_drv_t *drv, void *file_p, uint32_t pos, lv_fs_whence_t whence) {
+lv_fs_res_t ImageLoader::fs_seek(lv_fs_drv_t *drv, void *file_p, uint32_t pos, lv_fs_whence_t whence) {
     FileHelper *fileHelper = (FileHelper*)file_p;
     fileHelper->seek(pos, whence == LV_FS_SEEK_SET ? SeekSet : (whence == LV_FS_SEEK_CUR ? SeekCur : SeekEnd));
     return LV_FS_RES_OK;
 }
 
-static lv_fs_res_t fs_tell(lv_fs_drv_t *drv, void *file_p, uint32_t *pos_p) {
+lv_fs_res_t ImageLoader::fs_tell(lv_fs_drv_t *drv, void *file_p, uint32_t *pos_p) {
    
     FileHelper *fileHelper = (FileHelper*)file_p;
     *pos_p = fileHelper->position();
@@ -99,45 +116,100 @@ const std::string ImageLoader::logPrefix()
 
 void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
 {
-    // <Enumeration Value="0"  Id="%ENID%" Text="Deaktiviert"  />
-    // <Enumeration Value="10" Id="%ENID%" Text="Ein-/Ausschaltbares Gerät" Icon="light-switch-off" />
-    // <Enumeration Value="11" Id="%ENID%" Text="Steckdose" Icon="power-socket-eu" />
-    // <Enumeration Value="20" Id="%ENID%" Text="Lampe" Icon="lamp-outline"   />
-    // <Enumeration Value="30" Id="%ENID%" Text="Jalousie" Icon="window-shutter" />
-    // <Enumeration Value="31" Id="%ENID%" Text="Rolladen" Icon="roller-shade-closed" />
-    // <Enumeration Value="32" Id="%ENID%" Text="Markise" Icon="storefront-outline" />
-    // <Enumeration Value="50" Id="%ENID%" Text="Thermostat" Icon="thermostat" />
-    // <Enumeration Value="60" Id="%ENID%" Text="Anzeige" Icon="card-text-outline" />
-    // <Enumeration Value="70" Id="%ENID%" Text="Kontakt" Icon="electric-switch"/>
-    // <Enumeration Value="71" Id="%ENID%" Text="Bewegungsmelder" Icon="walk" />
-    // <Enumeration Value="72" Id="%ENID%" Text="Präsensmelder" Icon="human-male-female"/>
-    // <Enumeration Value="73" Id="%ENID%" Text="Leckmelder" Icon="water-alert-outline" />
-    // <Enumeration Value="74" Id="%ENID%" Text="Rauchmelder" Icon="smoke" />
-    // <Enumeration Value="75" Id="%ENID%" Text="Kohlendioxidmelder (CO2)" Icon="molecule-co2"  />
-    // <Enumeration Value="76" Id="%ENID%" Text="Kohlenmonoxidmelder (CO)" Icon="molecule-co" />
-    // <Enumeration Value="80" Id="%ENID%" Text="Lüfter" Icon="fan" />
-    // <Enumeration Value="90" Id="%ENID%" Text="Fenster" Icon="window-closed-variant" />
-    // <Enumeration Value="91" Id="%ENID%" Text="Tür" Icon="door" />
-    // <Enumeration Value="92" Id="%ENID%" Text="Garagentor" Icon="garage-open-variant" />
-    // if (fileName == "Type10.png")
-    // {
-    //     lv_img_set_src(imageObject, &light_switch_off);
-    // }
-    // else if (fileName == "Type11.png")
-    // {
-    //     lv_img_set_src(imageObject, &power_socket_eu);
-    // }
-    // else if (fileName == "Type20.png")
-    // {
-    //     lv_img_set_src(imageObject, &lamp_outline);
-    // }
-    // else
+    if (fileName == "")
+    {
+        lv_img_set_src(imageObject, nullptr);
+        return;
+    }
+    else if (LittleFS.exists(("/" + fileName).c_str()))
     {
         std::string filePath;
         filePath += driveLetter;
         filePath += ":/";
         filePath += fileName;
         logInfoP("Load file: %s", filePath.c_str());
+
         lv_img_set_src(imageObject, filePath.c_str());
+    }
+    else if (fileName == "Type10.png")
+    {
+        lv_img_set_src(imageObject, &Type10);
+    }
+    else if (fileName == "Type11.png")
+    {
+        lv_img_set_src(imageObject, &Type11);
+    }
+    else if (fileName == "Type20.png")
+    {
+        lv_img_set_src(imageObject, &Type20);
+    }
+    else if (fileName == "Type30.png")
+    {
+        lv_img_set_src(imageObject, &Type30);
+    }
+    else if (fileName == "Type31.png")
+    {
+        lv_img_set_src(imageObject, &Type31);
+    }
+    else if (fileName == "Type32.png")
+    {
+        lv_img_set_src(imageObject, &Type32);
+    }
+    else if (fileName == "Type50.png")
+    {
+        lv_img_set_src(imageObject, &Type50);
+    }
+    else if (fileName == "Type60.png")
+    {
+        lv_img_set_src(imageObject, &Type60);
+    }
+    else if (fileName == "Type70.png")
+    {
+        lv_img_set_src(imageObject, &Type70);
+    }
+    else if (fileName == "Type71.png")
+    {
+        lv_img_set_src(imageObject, &Type71);
+    }
+    else if (fileName == "Type72.png")
+    {
+        lv_img_set_src(imageObject, &Type72);
+    }
+    else if (fileName == "Type73.png")
+    {
+        lv_img_set_src(imageObject, &Type73);
+    }
+    else if (fileName == "Type74.png")
+    {
+        lv_img_set_src(imageObject, &Type74);
+    }
+    else if (fileName == "Type75.png")
+    {
+        lv_img_set_src(imageObject, &Type75);
+    }
+    else if (fileName == "Type76.png")
+    {
+        lv_img_set_src(imageObject, &Type76);
+    }
+    else if (fileName == "Type80.png")
+    {
+        lv_img_set_src(imageObject, &Type80);
+    }
+    else if (fileName == "Type90.png")
+    {
+        lv_img_set_src(imageObject, &Type90);
+    }
+    else if (fileName == "Type91.png")
+    {
+        lv_img_set_src(imageObject, &Type91);
+    }
+    else if (fileName == "Type92.png")
+    {
+        lv_img_set_src(imageObject, &Type92);
+    }
+    else
+    {
+        logError("loadImage", "File not found: %s", fileName);
+        lv_img_set_src(imageObject, &missing_file);
     }
 }

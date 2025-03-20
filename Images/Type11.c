@@ -17,11 +17,11 @@
 #define LV_ATTRIBUTE_MEM_ALIGN
 #endif
 
-#ifndef LV_ATTRIBUTE_IMG_POWER_SOCKET_EU
-#define LV_ATTRIBUTE_IMG_POWER_SOCKET_EU
+#ifndef LV_ATTRIBUTE_IMG_TYPE11
+#define LV_ATTRIBUTE_IMG_TYPE11
 #endif
 
-const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_POWER_SOCKET_EU uint8_t power_socket_eu_map[] = {
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_TYPE11 uint8_t Type11_map[] = {
   0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 
@@ -56,14 +56,14 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_POWER_SOC
   0x00, 0x00, 0x00, 0x00, 
 };
 
-const lv_img_dsc_t power_socket_eu = {
-  .header = {
+const lv_img_dsc_t Type11 = {
+.header = {
     .cf = LV_IMG_CF_ALPHA_1BIT,
     .always_zero = 0,
     .reserved = 0,
     .w = 32,
-    .h = 32,
-  },
+    .h = 32
+    },
   .data_size = 128,
-  .data = power_socket_eu_map,
+  .data = Type11_map,
 };

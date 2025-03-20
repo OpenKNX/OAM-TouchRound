@@ -15,8 +15,6 @@ void DeviceMainFunctionCell::init(KnxChannelBase* device)
     _device = device;
 }
 
-#include "../Images/lamp-outline.c"
-
 void DeviceMainFunctionCell::setup()
 {
     KnxChannelBase& device = *_device;
