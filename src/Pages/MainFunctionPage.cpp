@@ -20,10 +20,16 @@ const char* MainFunctionPage::pageType()
     return "MainFunction";
 }
 
+KnxChannelBase* MainFunctionPage::getDevice()
+{
+    if (_device == nullptr)
+        _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+    return _device;
+}
+
 void MainFunctionPage::setup()
 {
-
-    _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+    _device = getDevice();
     if (_device == nullptr)
     {
         errorInSetup("Gerät ist deaktiviert");
@@ -100,20 +106,37 @@ void MainFunctionPage::longPressed()
 
 void MainFunctionPage::handleClick(int function, int jumpToPage)
 {
+    // <Enumeration Text="Nichts" Value="0" Id="%ENID%" />          
     // <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
     // <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
     // <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
     switch(function)
     {
-    case 0:      
+    case 0:
+        logDebugP("Nichts");
+        return;
+    case 1:    
+        logDebugP("Hauptfunktion");
         if (_device->supportMainFunctionClick())
             _device->commandMainFunctionClick();
-        break;
-    case 1:
-        openknxTouchDisplayModule.showDetailDevicePage();
-        break;
+        return;
     case 2:
+        logDebugP("Detailseite");
+        openknxTouchDisplayModule.showDetailDevicePage();
+        return;
+    case 3:
+        logDebugP("Absprung zu Seite %d", jumpToPage);
         openknxTouchDisplayModule.activatePage(jumpToPage);
-        break;
+        return;
     }
+}
+
+std::string MainFunctionPage::name()
+{
+    return _device->getNameInUTF8();
+}
+
+std::string MainFunctionPage::image()
+{
+    return _device->mainFunctionImage();    
 }

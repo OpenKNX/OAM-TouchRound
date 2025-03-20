@@ -85,25 +85,33 @@ void DeviceMainFunctionCell::buttonReleased()
 
 void DeviceMainFunctionCell::longPressed()
 {
+    logErrorP("Long Press");
     handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
 }
 
 void DeviceMainFunctionCell::handleClick(int function, int jumpToPage)
 {
+    // <Enumeration Text="Nichts" Value="0" Id="%ENID%" />          
     // <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
     // <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
     // <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
     switch(function)
     {
-    case 0:      
+    case 0:
+        logDebugP("Nichts");
+        return;
+    case 1:    
+        logDebugP("Hauptfunktion");
         if (_device->supportMainFunctionClick())
             _device->commandMainFunctionClick();
-        break;
-    case 1:
-        openknxTouchDisplayModule.showDetailDevicePage();
-        break;
+        return;
     case 2:
+        logDebugP("Detailseite");
+        openknxTouchDisplayModule.showDetailDevicePage();
+        return;
+    case 3:
+        logDebugP("Absprung zu Seite %d", jumpToPage);
         openknxTouchDisplayModule.activatePage(jumpToPage);
-        break;
+        return;
     }
 }

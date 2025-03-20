@@ -44,7 +44,6 @@ private:
 	
 	
 private:
-	Page* _currentPage = nullptr;
 	bool _detailDevicePageActive = false;
 public:
 	void activatePage(uint8_t channel, bool displayOn = true);

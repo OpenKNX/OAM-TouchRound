@@ -14,3 +14,13 @@ void ErrorPage::setup()
 {
     errorInSetup(_message);
 }
+
+std::string ErrorPage::name()
+{
+    return "Fehler";
+}
+
+std::string ErrorPage::image()
+{
+    return "Error";
+}

@@ -66,3 +66,13 @@ void ProgButtonPage::setup()
     _screen.show();
 }
 
+std::string ProgButtonPage::name()
+{
+    return "System";
+}
+
+std::string ProgButtonPage::image()
+{
+    return "System.png";
+}
+

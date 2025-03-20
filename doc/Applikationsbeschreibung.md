@@ -88,5 +88,11 @@ Legt fest, wieviele Bedien- bzw. Anzeigefelder auf der Seite sind.
 <!-- DOC -->
 ### Langer Druck
 
+<!-- DOC -->
+### Name
+
+<!-- DOC -->
+### Bild
+
 
 ToDo

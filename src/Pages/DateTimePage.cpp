@@ -78,3 +78,13 @@ void DateTimePage::loop()
 {
    updateTime(false);
 }
+
+std::string DateTimePage::name()
+{
+    return "Uhrzeit";
+}
+
+std::string DateTimePage::image()
+{
+    return "Clock.png";
+}

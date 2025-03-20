@@ -16,6 +16,7 @@ private:
     bool _longPressed = false;
     bool _shortPressed = false;
 
+    KnxChannelBase* getDevice();
     void channelValueChanged(KnxChannelBase& channel);
     void shortClicked();
     void longPressed();
@@ -26,4 +27,6 @@ public:
     virtual ~MainFunctionPage() override;
     void loop() override;
     void setup() override;
+    virtual std::string name() override;
+    virtual std::string image() override;
 };

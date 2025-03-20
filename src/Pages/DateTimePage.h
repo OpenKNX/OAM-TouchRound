@@ -12,4 +12,6 @@ protected:
     virtual void loop() override;
     void updateTime(bool forceUpdate);
     const char* dayOfWeekString(uint8_t dayOfWeek);
+    virtual std::string name() override;
+    virtual std::string image() override;
 };

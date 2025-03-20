@@ -14,5 +14,7 @@ protected:
     virtual void loop() override;
 public:
     virtual ~CellPage();
+    virtual std::string name() override;
+    virtual std::string image() override;
 };
 

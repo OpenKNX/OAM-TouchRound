@@ -1,6 +1,7 @@
 #include "CellPage.h"
 #include "../Cells/Cell.h"
 #include "../Screens/CellScreen.h"
+#include "CP1252ToUTF8.h"
 
 const char* CellPage::pageType()
 {
@@ -73,4 +74,25 @@ CellPage::~CellPage()
         delete _cells[i];
     }
     delete[] _cells;
+}
+
+std::string CellPage::name()
+{
+    char* pageName1252 = (char *) ParamTCH_ChannelPageName;
+    const char* utf8 = convert1252ToUTF8(pageName1252);
+    auto result = std::string(utf8);
+    if (pageName1252 != nullptr)
+        free((void*) utf8);
+    return result;
+}
+
+std::string CellPage::image()
+{
+    uint8_t icon = ParamTCH_ChannelIconSelection;
+    if (icon == 0)
+    {
+        // custom icon
+        return std::to_string(ParamTCH_ChannelIconNumber) + ".png";
+    }
+    return std::string("Type") + std::to_string(icon) + ".png";
 }

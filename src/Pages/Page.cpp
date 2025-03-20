@@ -9,9 +9,27 @@
 #include "../TouchDisplayModule.h"
 #include "../Screens/MessageScreen.h"
 
+Page* Page::_currentPage = nullptr;
+
 const std::string Page::logPrefix()
 {
     return _name;
+}
+
+Page* Page::currentPage()
+{
+    return _currentPage;
+}
+
+void Page::showPage(Page* page)
+{
+    if (_currentPage != nullptr)
+    {
+        logDebug("Page", "Delete Page: %d", page);
+        delete _currentPage;
+    }
+    page->setup();
+    _currentPage = page;
 }
 
 void Page::errorInSetup(const char* message)
@@ -51,6 +69,7 @@ Page* Page::createPage(uint8_t channelIndex)
     // <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
     // <Enumeration Text="Mehrere Felder" Value="2" Id="%ENID%" />
     // <Enumeration Text="Zeit / Datum" Value="3" Id="%ENID%" />
+    // <Enumeration Text="System" Value="4" Id="%ENID%" />
     switch (ParamTCH_ChannelPageType)
     {
     case 0:
@@ -67,6 +86,9 @@ Page* Page::createPage(uint8_t channelIndex)
         break;
     case 3:
         result = new DateTimePage();
+        break;
+    case 4:
+        result = new ProgButtonPage();
         break;
     default:
         auto errorPage = new ErrorPage();
@@ -93,8 +115,6 @@ void Page::init(uint8_t channelIndex)
     _name = pageType();
     _name += "Page";
     _name += std::to_string(page);
-    logInfoP("setup");
-    setup();
 }
 
 

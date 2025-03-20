@@ -20,7 +20,9 @@
 #include "../Images/Type91.c"
 #include "../Images/Type92.c"
 #include "../Images/missing_file.c"
-
+#include "../Images/System.c"
+#include "../Images/Error.c"
+#include "../Images/Clock.c"
 
 #include "lvgl.h"
 #include "LittleFS.h"
@@ -206,6 +208,18 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
     else if (fileName == "Type92.png")
     {
         lv_img_set_src(imageObject, &Type92);
+    }
+    else if (fileName == "System.png")
+    {
+        lv_img_set_src(imageObject, &System);
+    }
+    else if (fileName == "Error.png")
+    {
+        lv_img_set_src(imageObject, &ErrorImg);
+    }
+    else if (fileName == "Clock.png")
+    {
+        lv_img_set_src(imageObject, &Clock);
     }
     else
     {
