@@ -9,8 +9,8 @@ class DetailDevicePage : public Page
 {
     static DeviceBinderFactory* _widgetFactory;
 protected:
-    ChannelBridge* _bridge;
-    KnxChannelBase* _device;
+    ChannelBridge* _bridge = nullptr;
+    KnxChannelBase* _device = nullptr;
     virtual const char* pageType() override;
     KnxChannelBase* getDevice();
 

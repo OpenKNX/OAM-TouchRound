@@ -11,7 +11,7 @@ private:
     MainFunctionChangedHandler _handler;
     lv_event_cb_t _eventPressed = nullptr;
     lv_event_cb_t _eventReleased = nullptr;
-    KnxChannelBase* _device;
+    KnxChannelBase* _device = nullptr;
     unsigned long _clickStarted = 0;
     bool _longPressed = false;
     bool _shortPressed = false;

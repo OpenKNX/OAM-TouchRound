@@ -23,6 +23,9 @@
 #include "../Images/System.c"
 #include "../Images/Error.c"
 #include "../Images/Clock.c"
+#include "../Images/Time.c"
+#include "../Images/Date.c"
+#include "../Images/DateTime.c"
 
 #include "lvgl.h"
 #include "LittleFS.h"
@@ -220,6 +223,18 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
     else if (fileName == "Clock.png")
     {
         lv_img_set_src(imageObject, &Clock);
+    }
+    else if (fileName == "Time.png")
+    {
+        lv_img_set_src(imageObject, &Time);
+    }
+    else if (fileName == "Date.png")
+    {
+        lv_img_set_src(imageObject, &Date);
+    }
+    else if (fileName == "DateTime.png")
+    {
+        lv_img_set_src(imageObject, &DateTime);
     }
     else
     {

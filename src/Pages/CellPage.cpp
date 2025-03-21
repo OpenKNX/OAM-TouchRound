@@ -10,19 +10,13 @@ const char* CellPage::pageType()
 
 void CellPage::setup()
 {
-    logDebugP("Init page with %d cells", (int) _numberOfCells);
-     _numberOfCells = ParamTCH_ChannelNumbeOfFields;
+    _numberOfCells = ParamTCH_ChannelNumbeOfFields;
+    logDebugP("setup %d cells", (int) _numberOfCells);
     if (_numberOfCells == 0)
     {
         errorInSetup("Seite hat keine Felder");
         return;
     }
-    if (_channelIndex >= ParamTCH_VisibleChannels)
-    {
-        errorInSetup("Seiteindex ist nicht verfügbar");
-        return;
-    }
-   
     switch (_numberOfCells)
     {
     case 2:
@@ -42,6 +36,7 @@ void CellPage::setup()
     _cells = new Cell*[_numberOfCells];    
     for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
     {
+        logDebugP("Get cell object %d", cellIndex);
         CellObject& cellObject =  _screen->getCell(cellIndex);
         _cells[cellIndex] = Cell::createCell(_channelIndex, cellIndex, cellObject);
     }

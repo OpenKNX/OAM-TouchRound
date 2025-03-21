@@ -133,10 +133,16 @@ void MainFunctionPage::handleClick(int function, int jumpToPage)
 
 std::string MainFunctionPage::name()
 {
-    return _device->getNameInUTF8();
+    KnxChannelBase* device = getDevice();
+    if (device != nullptr)
+        return device->getNameInUTF8();
+    return "Nicht definiert";
 }
 
 std::string MainFunctionPage::image()
 {
-    return _device->mainFunctionImage();    
+    KnxChannelBase* device = getDevice();
+    if (device != nullptr)
+        return device->mainFunctionImage(); 
+    return "";  
 }

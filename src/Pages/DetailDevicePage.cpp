@@ -72,5 +72,7 @@ std::string DetailDevicePage::name()
 std::string DetailDevicePage::image()
 {
     KnxChannelBase* device = getDevice();
-    return device->mainFunctionImage();
+    if (device != nullptr)
+        return device->mainFunctionImage();
+    return "";
 }
