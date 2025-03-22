@@ -13,9 +13,9 @@
                                 <!-- Device Selection Field -->      
                                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%00" Name="Channel%C%DeviceSelection%N%" ParameterType="%AID%_PT-TCHDeviceSelection" Text="Gerät" Value="1" />    
                                 <!-- Short Press -->      
-                                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%01" Name="Channel%C%ShortPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Kurzer Druck" Value="0" />    
+                                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%01" Name="Channel%C%ShortPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Kurzer Druck" Value="1" />    
                                 <!-- Long Press -->      
-                                <Parameter Offset="1" BitOffset="4" Id="%AID%_UP-%TT%%CC%%N%02" Name="Channel%C%LongPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Langer Druck" Value="1" />    
+                                <Parameter Offset="1" BitOffset="4" Id="%AID%_UP-%TT%%CC%%N%02" Name="Channel%C%LongPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Langer Druck" Value="2" />    
                                  <!-- Jump To Short Press-->
                                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%03" Name="Channel%C%JumpToShort%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
                                 <!-- Jump To Long Press -->
@@ -52,7 +52,9 @@
                                         <!-- Cell Type -->
                                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501" IndentLevel="1" HelpContext="%DOC%" />      
                                         <choose ParamRefId="%AID%_UP-%TT%%CC%%N%05_R-%TT%%CC%%N%0501">
-                                
+                                            <when test="0">
+                                                <!-- Empty Cell -->
+                                            </when>
                                             <when test="1" >
                                                 <!-- Device Cell -->
 
@@ -63,7 +65,7 @@
                                                 <!-- Short Press -->
                                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101" IndentLevel="1" HelpContext="%DOC%" />
                                                 <choose ParamRefId="%AID%_UP-%TT%%CC%%N%01_R-%TT%%CC%%N%0101">
-                                                    <when test="2" >
+                                                    <when test="3" >
                                                         <!-- Jump To Short Press -->
                                                         <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%" />                                   
                                                     </when>
@@ -71,14 +73,24 @@
                                                 <!-- Long Press -->
                                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201" IndentLevel="1" HelpContext="%DOC%" />
                                                 <choose ParamRefId="%AID%_UP-%TT%%CC%%N%02_R-%TT%%CC%%N%0201">
-                                                    <when test="2" >
+                                                    <when test="3" >
                                                         <!-- Jump To Long Press -->
                                                         <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%%N%04_R-%TT%%CC%%N%0401" HelpContext="%DOC%" />
                                                     </when>
                                                 </choose>
                                             </when>
-                                            <when test="1" >
-                                                <!-- Date Time Cell -->
+                                            <when test="2" >
+                                                <!--Jump to page -->
+
+                                                <!-- Jump To Short Press -->
+                                                <ParameterRefRef  IndentLevel="1" RefId="%AID%_UP-%TT%%CC%%N%03_R-%TT%%CC%%N%0301" HelpContext="%DOC%"  />
+                   
+                                            </when>
+                                            <when test="3" >
+                                                <!-- Time  -->
+                                            </when>
+                                            <when test="4" >
+                                                <!-- Date -->
                                             </when>
                                         </choose>
                                     

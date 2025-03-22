@@ -17,11 +17,11 @@
 #define LV_ATTRIBUTE_MEM_ALIGN
 #endif
 
-#ifndef LV_ATTRIBUTE_IMG_LAMP_OUTLINE
-#define LV_ATTRIBUTE_IMG_LAMP_OUTLINE
+#ifndef LV_ATTRIBUTE_IMG_TYPE20
+#define LV_ATTRIBUTE_IMG_TYPE20
 #endif
 
-const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_LAMP_OUTLINE uint8_t lamp_outline_map[] = {
+const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_TYPE20 uint8_t Type20_map[] = {
   0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 
@@ -56,13 +56,14 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_LAMP_OUTL
   0x00, 0x00, 0x00, 0x00, 
 };
 
-const lv_img_dsc_t lamp_outline = {
- .header = 
-    {
+const lv_img_dsc_t Type20 = {
+    .header = {
         .cf = LV_IMG_CF_ALPHA_1BIT,
+        .always_zero = 0,
+        .reserved = 0,
         .w = 32,
         .h = 32
     },
   .data_size = 128,
-  .data = lamp_outline_map,
+  .data = Type20_map,
 };

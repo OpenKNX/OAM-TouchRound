@@ -74,6 +74,9 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "lvgl.h": "c",
-        "lamp-outline.c": "cpp"
+        "lamp-outline.c": "cpp",
+        "type50.c": "cpp",
+        "type71.c": "cpp",
+        "missing_file.c": "cpp"
     }
 }

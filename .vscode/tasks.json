@@ -4,13 +4,29 @@
         {
             "label": "OpenKNXproducer (Dev)",
             "type": "shell",
-            "command": "OpenKNXproducer",
+            "command": "~/bin/OpenKNXproducer",
             "args": [
                 "create",
                 "--Debug",
                 "-h",
                 "include/knxprod.h",
                 "src/TouchRoundModule-Dev"
+            ],
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "OpenKNXproducer Documentation",
+            "type": "shell",
+            "command": "~/bin/OpenKNXproducer.exe",
+            "args": [
+                "baggages",
+                "--DocFileName",
+                "doc/Applikationsbeschreibung-Fingerprint.md",
+                "--BaggagesDir",
+                "src/Baggages/Help_de",
+                "--Prefix",
+                "FIN"
             ],
             "problemMatcher": [],
             "group": "test"

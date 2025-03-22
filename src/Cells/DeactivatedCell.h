@@ -5,5 +5,6 @@ class DeactivatedCell : public Cell
 {
     protected:
         virtual const char* cellType() override;
+        virtual void setup() override;
 
 };

@@ -12,5 +12,15 @@ void ErrorPage::setMessage(const char* message)
 
 void ErrorPage::setup()
 {
-    errorInSetup(_message);
+    errorInSetup(_message.c_str());
+}
+
+std::string ErrorPage::name()
+{
+    return "Fehler";
+}
+
+std::string ErrorPage::image()
+{
+    return "Error";
 }

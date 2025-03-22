@@ -48,7 +48,6 @@ private:
 	inline volatile static bool _touchLeftPressed = false;
 	inline volatile static bool _touchRightPressed = false;
 
-	Page* _currentPage = nullptr;
 	bool _detailDevicePageActive = false;
 
 public:

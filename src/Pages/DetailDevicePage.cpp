@@ -12,13 +12,19 @@ const char* DetailDevicePage::pageType()
 
 DetailDevicePage::~DetailDevicePage()
 {
-    if (_device != nullptr)
+    if (_bridge != nullptr)
     {
-        KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(_channelIndex);
-        channel->deleteBridgeDevice(_device);
+        KnxChannelBase* device = getDevice();
+        device->deleteBridgeDevice(_bridge);
     }
 }
 
+KnxChannelBase* DetailDevicePage::getDevice()
+{
+    if (_device == nullptr)
+       _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+    return _device;
+}
 
 void DetailDevicePage::createDeviceBinder()  
 {
@@ -35,15 +41,15 @@ void DetailDevicePage::createDeviceBinder()
     }
     logDebugP("Create device widget %d", deviceNumber);
    
-    KnxChannelBase* channel = openknxSmartHomeBridgeModule.getChannel(deviceNumber - 1);
-    if (channel == nullptr)
+    KnxChannelBase* device = getDevice();
+    if (device == nullptr)
     {
         errorInSetup("Gerät ist deaktiviert");
         return;
     }
     _widgetFactory->_currentDevicePage = this;
-    _device = channel->createBridgeDevice(*_widgetFactory);
-    if (_device == nullptr)
+    _bridge = device->createBridgeDevice(*_widgetFactory);
+    if (_bridge == nullptr)
     {
         errorInSetup("Gerät wird zur Anzeige\nnoch nicht unterstützt");
         return;
@@ -53,4 +59,20 @@ void DetailDevicePage::createDeviceBinder()
 void DetailDevicePage::setup()
 {
     createDeviceBinder();
+}
+
+std::string DetailDevicePage::name()
+{
+    KnxChannelBase* device = getDevice();
+    if (device != nullptr)
+        return device->getNameInUTF8();
+    return "Nicht definiert";
+}
+
+std::string DetailDevicePage::image()
+{
+    KnxChannelBase* device = getDevice();
+    if (device != nullptr)
+        return device->mainFunctionImage();
+    return "";
 }

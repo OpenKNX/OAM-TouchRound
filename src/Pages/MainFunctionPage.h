@@ -7,22 +7,26 @@ class MainFunctionPage : public Page
 {
 private:
     MainFunctionScreen& _screen = *MainFunctionScreen::instance;
-    MainFunctionChangedHandler _handler;
     virtual const char* pageType() override;
+    MainFunctionChangedHandler _handler;
     lv_event_cb_t _eventPressed = nullptr;
     lv_event_cb_t _eventReleased = nullptr;
-    KnxChannelBase* _channel;
+    KnxChannelBase* _device = nullptr;
     unsigned long _clickStarted = 0;
     bool _longPressed = false;
     bool _shortPressed = false;
 
-public:
-    virtual ~MainFunctionPage() override;
-    void loop() override;
-    void setup() override;
+    KnxChannelBase* getDevice();
     void channelValueChanged(KnxChannelBase& channel);
     void shortClicked();
     void longPressed();
     void buttonReleased();
     void handleClick(int function, int jumpToPage);
+
+public:
+    virtual ~MainFunctionPage() override;
+    void loop() override;
+    void setup() override;
+    virtual std::string name() override;
+    virtual std::string image() override;
 };

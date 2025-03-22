@@ -45,7 +45,7 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
 ### Seitename
 
 <!-- DOC -->
-### Symbol-Bild
+### Bild für Absprung-Link auf diese Seite
 
 <!-- DOC -->
 ### Bilddatei
@@ -87,6 +87,12 @@ Legt fest, wieviele Bedien- bzw. Anzeigefelder auf der Seite sind.
 
 <!-- DOC -->
 ### Langer Druck
+
+<!-- DOC -->
+### Name
+
+<!-- DOC -->
+### Bild
 
 
 ToDo

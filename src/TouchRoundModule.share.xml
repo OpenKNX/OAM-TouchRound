@@ -24,6 +24,7 @@
                   <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
                   <Enumeration Text="Mehrere Felder" Value="2" Id="%ENID%" />
                   <Enumeration Text="Zeit / Datum" Value="3" Id="%ENID%" />
+                  <Enumeration Text="System" Value="4" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
@@ -49,6 +50,8 @@
                   <Enumeration Text="Leer" Value="0" Id="%ENID%" />
                   <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
                   <Enumeration Text="Sprung zu Seite" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Zeit" Value="3" Id="%ENID%" />
+                  <Enumeration Text="Datum" Value="4" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
 
@@ -69,9 +72,10 @@
               </ParameterType>
               <ParameterType Id="%AID%_PT-TCHClickFunction" Name="TCHClickFunction">
                 <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="Hauptfunktion ausführen" Value="0" Id="%ENID%" />
-                  <Enumeration Text="Detailseite aufrufen" Value="1" Id="%ENID%" />
-                  <Enumeration Text="Absprung zu Seite" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Nichts" Value="0" Id="%ENID%" />
+                  <Enumeration Text="Hauptfunktion ausführen" Value="1" Id="%ENID%" />
+                  <Enumeration Text="Detailseite aufrufen" Value="2" Id="%ENID%" />
+                  <Enumeration Text="Absprung zu Seite" Value="3" Id="%ENID%" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="%AID%_PT-TCHDevicePageType" Name="TCHDevicePageType">
@@ -112,7 +116,7 @@
               <ParameterType Id="%AID%_PT-TCHIcon" Name="TCHIcon">
                 <TypeRestriction Base="Value" SizeInBit="8">
                     <Enumeration Value="0"  Id="%ENID%" Text="Benutzerdefiniert"  />
-                    <Enumeration Value="10" Id="%ENID%" Text="Ein-/Ausschaltbares Gerät" Icon="light-switch-off" />
+                    <Enumeration Value="10" Id="%ENID%" Text="Ein-/Ausschaltbares Gerät" Icon="power" />
                     <Enumeration Value="11" Id="%ENID%" Text="Steckdose" Icon="power-socket-eu" />
                     <Enumeration Value="20" Id="%ENID%" Text="Lampe" Icon="lamp-outline"   />
                     <Enumeration Value="30" Id="%ENID%" Text="Jalousie" Icon="window-shutter" />

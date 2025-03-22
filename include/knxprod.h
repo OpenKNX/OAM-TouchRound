@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 3
-#define MAIN_ApplicationVersion 2
+#define MAIN_ApplicationVersion 3
 #define MAIN_ParameterSize 11023
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -480,7 +480,7 @@
 #define TCH_ChannelNumbeOfFields                 2      // 8 Bits, Bit 7-0
 #define TCH_ChannelPageName                      3      // char*, 25 Byte
 #define TCH_ChannelIconSelection                29      // 8 Bits, Bit 7-0
-#define TCH_ChannelNumber                       30      // uint16_t
+#define TCH_ChannelIconNumber                   30      // uint16_t
 #define TCH_ChannelDevicePageType               32      // 4 Bits, Bit 7-4
 #define     TCH_ChannelDevicePageTypeMask 0xF0
 #define     TCH_ChannelDevicePageTypeShift 4
@@ -533,12 +533,12 @@
 #define ParamTCH_ChannelAvailable                    ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelAvailable)) & TCH_ChannelAvailableMask) >> TCH_ChannelAvailableShift)
 // Layout
 #define ParamTCH_ChannelNumbeOfFields                (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelNumbeOfFields)))
-// Seitename
+// Name
 #define ParamTCH_ChannelPageName                     (knx.paramData(TCH_ParamCalcIndex(TCH_ChannelPageName)))
-// Symbol-Bild
+// Bild
 #define ParamTCH_ChannelIconSelection                (knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelIconSelection)))
 // Bilddatei
-#define ParamTCH_ChannelNumber                       (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelNumber)))
+#define ParamTCH_ChannelIconNumber                   (knx.paramWord(TCH_ParamCalcIndex(TCH_ChannelIconNumber)))
 // Anzeige
 #define ParamTCH_ChannelDevicePageType               ((knx.paramByte(TCH_ParamCalcIndex(TCH_ChannelDevicePageType)) & TCH_ChannelDevicePageTypeMask) >> TCH_ChannelDevicePageTypeShift)
 // Gerät

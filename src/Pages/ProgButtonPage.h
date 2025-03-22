@@ -17,4 +17,6 @@ public:
     virtual const char* pageType() override;
     virtual void loop() override;
     virtual void setup() override;
+    virtual std::string name() override;
+    virtual std::string image() override;
 };

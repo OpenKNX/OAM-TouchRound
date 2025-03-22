@@ -21,12 +21,12 @@
                 <!-- Number of fields -->
                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumbeOfFields" ParameterType="%AID%_PT-TCHNumbeOfFields" Text="Layout" Value="2" />
                 <!-- Page Name -->
-                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%005" Name="Channel%C%PageName" ParameterType="%AID%_PT-TCHPageName" Text="Seitename" Value="Seite %C%" />
+                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%005" Name="Channel%C%PageName" ParameterType="%AID%_PT-TCHPageName" Text="Name" Value="Seite %C%" />
                 <!-- 25 chars + '\0' = 26 byes -->
                 <!-- Icon Selection -->
-                <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="Channel%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Symbol-Bild" Value="20" />
+                <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="Channel%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Bild" Value="20" />
                 <!-- Custom Icon -->
-                <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="Channel%C%Number" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
+                <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="Channel%C%IconNumber" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
                 <!-- ^^^ 2 bytes ^^^ --> 
                 
                 <!-- Next Id AID%_UP-%TT%%CC%008 -->
@@ -130,7 +130,7 @@
                                 <!-- Short Press -->
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101" IndentLevel="1" HelpContext="%DOC%" />
                                 <choose ParamRefId="%AID%_UP-%TT%%CC%101_R-%TT%%CC%10101">
-                                    <when test="2" >
+                                    <when test="3" >
                                         <!-- Jump To Short Press -->
                                         <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%103_R-%TT%%CC%10301" HelpContext="%DOC%" />                                   
                                     </when>
@@ -138,7 +138,7 @@
                                 <!-- Long Press -->
                                 <ParameterRefRef RefId="%AID%_UP-%TT%%CC%102_R-%TT%%CC%10201" IndentLevel="1" HelpContext="%DOC%" />
                                 <choose ParamRefId="%AID%_UP-%TT%%CC%102_R-%TT%%CC%10201">
-                                    <when test="2" >
+                                    <when test="3" >
                                         <!-- Jump To Long Press -->
                                         <ParameterRefRef IndentLevel="2" RefId="%AID%_UP-%TT%%CC%104_R-%TT%%CC%10401" HelpContext="%DOC%" />
                                     </when>
@@ -148,7 +148,19 @@
                       </when>
                       <when test="2">
                         <!-- Cells Page -->
-
+                
+                        <!-- Number of fields-->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" HelpContext="%DOC%" />          
+                          
+                        <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
+                        <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
+                     
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                        <ParameterSeparator Id="%AID%_PS-nnn" Text="Verküpfungen auf diese Seite" UIHint="Headline" />
+          
+                        <!-- Page Name -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%005_R-%TT%%CC%00501" IndentLevel="1" HelpContext="%DOC%" />
+                     
                         <!-- Icon Selection -->
                         <ParameterRefRef RefId="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601" IndentLevel="1" HelpContext="%DOC%" />
                         <choose ParamRefId="%AID%_UP-%TT%%CC%006_R-%TT%%CC%00601">
@@ -158,11 +170,7 @@
                           </when>
                         </choose>
 
-                        <!-- Number of fields-->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" IndentLevel="1" HelpContext="%DOC%" />          
-                          
-                        <!-- TouchRoundModule.TouchRoundModule.CellDefintion.xml will be included here -->
-                        <op:usePart name="CellDefintion" xpath="//KNX/ManufacturerData/Manufacturer/ApplicationPrograms/ApplicationProgram/Dynamic/ChannelIndependentBlock/*" /> 
+                     
                       </when>
                       <when test="3">
                         <!-- Date Time Page -->

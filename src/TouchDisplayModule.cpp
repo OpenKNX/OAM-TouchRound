@@ -11,6 +11,7 @@
 #include "./Screens/DimmerScreen.h"
 #include "./Screens/MessageScreen.h"
 #include "./Pages/ProgButtonPage.h"
+#include "./ImageLoader.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -103,7 +104,7 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     auto current = _channelIndex;
     _channelIndex = page - 1;
     bool activated = pageActivated();
-    if (current == _channelIndex && _currentPageActivated == activated && _currentPage != nullptr && !_detailDevicePageActive)
+    if (current == _channelIndex && _currentPageActivated == activated && Page::currentPage() != nullptr && !_detailDevicePageActive)
     {
         logDebugP("Page: %d already activ", page);
         return;
@@ -113,20 +114,15 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     _detailDevicePageActive = false;
     logDebugP("Set KO: %d", _channelIndex);
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
-    if (_currentPage != nullptr)
-    {
-        logDebugP("Delete Page: %d", page);
-        delete _currentPage;
-    }
     if (activated)
     {
         logDebugP("Create Page: %d", page);
-        _currentPage = Page::createPage(_channelIndex);
+        Page::showPage(Page::createPage(_channelIndex));
     }
     else
     {  
          logDebugP("Deativated Page: %d", page);
-        _currentPage = Page::createDeactivatedPage(_channelIndex);
+         Page::showPage(Page::createDeactivatedPage(_channelIndex));
     }
 }
 
@@ -134,18 +130,14 @@ void TouchDisplayModule::showDetailDevicePage()
 {
     logDebugP("Show Detail Device Page %d", _channelIndex + 1);
     _detailDevicePageActive = true;
-    if (_currentPage != nullptr)
-        delete _currentPage;
-    _currentPage = Page::createDetailDevicePage(_channelIndex);
+    Page::showPage(Page::createDetailDevicePage(_channelIndex));
 }
 
 void TouchDisplayModule::showProgButtonPage()
 {
     display(true);
     _lastTimeoutReset = 0;
-    if (_currentPage != nullptr)
-        delete _currentPage;
-    _currentPage = Page::createProgButtonPage();
+    Page::showPage(Page::createProgButtonPage());
 }
 
 void TouchDisplayModule::showErrorPage(const char *message)
@@ -153,9 +145,7 @@ void TouchDisplayModule::showErrorPage(const char *message)
     display(true);
     _lastTimeoutReset = 0;
     logErrorP("Error Screen: %s", message);
-    if (_currentPage != nullptr)
-        delete _currentPage;
-    _currentPage = Page::createErrorPage(message, _channelIndex);
+    Page::showPage(Page::createErrorPage(message, _channelIndex));
 }
 
 void TouchDisplayModule::nextPage()
@@ -238,13 +228,16 @@ void TouchDisplayModule::setup(bool configured)
     if (configured)
         _lastTimeoutReset = millis();
 
-    lv_log_register_print_cb(lv_log);
-
     lv_init();
-
+#if LV_USE_LOG
+    lv_log_register_print_cb(lv_log);
+#endif
+    ImageLoader::connectLittleFSwithLVGL();
+  
     lv_xiao_disp_init();
     lv_xiao_touch_init();
 
+   
     updateTheme();
     MessageScreen::instance = new MessageScreen();
     MainFunctionScreen::instance = new MainFunctionScreen();
@@ -360,7 +353,7 @@ void TouchDisplayModule::touched(lv_event_t *event)
 
 void TouchDisplayModule::lv_log(const char *buf)
 {
-         logDebug("lvgl", buf);
+    logInfo("lvgl", "%s", buf);
 }
 
 void TouchDisplayModule::resetDisplayTimeout()
@@ -437,8 +430,9 @@ void TouchDisplayModule::interruptTouchRight()
 void TouchDisplayModule::loop(bool configured)
 {
     lv_timer_handler(); // let the GUI do its work
-    if (_currentPage != nullptr)
-        _currentPage->loop();
+    Page* currentPage = Page::currentPage();
+    if (currentPage != nullptr && _displayOn)
+        currentPage->loop();
 
     if (_lastTimeoutReset != 0)
     {
