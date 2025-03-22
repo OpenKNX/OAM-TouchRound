@@ -11,7 +11,6 @@ class Page;
 class TouchDisplayModule : public OpenKNX::Module
 {
 	uint8_t _channelIndex = 255; // current active channel, do not rename, because var name is used in macros
-	bool _currentPageActivated = true;
 	uint8_t _defaultPage = 0;
 	uint16_t _displayTimeoutMs = 0;
 	uint16_t _pageTimeout = 0;
@@ -19,6 +18,8 @@ class TouchDisplayModule : public OpenKNX::Module
 	bool _displayOn = false;
 	lv_obj_t* _displayOffRectangle = nullptr;
 	uint8_t _theme = 0;
+	bool _detailDevicePageActive = false;
+	unsigned long _waitForEnablePageWhichWasRequested = 0;
 public:
 	void loop(bool configured) override;
 	void setup() override;
@@ -40,15 +41,15 @@ private:
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
 	void addGlobalEvents(lv_obj_t* sreen);
+	void showFirstPage();
 
 	void resetDisplayTimeout();
 	void display_pressed();
-	bool pageActivated();
+	bool pageEnabled(uint8_t page);
+	void checkPageEnabledChanged();
 	
 	inline volatile static bool _touchLeftPressed = false;
 	inline volatile static bool _touchRightPressed = false;
-
-	bool _detailDevicePageActive = false;
 
 public:
 	void activatePage(uint8_t channel, bool displayOn = true);

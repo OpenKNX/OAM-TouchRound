@@ -54,7 +54,7 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
 ### Layout
 
 <!-- DOC -->
-### Seite verfügbar
+### Seitefreigabe über Objekt
 
 <!-- DOC -->
 ### Gerät
@@ -63,7 +63,7 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
 ### Anzeige
 
 <!-- DOC -->
-### Seite über Blaettern erreichbar
+### Seite über Blättern erreichbar
 
 <!-- DOC -->
 ### Absprung zu

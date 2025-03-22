@@ -15,9 +15,9 @@
                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="Channel%C%PageType" ParameterType="%AID%_PT-TCHPageType" Text="Seitentyp" Value="1" />          
                 <!-- Page Reachable -->  
                 <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%002" Name="Channel%C%Navigation" ParameterType="%AID%_PT-OnOffYesNo" Text="Seite über Blättern erreichbar" Value="1" />
-                <!-- Page Available -->
-                <Parameter Offset="1" BitOffset="1" Id="%AID%_UP-%TT%%CC%003" Name="Channel%C%Available" ParameterType="%AID%_PT-TCHPageAvailable" Text="Seite verfügbar" Value="0" />
-                <!--7 bits free --> 
+                <!--3 bits free --> 
+                <!-- Page Enabled -->
+                <Parameter Offset="1" BitOffset="3" Id="%AID%_UP-%TT%%CC%003" Name="Channel%C%PageEnabled" ParameterType="%AID%_PT-TCHPageEnabled" Text="Seitefreigabe über Objekt" Value="0" />
                 <!-- Number of fields -->
                 <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%004" Name="Channel%C%NumbeOfFields" ParameterType="%AID%_PT-TCHNumbeOfFields" Text="Layout" Value="2" />
                 <!-- Page Name -->
@@ -28,13 +28,13 @@
                 <!-- Custom Icon -->
                 <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="Channel%C%IconNumber" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
                 <!-- ^^^ 2 bytes ^^^ --> 
-                
+           
                 <!-- Next Id AID%_UP-%TT%%CC%008 -->
           
 
                 <!-- Device Page Type --> 
                 <!-- defined in this union, because it must not overlapped with the Cell Defintion -->
-                <Parameter Offset="32" BitOffset="0" Id="%AID%_UP-%TT%%CC%017" Name="Channel%C%DevicePageType" ParameterType="%AID%_PT-TCHDevicePageType" Text="Anzeige" Value="1" />
+                <Parameter Offset="33" BitOffset="0" Id="%AID%_UP-%TT%%CC%017" Name="Channel%C%DevicePageType" ParameterType="%AID%_PT-TCHDevicePageType" Text="Anzeige" Value="1" />
                 <!-- 4 bits free -->          
               </Union>
               <!-- Next Offset must be set to:
@@ -55,7 +55,7 @@
               <ParameterRef Id="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101" RefId="%AID%_UP-%TT%%CC%001" />   
               <!-- Page Reachable -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" RefId="%AID%_UP-%TT%%CC%002" />
-              <!-- Page Available -->
+              <!-- Page Enabled -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" RefId="%AID%_UP-%TT%%CC%003" />
               <!-- Number of Fields -->
               <ParameterRef Id="%AID%_UP-%TT%%CC%004_R-%TT%%CC%00401" RefId="%AID%_UP-%TT%%CC%004" />
@@ -76,14 +76,8 @@
           
             </ParameterRefs>
             <ComObjectTable>
-              <!-- Page Enabled -->
-              <ComObject Id="%AID%_O-%TT%%CC%000" Number="%K00%" Name="CH%C%PageEnabled" ObjectSize="1 Bit" DatapointType="DPST-1-3" Text="Seite Freigegen" FunctionText="Seite Freigeben" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
             </ComObjectTable>
             <ComObjectRefs>
-              <!-- Page Enabled -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" RefId="%AID%_O-%TT%%CC%000" DatapointType="DPST-1-3" Text="Seite %C% Freigegen" FunctionText="Seite %C% {{0: ...}} Freigeben" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" />
-              <!-- Page Lock -->
-              <ComObjectRef Id="%AID%_O-%TT%%CC%000_R-%TT%%CC%00011" RefId="%AID%_O-%TT%%CC%000" DatapointType="DPST-1-1" Text="Seite %C% Sperren" FunctionText="Seite %C% {{0: ...}} Sperren" TextParameterRefId="%AID%_P-%TT%%CC%000_R-%TT%%CC%00001" />
             </ComObjectRefs>
           </Static>
           <Dynamic>
@@ -106,19 +100,9 @@
                     <choose ParamRefId="%AID%_UP-%TT%%CC%001_R-%TT%%CC%00101">
                       <when test="&gt;0">
                         <!-- Page Reachable -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" HelpContext="%DOC%" />  
-                        <!-- Page Available -->
-                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1" HelpContext="%DOC%" /> 
-                        <choose ParamRefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301">
-                          <when test="1">
-                            <!-- Page Enabled -->
-                            <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00001" />
-                          </when>
-                           <when test="2">
-                            <!-- Page Lock -->
-                            <ComObjectRefRef RefId="%AID%_O-%TT%%CC%000_R-%TT%%CC%00011" />
-                          </when>
-                        </choose>
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%002_R-%TT%%CC%00201" IndentLevel="1" HelpContext="%DOC%" />                                        
+                        <!-- Page Enabled -->
+                        <ParameterRefRef RefId="%AID%_UP-%TT%%CC%003_R-%TT%%CC%00301" IndentLevel="1" HelpContext="%DOC%" />                       
                       </when>
                       <when test="1">
                         <!-- Device Page -->

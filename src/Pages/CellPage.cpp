@@ -76,7 +76,7 @@ std::string CellPage::name()
     char* pageName1252 = (char *) ParamTCH_ChannelPageName;
     const char* utf8 = convert1252ToUTF8(pageName1252);
     auto result = std::string(utf8);
-    if (pageName1252 != nullptr)
+    if (pageName1252 != utf8)
         free((void*) utf8);
     return result;
 }

@@ -22,7 +22,9 @@ void JumpCell::setup()
     _eventPressed = [](lv_event_t *e) { ((JumpCell*) e->user_data)->_clicked = true; };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_CLICKED, this);
   
+    logDebug("JumpCell", "Setup JumpCell %d", (int) ParamTCH_ChannelJumpToShort1 - 1); 
     Page* page = Page::createPage(ParamTCH_ChannelJumpToShort1 - 1);
+    logDebug("JumpCell", "Setup JumpCell %s", page->name().c_str()); 
     lv_label_set_text(cellObject.label, page->name().c_str());
     ImageLoader::loadImage(cellObject.image, page->image().c_str());
     delete page;

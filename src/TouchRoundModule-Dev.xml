@@ -45,7 +45,7 @@
               ModuleType="14"
               KoSingleOffset="500"
               KoOffset="520"
-              NumChannels="15" >
+              NumChannels="50" >
       <op:verify File="../library.json" ModuleVersion="%TCH_VerifyVersion%" />
     </op:define>
 

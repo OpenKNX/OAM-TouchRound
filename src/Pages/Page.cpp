@@ -64,10 +64,13 @@ Page* Page::createDeactivatedPage(uint8_t channelIndex)
 
 Page* Page::createPage(uint8_t channelIndex)
 {
+    logDebug("Page", "Create Page %d", channelIndex + 1);
     uint8_t _channelIndex = channelIndex; // Used in parameter macros
     Page* result = nullptr;
     if (channelIndex >= ParamTCH_VisibleChannels)
     {
+        logDebug("Page", "Create ErrorPage");
+    
         auto errorPage = new ErrorPage();
         std::string message = "Unbekannte Seite ";
         message += std::to_string(channelIndex + 1);
@@ -84,24 +87,35 @@ Page* Page::createPage(uint8_t channelIndex)
         switch (ParamTCH_ChannelPageType)
         {
         case 0:
+            logDebug("Page", "Create DeactivatedPage");
             result = new DeactivatedPage();
             break;
         case 1:
             if (ParamTCH_ChannelDevicePageType == 0)
+            {
+                logDebug("Page", "Create MainFunctionPage");
                 result = new MainFunctionPage();
+            }
             else
+            {
+                logDebug("Page", "Create DetailDevicePage");
                 result = new DetailDevicePage();
+            }
             break;
         case 2: 
+            logDebug("Page", "Create CellPage");
             result = new CellPage();
             break;
         case 3:
+            logDebug("Page", "Create DateTimePage");
             result = new DateTimePage();
             break;
         case 4:
+            logDebug("Page", "Create ProgButtonPage");
             result = new ProgButtonPage();
             break;
         default:
+            logDebug("Page", "Create ErrorPage");
             auto errorPage = new ErrorPage();
             errorPage->setMessage("Unbekannte Seitentype");
             result = errorPage;

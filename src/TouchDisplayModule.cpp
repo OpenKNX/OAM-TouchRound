@@ -31,16 +31,33 @@ void TouchDisplayModule::setup()
     if (ParamTCH_DefaultPageKO)
     {
         if (KoTCH_DefaultPage.initialized())
-            _defaultPage = KoTCH_DefaultPage.value(DPT_SceneNumber);
+            _defaultPage = 1 + (uint8_t) KoTCH_DefaultPage.value(DPT_SceneNumber);
         else
             KoTCH_DefaultPage.requestObjectRead();
     }
     if (ParamTCH_DayNightObject > 0 && !KoTCH_DayNight.initialized())
         KoTCH_DayNight.requestObjectRead();
-    if (ParamTCH_ChannelAvailable > 0 && !KoTCH_CHPageEnabled.initialized())
-        KoTCH_CHPageEnabled.requestObjectRead();
+
+    if (!KoTCH_PageEnabledA.initialized())
+        KoTCH_PageEnabledA.requestObjectRead();
+    if (!KoTCH_PageEnabledB.initialized())
+        KoTCH_PageEnabledB.requestObjectRead();
+    if (!KoTCH_PageEnabledC.initialized())
+        KoTCH_PageEnabledC.requestObjectRead();
+    if (!KoTCH_PageEnabledD.initialized())
+        KoTCH_PageEnabledD.requestObjectRead();
+    if (!KoTCH_PageEnabledE.initialized())
+        KoTCH_PageEnabledE.requestObjectRead();
+    if (!KoTCH_PageEnabledF.initialized())
+        KoTCH_PageEnabledF.requestObjectRead();
+    if (!KoTCH_PageEnabledG.initialized())
+        KoTCH_PageEnabledG.requestObjectRead();
+    if (!KoTCH_PageEnabledH.initialized())
+        KoTCH_PageEnabledH.requestObjectRead();
+
     logDebugP("Default Page: %d", _defaultPage);
-    activatePage(_defaultPage);
+    showFirstPage();
+    Module::setup();
 }
 
 void TouchDisplayModule::processInputKo(GroupObject &ko)
@@ -49,7 +66,15 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     {
     case TCH_KoPage:
     {
-        activatePage(ko.value(DPT_SceneNumber));
+        uint8_t page = 1 + (uint8_t) ko.value(DPT_SceneNumber);
+        logDebugP("Requested Page: %d", page);
+        if (pageEnabled(page))
+            activatePage(page);
+        else
+        {
+            logDebugP("Requested Page: %d not enabled", page);
+            _waitForEnablePageWhichWasRequested = max(millis(), 1L);
+        }
     }
     break;
     case TCH_KoPrevNext:
@@ -63,7 +88,7 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
     case TCH_KoDefaultPage:
     {
         bool isDefaultPageActive = _defaultPage != _channelIndex;
-        _defaultPage = ko.value(DPT_SceneNumber);
+        _defaultPage = 1 + (uint8_t) ko.value(DPT_SceneNumber);
         if (isDefaultPageActive)
             activatePage(_defaultPage);
     }
@@ -77,53 +102,83 @@ void TouchDisplayModule::processInputKo(GroupObject &ko)
         updateTheme();
         break;
     }
-    }
-    switch (TCH_KoCalcIndex(ko.asap()))
+    case TCH_KoPageEnabledA:
+    case TCH_KoPageEnabledB:
+    case TCH_KoPageEnabledC:
+    case TCH_KoPageEnabledD:
+    case TCH_KoPageEnabledE:
+    case TCH_KoPageEnabledF:
+    case TCH_KoPageEnabledG:    
+    case TCH_KoPageEnabledH:
     {
-        case TCH_KoCHPageEnabled:
+        if (_waitForEnablePageWhichWasRequested > 0)
         {
-            if (pageActivated())
+            uint8_t page = 1 + (uint8_t) KoTCH_Page.value(DPT_SceneNumber);
+            if (pageEnabled(page))
+                activatePage(page);
+        }
+
+        if (_channelIndex != 255)
+        {
+            uint8_t page = _channelIndex + 1;
+            if (!pageEnabled(page))
             {
-                activatePage(_channelIndex + 1);
-            }
-            else
-            {
-                nextPage();
-            }
+                _channelIndex = 255;
+                showFirstPage();
+            }   
+        }
+        else
+        {
+            showFirstPage();
         }
         break;
     }
+    }
 }
+
+void TouchDisplayModule::showFirstPage()
+{
+    if (pageEnabled(_defaultPage))
+        activatePage(_defaultPage);
+    else
+        nextPage();
+    if (_channelIndex == 255)
+    {
+        showErrorPage("Keine Seite freigegeben");
+    } 
+}
+
 
 void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
 {
+    bool enabled = pageEnabled(page);
+    if (!enabled)
+    {
+        logDebugP("Page: %d not enabled", page);
+        return;
+    }
+    if (_waitForEnablePageWhichWasRequested > 0)
+    {
+        _waitForEnablePageWhichWasRequested = 0;
+        logDebugP("Stop waiting for requested page because a page is activated");
+    }
     if (displayOn)
         display(true);
 
     _lastTimeoutReset = millis();
     auto current = _channelIndex;
     _channelIndex = page - 1;
-    bool activated = pageActivated();
-    if (current == _channelIndex && _currentPageActivated == activated && Page::currentPage() != nullptr && !_detailDevicePageActive)
+    if (current == _channelIndex && Page::currentPage() != nullptr && !_detailDevicePageActive)
     {
         logDebugP("Page: %d already activ", page);
         return;
     }
     logDebugP("Active Page: %d", page);
-    _currentPageActivated = activated;
     _detailDevicePageActive = false;
     logDebugP("Set KO: %d", _channelIndex);
     KoTCH_CurrentPage.value(_channelIndex, DPT_SceneNumber);
-    if (activated)
-    {
-        logDebugP("Create Page: %d", page);
-        Page::showPage(Page::createPage(_channelIndex));
-    }
-    else
-    {  
-         logDebugP("Deativated Page: %d", page);
-         Page::showPage(Page::createDeactivatedPage(_channelIndex));
-    }
+    logDebugP("Create Page: %d", page);
+    Page::showPage(Page::createPage(_channelIndex));
 }
 
 void TouchDisplayModule::showDetailDevicePage()
@@ -158,9 +213,10 @@ void TouchDisplayModule::nextPage()
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = 0;
 
-        if (ParamTCH_ChannelNavigation && pageActivated())
+        uint8_t page = _channelIndex + 1;
+        if (ParamTCH_ChannelNavigation && pageEnabled(page))
         {
-            newPage = _channelIndex + 1;
+            newPage = page;
             break;
         }
     }
@@ -168,27 +224,68 @@ void TouchDisplayModule::nextPage()
     activatePage(newPage);
 }
 
-bool TouchDisplayModule::pageActivated()
+bool TouchDisplayModule::pageEnabled(uint8_t page)
 {
+    uint8_t _channelIndex = page - 1;
     if (ParamTCH_ChannelPageType == 0)
         return false;
-    //     <Enumeration Text="Immer" Value="0" Id="%ENID%" />
-    //     <Enumeration Text="Über Objekt aktivierbar" Value="1" Id="%ENID%" />
-    //     <Enumeration Text="Über Objekt deaktivierbar" Value="2" Id="%ENID%" />
-    if (KoTCH_CHPageEnabled.initialized())
+  
+    switch (ParamTCH_ChannelPageEnabled)
     {
-        switch (ParamTCH_ChannelAvailable)
-        {
-        case 1:
-            if (!KoTCH_CHPageEnabled.value(DPT_Switch))
-                return false;
-            break;
-        case 2:
-            if (KoTCH_CHPageEnabled.value(DPT_Switch))
-                return false;
-            break;
-        }
+    case 1:
+        if (!KoTCH_PageEnabledA.value(DPT_Switch))
+            return false;
+        break;
+    case 2:
+        if (KoTCH_PageEnabledB.value(DPT_Switch))
+            return false;
+        break;
     }
+    // <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe A" Value="1" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe B" Value="2" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe C" Value="3" Id="%ENID%" /> 
+    // <Enumeration Text="Seitenfreigabe D" Value="4" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe E" Value="5" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe F" Value="6" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe G" Value="7" Id="%ENID%" />
+    // <Enumeration Text="Seitenfreigabe H" Value="8" Id="%ENID%" />
+    switch (ParamTCH_ChannelPageEnabled)
+    {
+    case 1:
+        if (!KoTCH_PageEnabledA.value(DPT_Switch))
+            return false;
+        break;
+    case 2:
+        if (!KoTCH_PageEnabledB.value(DPT_Switch))
+            return false;
+        break;
+    case 3:
+        if (!KoTCH_PageEnabledC.value(DPT_Switch))
+            return false;
+        break;
+    case 4:
+        if (!KoTCH_PageEnabledD.value(DPT_Switch))
+            return false;
+        break;
+    case 5:
+        if (!KoTCH_PageEnabledE.value(DPT_Switch))
+            return false;
+        break;
+    case 6:
+        if (!KoTCH_PageEnabledF.value(DPT_Switch))
+            return false;
+        break;
+    case 7:
+        if (!KoTCH_PageEnabledG.value(DPT_Switch))
+            return false;
+        break;
+    case 8: 
+        if (!KoTCH_PageEnabledH.value(DPT_Switch))
+            return false;
+        break;
+    }
+    
     return true;
 }
 
@@ -205,9 +302,10 @@ void TouchDisplayModule::previousPage()
     {
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = ParamTCH_VisibleChannels - 1;
-        if (ParamTCH_ChannelNavigation && pageActivated())
+        uint8_t page = _channelIndex + 1;
+        if (ParamTCH_ChannelNavigation && pageEnabled(page))
         {
-            newPage = _channelIndex + 1;
+            newPage = page;
             break;
         }
     }
@@ -457,14 +555,28 @@ void TouchDisplayModule::loop(bool configured)
 
     if (_touchLeftPressed)
     {
-        previousPage();
+        if (_displayOn)
+            previousPage();
+        else
+            display(true);
+      
         _touchLeftPressed = false;
     }
 
     if (_touchRightPressed)
     {
-        nextPage();
+        if (_displayOn)
+            nextPage();
+        else
+            display(true);
+            
         _touchRightPressed = false;
+    }
+
+    if (_waitForEnablePageWhichWasRequested > 0 && millis() - _waitForEnablePageWhichWasRequested > 1000)
+    {
+        _waitForEnablePageWhichWasRequested = 0;
+        logDebugP("Stop waiting for requested page because of timeout");
     }
 }
 void TouchDisplayModule::loop1(bool configured)

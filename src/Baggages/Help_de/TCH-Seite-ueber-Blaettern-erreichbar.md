@@ -1,2 +1,2 @@
-﻿### Seite über Blaettern erreichbar
+﻿### Seite über Blättern erreichbar
 

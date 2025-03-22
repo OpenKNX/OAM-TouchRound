@@ -141,6 +141,22 @@
                 <ParameterType Id="%AID%_PT-TCHIconNumber" Name="TCHIconNumber">
                   <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1" maxInclusive="65535" />
                 </ParameterType>
+
+                <ParameterType Id="%AID%_PT-TCHPageEnabled" Name="TCHPageEnabled">
+                  <TypeRestriction Base="Value" SizeInBit="4">
+                    <Enumeration Text="Deaktiviert" Value="0" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe A" Value="1" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe B" Value="2" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe C" Value="3" Id="%ENID%" /> 
+                    <Enumeration Text="Seitenfreigabe D" Value="4" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe E" Value="5" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe F" Value="6" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe G" Value="7" Id="%ENID%" />
+                    <Enumeration Text="Seitenfreigabe H" Value="8" Id="%ENID%" />
+                  </TypeRestriction>
+                </ParameterType>
+
+
               </ParameterTypes>
 
             <Parameters>
@@ -210,7 +226,22 @@
 							<ComObject Number="5" Id="%AID%_O-%TT%00005" ObjectSize="1 Byte" DatapointType="DPST-17-1" Name="DefaultPage" Text="Standardseite" FunctionText="Standardseite" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
 	           	<!-- Display Tag Nacht -->
 							<ComObject Number="6" Id="%AID%_O-%TT%00006" ObjectSize="1 Bit" DatapointType="DPST-1-24" Name="DayNight" Text="Tag/Nacht" FunctionText="Nacht EIN" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" Priority="Low" />
-				  
+              <!-- Page Enabled A -->
+              <ComObject Number="7" Id="%AID%_O-%TT%00007" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledA" Text="Seitenfreigabe A" FunctionText="Seitenfreigabe A" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+              <!-- Page Enabled B -->
+              <ComObject Number="8" Id="%AID%_O-%TT%00008" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledB" Text="Seitenfreigabe B" FunctionText="Seitenfreigabe B" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+              <!-- Page Enabled C -->
+              <ComObject Number="9" Id="%AID%_O-%TT%00009" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledC" Text="Seitenfreigabe C" FunctionText="Seitenfreigabe C" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />  	     
+              <!-- Page Enabled D -->
+              <ComObject Number="10" Id="%AID%_O-%TT%00010" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledD" Text="Seitenfreigabe D" FunctionText="Seitenfreigabe D" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+              <!-- Page Enabled E -->
+              <ComObject Number="11" Id="%AID%_O-%TT%00011" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledE" Text="Seitenfreigabe E" FunctionText="Seitenfreigabe E" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+              <!-- Page Enabled F -->
+              <ComObject Number="12" Id="%AID%_O-%TT%00012" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledF" Text="Seitenfreigabe F" FunctionText="Seitenfreigabe F" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
+              <!-- Page Enabled G -->
+              <ComObject Number="13" Id="%AID%_O-%TT%00013" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledG" Text="Seitenfreigabe G" FunctionText="Seitenfreigabe G" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" /> 
+              <!-- Page Enabled H -->
+              <ComObject Number="14" Id="%AID%_O-%TT%00014" ObjectSize="1 Bit" DatapointType="DPST-1-3" Name="PageEnabledH" Text="Seitenfreigabe H" FunctionText="Seitenfreigabe H" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" Priority="Low" />
             </ComObjectTable>
             <ComObjectRefs>
               <!-- Display On/Off -->
@@ -229,7 +260,24 @@
               <ComObjectRef Id="%AID%_O-%TT%00006_R-%TT%0000601" RefId="%AID%_O-%TT%00006" /> 
               <!-- Display Tag = 1 Nacht =0 -->
 							<ComObjectRef Id="%AID%_O-%TT%00006_R-%TT%0000611" RefId="%AID%_O-%TT%00006" DatapointType="DPST-1-1" Name="DayNight" Text="Nacht/Tag" FunctionText="Tag EIN" />
-				    
+				      <!-- Page Enabled A -->
+              <ComObjectRef Id="%AID%_O-%TT%00007_R-%TT%0000701" RefId="%AID%_O-%TT%00007" />
+              <!-- Page Enabled B -->
+              <ComObjectRef Id="%AID%_O-%TT%00008_R-%TT%0000801" RefId="%AID%_O-%TT%00008" />
+              <!-- Page Enabled C -->
+              <ComObjectRef Id="%AID%_O-%TT%00009_R-%TT%0000901" RefId="%AID%_O-%TT%00009" />
+              <!-- Page Enabled D -->
+              <ComObjectRef Id="%AID%_O-%TT%00010_R-%TT%0001001" RefId="%AID%_O-%TT%00010" />
+              <!-- Page Enabled E -->
+              <ComObjectRef Id="%AID%_O-%TT%00011_R-%TT%0001101" RefId="%AID%_O-%TT%00011" />
+              <!-- Page Enabled F -->
+              <ComObjectRef Id="%AID%_O-%TT%00012_R-%TT%0001201" RefId="%AID%_O-%TT%00012" />
+              <!-- Page Enabled G -->
+              <ComObjectRef Id="%AID%_O-%TT%00013_R-%TT%0001301" RefId="%AID%_O-%TT%00013" />
+              <!-- Page Enabled H -->
+              <ComObjectRef Id="%AID%_O-%TT%00014_R-%TT%0001401" RefId="%AID%_O-%TT%00014" />
+
+
             </ComObjectRefs>
             <Extension>
               <Baggage RefId="%FILE-HELP-de%" />
@@ -297,7 +345,7 @@
                   <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00002_R-%TT%0000201" Cell="1,3" HelpContext="%DOC%"/>
                 </ParameterBlock> 
 
-                 <!-- Default Page KO -->
+                <!-- Default Page KO -->
                 <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00004_R-%TT%0000401" />
                 <choose ParamRefId="%AID%_UP-%TT%00004_R-%TT%0000401">
                   <when test="1">
@@ -327,6 +375,23 @@
                     <ParameterRefRef IndentLevel="1" RefId="%AID%_UP-%TT%00008_R-%TT%0000801" />
                   </when>   
                 </choose>
+
+                <!-- Page Enabled A -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00007_R-%TT%0000701" />  
+                <!-- Page Enabled B -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00008_R-%TT%0000801" />
+                <!-- Page Enabled C -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00009_R-%TT%0000901" />
+                <!-- Page Enabled D -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00010_R-%TT%0001001" />
+                <!-- Page Enabled E -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00011_R-%TT%0001101" />
+                <!-- Page Enabled F -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00012_R-%TT%0001201" />
+                <!-- Page Enabled G -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00013_R-%TT%0001301" />
+                <!-- Page Enabled H -->
+                <ComObjectRefRef RefId="%AID%_O-%TT%00014_R-%TT%0001401" />
 
      					  <ParameterSeparator Id="%AID%_PS-nnn" Text="" UIHint="HorizontalRuler" />
                 <ParameterSeparator Id="%AID%_PS-nnn" Text="Kanalauswahl" UIHint="Headline" />
