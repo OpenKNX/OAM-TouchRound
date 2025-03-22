@@ -8,3 +8,6 @@
 #define KNX_UART_TX_PIN 12
 #define KNX_UART_RX_PIN 13
 #define SAVE_INTERRUPT_PIN 0
+
+#define TOUCH_LEFT_PIN 24
+#define TOUCH_RIGHT_PIN 25

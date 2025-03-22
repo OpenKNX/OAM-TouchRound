@@ -266,6 +266,11 @@ void TouchDisplayModule::setup(bool configured)
     addGlobalEvents(MessageScreen::instance->screen);
     addGlobalEvents(ButtonMessageScreen::instance->screen);
 
+    pinMode(TOUCH_LEFT_PIN, INPUT);
+    pinMode(TOUCH_RIGHT_PIN, INPUT);
+    attachInterrupt(digitalPinToInterrupt(TOUCH_LEFT_PIN), TouchDisplayModule::interruptTouchLeft, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(TOUCH_RIGHT_PIN), TouchDisplayModule::interruptTouchRight, CHANGE);
+
     if (configured)
     {
         auto gestureLayer = lv_obj_create(lv_layer_top());
@@ -419,6 +424,16 @@ void TouchDisplayModule::handleGesture(lv_event_t *event)
     }
 }
 
+void TouchDisplayModule::interruptTouchLeft()
+{
+    _touchLeftPressed = digitalRead(TOUCH_LEFT_PIN) == HIGH;
+}
+
+void TouchDisplayModule::interruptTouchRight()
+{
+    _touchRightPressed = digitalRead(TOUCH_RIGHT_PIN) == HIGH;
+}
+
 void TouchDisplayModule::loop(bool configured)
 {
     lv_timer_handler(); // let the GUI do its work
@@ -444,6 +459,18 @@ void TouchDisplayModule::loop(bool configured)
         {
             _lastTimeoutReset = 0;
         }
+    }
+
+    if (_touchLeftPressed)
+    {
+        previousPage();
+        _touchLeftPressed = false;
+    }
+
+    if (_touchRightPressed)
+    {
+        nextPage();
+        _touchRightPressed = false;
     }
 }
 void TouchDisplayModule::loop1(bool configured)

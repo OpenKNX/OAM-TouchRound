@@ -33,6 +33,9 @@ public:
 
 private:
 	
+	static void interruptTouchLeft();
+	static void interruptTouchRight();
+
 	static void lv_log(const char *buf);
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
@@ -42,10 +45,12 @@ private:
 	void display_pressed();
 	bool pageActivated();
 	
-	
-private:
+	inline volatile static bool _touchLeftPressed = false;
+	inline volatile static bool _touchRightPressed = false;
+
 	Page* _currentPage = nullptr;
 	bool _detailDevicePageActive = false;
+
 public:
 	void activatePage(uint8_t channel, bool displayOn = true);
 	void display(bool on);
@@ -61,7 +66,7 @@ public:
 	void showHelp() override;
 	void updateTheme();
 	void setTheme(uint8_t theme);
-#
+
 };
 
 
