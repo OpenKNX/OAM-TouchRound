@@ -23,7 +23,7 @@
   <op:config name="%BRI_HomeKitSupport%" value="0" />
   <op:config name="%BRI_HueSupport%" value="0" />
   <op:config name="%BRI_NumChannelsDefault%" value="0" />
-  <op:config name="%BRI_DefaultType%" value="10" />
+  <op:config name="%BRI_DefaultType%" value="0" />
  
   <op:config name="%BRI_NumChannels%" value="50" /> <!-- The line "<op:part href="TouchRoundModule.DeviceEnumValue.xml" name="DeviceEnumValue" instances="50">"" in TouchRoundModule.share.share.xml must be changed too   -->
 </KNX>

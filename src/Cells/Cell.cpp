@@ -31,13 +31,13 @@ Cell *Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, CellObject &cell
     uint8_t _channelIndex = channelIndex; // Used in parameter macros
     uint8_t _cellIndex = cellIndex;       // Used in parameter macros
     Cell *result = nullptr;
-    logDebug("Cell", "Get create cell %d with type %d", (int) cellIndex, (int) ParamTCH_ChannelTCHCellType1);
+    logDebug("Cell", "Get create cell %d with type %d", (int) cellIndex, (int) ParamTCH_CHTCHCellType1);
     // <Enumeration Text="Leer" Value="0" Id="%ENID%" />
     // <Enumeration Text="Gerät" Value="1" Id="%ENID%" />
     // <Enumeration Text="Sprung zu Seite" Value="2" Id="%ENID%" />
     // <Enumeration Text="Zeit" Value="3" Id="%ENID%" />
     // <Enumeration Text="Datum" Value="4" Id="%ENID%" />
-    switch (ParamTCH_ChannelTCHCellType1)
+    switch (ParamTCH_CHTCHCellType1)
     {
     case 0:
         logDebug("Cell", "Create Empty Cell");
@@ -45,8 +45,8 @@ Cell *Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, CellObject &cell
         break;
     case 1:
     {
-        uint8_t deviceIndex = ParamTCH_ChannelDeviceSelection1 - 1;
-        logDebug("Cell", "Create Device Cell %d", (int) ParamTCH_ChannelDeviceSelection1);
+        uint8_t deviceIndex = ParamTCH_CHDeviceSelection1 - 1;
+        logDebug("Cell", "Create Device Cell %d", (int) ParamTCH_CHDeviceSelection1);
         auto device = openknxSmartHomeBridgeModule.getChannel(deviceIndex);
         if (device == nullptr)
         {

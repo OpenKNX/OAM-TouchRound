@@ -23,7 +23,7 @@ const char* MainFunctionPage::pageType()
 KnxChannelBase* MainFunctionPage::getDevice()
 {
     if (_device == nullptr)
-        _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+        _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_CHDeviceSelection1 - 1);
     return _device;
 }
 
@@ -84,7 +84,7 @@ void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 
 void MainFunctionPage::shortClicked()
 {
-    handleClick(ParamTCH_ChannelShortPress1, ParamTCH_ChannelJumpToShort1);
+    handleClick(ParamTCH_CHShortPress1, ParamTCH_CHJumpToShort1);
 }
 
 void MainFunctionPage::buttonReleased()
@@ -101,7 +101,7 @@ void MainFunctionPage::buttonReleased()
 
 void MainFunctionPage::longPressed()
 {
-    handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
+    handleClick(ParamTCH_CHLongPress1, ParamTCH_CHJumpToLong1);
 }
 
 void MainFunctionPage::handleClick(int function, int jumpToPage)

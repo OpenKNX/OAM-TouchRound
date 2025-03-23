@@ -84,14 +84,14 @@ Page* Page::createPage(uint8_t channelIndex)
         // <Enumeration Text="Mehrere Felder" Value="2" Id="%ENID%" />
         // <Enumeration Text="Zeit / Datum" Value="3" Id="%ENID%" />
         // <Enumeration Text="System" Value="4" Id="%ENID%" />
-        switch (ParamTCH_ChannelPageType)
+        switch (ParamTCH_CHPageType)
         {
         case 0:
             logDebug("Page", "Create DeactivatedPage");
             result = new DeactivatedPage();
             break;
         case 1:
-            if (ParamTCH_ChannelDevicePageType == 0)
+            if (ParamTCH_CHDevicePageType == 0)
             {
                 logDebug("Page", "Create MainFunctionPage");
                 result = new MainFunctionPage();

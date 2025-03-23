@@ -11,17 +11,17 @@
                             <Union SizeInBit="40">
                                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="%OFFSET%" BitOffset="0" />
                                 <!-- Device Selection Field -->      
-                                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%00" Name="Channel%C%DeviceSelection%N%" ParameterType="%AID%_PT-TCHDeviceSelection" Text="Gerät" Value="1" />    
+                                <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%00" Name="CH%C%DeviceSelection%N%" ParameterType="%AID%_PT-TCHDeviceSelection" Text="Gerät" Value="1" />    
                                 <!-- Short Press -->      
-                                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%01" Name="Channel%C%ShortPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Kurzer Druck" Value="1" />    
+                                <Parameter Offset="1" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%01" Name="CH%C%ShortPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Kurzer Druck" Value="1" />    
                                 <!-- Long Press -->      
-                                <Parameter Offset="1" BitOffset="4" Id="%AID%_UP-%TT%%CC%%N%02" Name="Channel%C%LongPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Langer Druck" Value="2" />    
+                                <Parameter Offset="1" BitOffset="4" Id="%AID%_UP-%TT%%CC%%N%02" Name="CH%C%LongPress%N%" ParameterType="%AID%_PT-TCHClickFunction" Text="Langer Druck" Value="2" />    
                                  <!-- Jump To Short Press-->
-                                <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%03" Name="Channel%C%JumpToShort%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
+                                <Parameter Offset="2" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%03" Name="CH%C%JumpToShort%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
                                 <!-- Jump To Long Press -->
-                                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%04" Name="Channel%C%JumpToLong%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
+                                <Parameter Offset="3" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%04" Name="CH%C%JumpToLong%N%" ParameterType="%AID%_PT-TCHNumChannels"  Text="Absprung zu" Value="1" />
                                 <!-- Cell Type -->      
-                                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%05" Name="Channel%C%TCHCellType%N%" ParameterType="%AID%_PT-TCHCellType" Text="Funktion" Value="1" />    
+                                <Parameter Offset="4" BitOffset="0" Id="%AID%_UP-%TT%%CC%%N%05" Name="CH%C%TCHCellType%N%" ParameterType="%AID%_PT-TCHCellType" Text="Funktion" Value="1" />    
                                 <!-- 4 bits free -->
                             </Union>
                         </Parameters>

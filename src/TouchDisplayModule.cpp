@@ -214,7 +214,7 @@ void TouchDisplayModule::nextPage()
             _channelIndex = 0;
 
         uint8_t page = _channelIndex + 1;
-        if (ParamTCH_ChannelNavigation && pageEnabled(page))
+        if (ParamTCH_CHNavigation && pageEnabled(page))
         {
             newPage = page;
             break;
@@ -227,10 +227,10 @@ void TouchDisplayModule::nextPage()
 bool TouchDisplayModule::pageEnabled(uint8_t page)
 {
     uint8_t _channelIndex = page - 1;
-    if (ParamTCH_ChannelPageType == 0)
+    if (ParamTCH_CHPageType == 0)
         return false;
   
-    switch (ParamTCH_ChannelPageEnabled)
+    switch (ParamTCH_CHPageEnabled)
     {
     case 1:
         if (!KoTCH_PageEnabledA.value(DPT_Switch))
@@ -250,7 +250,7 @@ bool TouchDisplayModule::pageEnabled(uint8_t page)
     // <Enumeration Text="Seitenfreigabe F" Value="6" Id="%ENID%" />
     // <Enumeration Text="Seitenfreigabe G" Value="7" Id="%ENID%" />
     // <Enumeration Text="Seitenfreigabe H" Value="8" Id="%ENID%" />
-    switch (ParamTCH_ChannelPageEnabled)
+    switch (ParamTCH_CHPageEnabled)
     {
     case 1:
         if (!KoTCH_PageEnabledA.value(DPT_Switch))
@@ -303,7 +303,7 @@ void TouchDisplayModule::previousPage()
         if (_channelIndex >= ParamTCH_VisibleChannels)
             _channelIndex = ParamTCH_VisibleChannels - 1;
         uint8_t page = _channelIndex + 1;
-        if (ParamTCH_ChannelNavigation && pageEnabled(page))
+        if (ParamTCH_CHNavigation && pageEnabled(page))
         {
             newPage = page;
             break;

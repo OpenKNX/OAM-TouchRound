@@ -68,7 +68,7 @@ void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
 
 void DeviceMainFunctionCell::shortClicked()
 {
-    handleClick(ParamTCH_ChannelShortPress1, ParamTCH_ChannelJumpToShort1);
+    handleClick(ParamTCH_CHShortPress1, ParamTCH_CHJumpToShort1);
 }
 
 void DeviceMainFunctionCell::buttonReleased()
@@ -86,7 +86,7 @@ void DeviceMainFunctionCell::buttonReleased()
 void DeviceMainFunctionCell::longPressed()
 {
     logErrorP("Long Press");
-    handleClick(ParamTCH_ChannelLongPress1, ParamTCH_ChannelJumpToLong1);
+    handleClick(ParamTCH_CHLongPress1, ParamTCH_CHJumpToLong1);
 }
 
 void DeviceMainFunctionCell::handleClick(int function, int jumpToPage)

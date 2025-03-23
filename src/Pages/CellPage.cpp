@@ -10,7 +10,7 @@ const char* CellPage::pageType()
 
 void CellPage::setup()
 {
-    _numberOfCells = ParamTCH_ChannelNumbeOfFields;
+    _numberOfCells = ParamTCH_CHNumbeOfFields;
     logDebugP("setup %d cells", (int) _numberOfCells);
     if (_numberOfCells == 0)
     {
@@ -73,7 +73,7 @@ CellPage::~CellPage()
 
 std::string CellPage::name()
 {
-    char* pageName1252 = (char *) ParamTCH_ChannelPageName;
+    char* pageName1252 = (char *) ParamTCH_CHPageName;
     const char* utf8 = convert1252ToUTF8(pageName1252);
     auto result = std::string(utf8);
     if (pageName1252 != utf8)
@@ -83,11 +83,11 @@ std::string CellPage::name()
 
 std::string CellPage::image()
 {
-    uint8_t icon = ParamTCH_ChannelIconSelection;
+    uint8_t icon = ParamTCH_CHIconSelection;
     if (icon == 0)
     {
         // custom icon
-        return std::to_string(ParamTCH_ChannelIconNumber) + ".png";
+        return std::to_string(ParamTCH_CHIconNumber) + ".png";
     }
     return std::string("Type") + std::to_string(icon) + ".png";
 }

@@ -22,7 +22,7 @@ DetailDevicePage::~DetailDevicePage()
 KnxChannelBase* DetailDevicePage::getDevice()
 {
     if (_device == nullptr)
-       _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_ChannelDeviceSelection1 - 1);
+       _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_CHDeviceSelection1 - 1);
     return _device;
 }
 
@@ -30,7 +30,7 @@ void DetailDevicePage::createDeviceBinder()
 {
     if (_widgetFactory == nullptr)
         _widgetFactory = new DeviceBinderFactory();
-    auto deviceNumber = ParamTCH_ChannelDeviceSelection1;
+    auto deviceNumber = ParamTCH_CHDeviceSelection1;
     if (deviceNumber >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
     {
         // std::ostringstream message;

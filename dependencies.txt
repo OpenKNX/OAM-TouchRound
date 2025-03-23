@@ -3,9 +3,9 @@ e69f636 v1 lib/knx https://github.com/OpenKNX/knx.git
 4d96c27ce release/v8.3 lib/lvgl https://github.com/lvgl/lvgl.git
 a6c49a6 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.git
 900005b v1dev lib/OFM-FileTransferModule https://github.com/OpenKNX/OFM-FileTransferModule.git
-1d1a22c v1dev lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
+496b344 v1dev lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 9a1cfe1 v1 lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
-3a7d4ec v1dev_MainFunctionAbstractionLayer lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
+0609168 v1dev_MainFunctionAbstractionLayer lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 1ce7a13 v1 lib/OFM-UsbExchange https://github.com/OpenKNX/OFM-UsbExchange.git
 e39365e v1 lib/OFM-VirtualButton https://github.com/OpenKNX/OFM-VirtualButton
 b6f98a2 timeLEDsupport lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
