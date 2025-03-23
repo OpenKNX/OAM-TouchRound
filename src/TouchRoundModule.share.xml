@@ -13,7 +13,7 @@
 					</op:part>
           <op:part href="TouchRoundModule.CellDefinition.xml" name="CellDefintion" instances="4">
 				    <op:param name="%N%" value="1" />
-            <op:param name="%OFFSET%" value="33" increment="5"/>
+            <op:param name="%OFFSET%" value="39" increment="5"/>
 					</op:part>
           
           <Static>
@@ -138,8 +138,8 @@
                   </TypeRestriction>
                 </ParameterType>
 
-                <ParameterType Id="%AID%_PT-TCHIconNumber" Name="TCHIconNumber">
-                  <TypeNumber SizeInBit="16" Type="unsignedInt" minInclusive="1" maxInclusive="65535" />
+                <ParameterType Id="%AID%_PT-TCHIconName" Name="TCHIconName">
+                  <TypeText  SizeInBit="64" Pattern="^[A-Za-z0-9_-]*$" />
                 </ParameterType>
 
                 <ParameterType Id="%AID%_PT-TCHPageEnabled" Name="TCHPageEnabled">

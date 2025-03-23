@@ -87,7 +87,8 @@ std::string CellPage::image()
     if (icon == 0)
     {
         // custom icon
-        return std::to_string(ParamTCH_CHIconNumber) + ".png";
+        auto name = (const char*)ParamTCH_CHIconName;
+        return std::string(name, 8) + ".png";
     }
     return std::string("Type") + std::to_string(icon) + ".png";
 }

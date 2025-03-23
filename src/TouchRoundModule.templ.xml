@@ -10,7 +10,7 @@
               <!-- Channel Description -->
               <Parameter Id="%AID%_P-%TT%%CC%000" Name="CH%C%Description" ParameterType="%AID%_PT-Text40Byte" Text="Beschreibung" Value="" />
             
-              <Union SizeInBit="264">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="??" increment="5"/> -->
+              <Union SizeInBit="312">  <!-- !!!!! UPDATE PARAMETER %OFFSET% IN SHARED IF  SizeInBit CHANGED <op:param name="%OFFSET%" value="??" increment="5"/> -->
                 <Memory CodeSegment="%AID%_RS-04-00000" Offset="0" BitOffset="0" />
                 <!-- Page Type -->
                 <Parameter Offset="0" BitOffset="0" Id="%AID%_UP-%TT%%CC%001" Name="CH%C%PageType" ParameterType="%AID%_PT-TCHPageType" Text="Seitentyp" Value="0" />          
@@ -27,15 +27,15 @@
                 <!-- Icon Selection -->
                 <Parameter Offset="29" BitOffset="0" Id="%AID%_UP-%TT%%CC%006" Name="CH%C%IconSelection" ParameterType="%AID%_PT-TCHIcon" Text="Bild" Value="20" />
                 <!-- Custom Icon -->
-                <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="CH%C%IconNumber" ParameterType="%AID%_PT-TCHIconNumber" Text="Bilddatei" Value="1" SuffixText=".png" />
-                <!-- ^^^ 2 bytes ^^^ --> 
+                <Parameter Offset="30" BitOffset="0" Id="%AID%_UP-%TT%%CC%007" Name="CH%C%IconName" ParameterType="%AID%_PT-TCHIconName" Text="Bilddatei" Value="Seite" SuffixText=".png" />
+                <!-- ^^^ 8 bytes ^^^ --> 
            
                 <!-- Next Id AID%_UP-%TT%%CC%008 -->
           
 
                 <!-- Device Page Type --> 
                 <!-- defined in this union, because it must not overlapped with the Cell Defintion -->
-                <Parameter Offset="33" BitOffset="0" Id="%AID%_UP-%TT%%CC%017" Name="CH%C%DevicePageType" ParameterType="%AID%_PT-TCHDevicePageType" Text="Anzeige" Value="1" />
+                <Parameter Offset="38" BitOffset="0" Id="%AID%_UP-%TT%%CC%017" Name="CH%C%DevicePageType" ParameterType="%AID%_PT-TCHDevicePageType" Text="Anzeige" Value="1" />
                 <!-- 4 bits free -->          
               </Union>
               <!-- Next Offset must be set to:
