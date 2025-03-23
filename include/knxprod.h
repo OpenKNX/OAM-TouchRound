@@ -193,6 +193,17 @@
 #define BRI_CHSwitchHueEmulation                30      // 1 Bit, Bit 7
 #define     BRI_CHSwitchHueEmulationMask 0x80
 #define     BRI_CHSwitchHueEmulationShift 7
+#define BRI_CHSwitchIcon                        30      // 1 Bit, Bit 6
+#define     BRI_CHSwitchIconMask 0x40
+#define     BRI_CHSwitchIconShift 6
+#define BRI_CHSwitchIconCol0                    30      // 1 Bit, Bit 5
+#define     BRI_CHSwitchIconCol0Mask 0x20
+#define     BRI_CHSwitchIconCol0Shift 5
+#define BRI_CHSwitchIconCol100                  30      // 1 Bit, Bit 5
+#define     BRI_CHSwitchIconCol100Mask 0x20
+#define     BRI_CHSwitchIconCol100Shift 5
+#define BRI_CHSwitchIcon0                       31      // uint16_t
+#define BRI_CHSwitchIcon100                     33      // uint16_t
 #define BRI_CHLightHueEmulation                 30      // 1 Bit, Bit 7
 #define     BRI_CHLightHueEmulationMask 0x80
 #define     BRI_CHLightHueEmulationShift 7
@@ -285,6 +296,16 @@
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
 // Gerät in Hue verwenden
 #define ParamBRI_CHSwitchHueEmulation                ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchHueEmulation)) & BRI_CHSwitchHueEmulationMask))
+// Benutzerdefiniertes Bild
+#define ParamBRI_CHSwitchIcon                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchIcon)) & BRI_CHSwitchIconMask))
+// Style und Statuseinfärbung
+#define ParamBRI_CHSwitchIconCol0                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchIconCol0)) & BRI_CHSwitchIconCol0Mask))
+// Style und Statuseinfärbung
+#define ParamBRI_CHSwitchIconCol100                  ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSwitchIconCol100)) & BRI_CHSwitchIconCol100Mask))
+// Bilddatei
+#define ParamBRI_CHSwitchIcon0                       (knx.paramWord(BRI_ParamCalcIndex(BRI_CHSwitchIcon0)))
+// Bilddatei
+#define ParamBRI_CHSwitchIcon100                     (knx.paramWord(BRI_ParamCalcIndex(BRI_CHSwitchIcon100)))
 // Lampe in Hue verwenden
 #define ParamBRI_CHLightHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightHueEmulation)) & BRI_CHLightHueEmulationMask))
 // KO für Schalten verwenden

@@ -11,8 +11,8 @@
             ApplicationRevision="0"
             ProductName="Rundes Touch-Display"
             ApplicationName="AB-TouchRound-Logic-Button"
-            BuildSuffix="-dev"
-            BuildSuffixText=" (dev)"
+            BuildSuffix="-Dev"
+            BuildSuffixText=" (Dev)"
             OrderNumber="OpenKnxTouchRound"
     />
 
