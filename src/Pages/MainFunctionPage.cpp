@@ -47,7 +47,6 @@ void MainFunctionPage::setup()
     lv_obj_add_event_cb(_screen.screen, _eventReleased, LV_EVENT_RELEASED, this);
   
     lv_label_set_text(_screen.label, device.getNameInUTF8());
-    ImageLoader::loadImage(_screen.image, device.mainFunctionImage());
     
     _screen.show();
 }
@@ -70,6 +69,8 @@ void MainFunctionPage::loop()
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
     lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
+    ImageLoader::loadImage(_screen.image, channel.mainFunctionImage());
+  
     if (channel.mainFunctionValue())
     {
         lv_obj_set_style_img_recolor_opa(_screen.image, 255, 0);
@@ -90,9 +91,13 @@ void MainFunctionPage::shortClicked()
 void MainFunctionPage::buttonReleased()
 {
     if (_clickStarted == 0)
+    {
+        logDebugP("Button released without click started");
         return;
+    }
     auto clickTime = millis() - _clickStarted;
     _clickStarted = 0;
+    logDebugP("Button released after %d ms", (int) clickTime);
     if (clickTime < 500)
         _shortPressed = true;
     else

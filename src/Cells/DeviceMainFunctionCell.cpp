@@ -32,7 +32,6 @@ void DeviceMainFunctionCell::setup()
     lv_obj_add_event_cb(cellObject.cell, _eventReleased, LV_EVENT_RELEASED, this);
 
     lv_label_set_text(cellObject.label, device.getNameInUTF8());
-    ImageLoader::loadImage(cellObject.image, device.mainFunctionImage());
 }
 
 void DeviceMainFunctionCell::loop()
@@ -53,6 +52,8 @@ void DeviceMainFunctionCell::loop()
 void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
 {
     CellObject& cellObject = *_cellObject;
+    ImageLoader::loadImage(cellObject.image, channel.mainFunctionImage());
+
  //   lv_label_set_text(cell.value, channel.currentValueAsString().c_str());
     if (channel.mainFunctionValue())
     {
