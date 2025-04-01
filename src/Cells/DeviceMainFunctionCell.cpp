@@ -10,6 +10,18 @@ const char* DeviceMainFunctionCell::cellType()
     return "DeviceMainFunction";
 }
 
+DeviceMainFunctionCell::~DeviceMainFunctionCell()
+{
+    if (_device != nullptr)
+        _device->removeChangedHandler(_handler);
+    if (_eventClicked != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventClicked, this);
+    if (_eventPressed != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventPressed, this);
+    if (_eventReleased != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventReleased, this);
+}
+
 void DeviceMainFunctionCell::init(KnxChannelBase* device)
 {
     _device = device;
@@ -26,7 +38,9 @@ void DeviceMainFunctionCell::setup()
        channelValueChanged(channel);
     };
     device.addChangedHandler(_handler);
-    _eventPressed = [](lv_event_t *e) { ((DeviceMainFunctionCell*) e->user_data)->_clickStarted = max(1l, millis()); };
+    _eventClicked = [](lv_event_t *e) { ((DeviceMainFunctionCell*) e->user_data)->shortClicked(); };
+    lv_obj_add_event_cb(cellObject.cell, _eventClicked, LV_EVENT_SHORT_CLICKED, this);
+    _eventPressed = [](lv_event_t *e) {  ((DeviceMainFunctionCell*) e->user_data)->_clickStarted = max(1l, millis()); };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_PRESSED, this);
     _eventReleased = [](lv_event_t *e) { ((DeviceMainFunctionCell*) e->user_data)->buttonReleased(); };
     lv_obj_add_event_cb(cellObject.cell, _eventReleased, LV_EVENT_RELEASED, this);

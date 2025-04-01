@@ -313,13 +313,6 @@ void TouchDisplayModule::previousPage()
     activatePage(newPage);
 }
 
-void TouchDisplayModule::addGlobalEvents(lv_obj_t *sreen)
-{
-    lv_obj_add_event_cb(sreen, [](lv_event_t *e)
-                        { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
-    lv_obj_add_event_cb(sreen, [](lv_event_t *e)
-                        { ((TouchDisplayModule *)e->user_data)->touched(e); }, LV_EVENT_LONG_PRESSED_REPEAT, this);
-}
 
 void TouchDisplayModule::setup(bool configured)
 {
@@ -347,15 +340,14 @@ void TouchDisplayModule::setup(bool configured)
     DimmerScreen::instance = new DimmerScreen();
     ButtonMessageScreen::instance = new ButtonMessageScreen();
 
-    addGlobalEvents(MainFunctionScreen::instance->screen);
-    addGlobalEvents(CellScreen2::instance->screen);
-    addGlobalEvents(CellScreen3::instance->screen);
-    addGlobalEvents(CellScreen4::instance->screen);
-    addGlobalEvents(DateTimeScreen::instance->screen);
-    addGlobalEvents(SwitchScreen::instance->screen);
-    addGlobalEvents(DimmerScreen::instance->screen);
-    addGlobalEvents(MessageScreen::instance->screen);
-    addGlobalEvents(ButtonMessageScreen::instance->screen);
+    // auto topLevelClickArea = lv_obj_create(lv_layer_top());
+    // lv_obj_set_size(topLevelClickArea, LV_HOR_RES, LV_VER_RES);
+    // lv_obj_set_style_bg_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    // lv_obj_set_style_border_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    // lv_obj_set_style_outline_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    // lv_obj_add_flag(topLevelClickArea, LV_OBJ_FLAG_EVENT_BUBBLE);
+    // lv_obj_add_event_cb(topLevelClickArea, [](lv_event_t *e) { logError("TopLayer", "Pressed"); ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
+  
 
     pinMode(TOUCH_LEFT_PIN, INPUT);
     pinMode(TOUCH_RIGHT_PIN, INPUT);
@@ -376,12 +368,11 @@ void TouchDisplayModule::setup(bool configured)
         lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e)
                             { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
     }
-    _displayOffRectangle = lv_obj_create(lv_layer_top());
-    lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
-    lv_obj_set_style_bg_color(_displayOffRectangle, lv_color_black(), 0);
-    lv_obj_set_style_border_width(_displayOffRectangle, 0, 0);
-    lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
-    addGlobalEvents(_displayOffRectangle);
+    // _displayOffRectangle = lv_obj_create(lv_layer_top());
+    // lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
+    // lv_obj_set_style_bg_color(_displayOffRectangle, lv_color_black(), 0);
+    // lv_obj_set_style_border_width(_displayOffRectangle, 0, 0);
+    // lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
     if (!configured)
     {
         showProgButtonPage();
@@ -444,7 +435,13 @@ void TouchDisplayModule::touched(lv_event_t *event)
 {
     if (!_displayOn)
     {
+        logErrorP("Stop bubbling");
         lv_event_stop_bubbling(event);
+    }
+    else
+    {
+        lv_obj_t * screen = lv_scr_act();
+        lv_event_send(screen, LV_EVENT_PRESSED, NULL);
     }
     display(true);
 }
@@ -474,13 +471,15 @@ void TouchDisplayModule::display(bool on)
         logDebug("Display", "Turn display on.");
         _displayOn = true;
         digitalWrite(XIAO_BL, HIGH);
-        lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
+        if (_displayOffRectangle != nullptr)
+            lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
     }
     else
     {
         logDebug("Display", "Turn display off.");
         _displayOn = false;
-        lv_obj_clear_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
+        if (_displayOffRectangle != nullptr)
+            lv_obj_clear_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
         digitalWrite(XIAO_BL, LOW);
     }
     if (knx.configured())
@@ -525,8 +524,17 @@ void TouchDisplayModule::interruptTouchRight()
     _touchRightPressed = digitalRead(TOUCH_RIGHT_PIN) == HIGH;
 }
 
+bool old = false;
 void TouchDisplayModule::loop(bool configured)
 {
+
+    auto newValue = digitalRead(TOUCH_INT);
+    if (newValue != old)
+    {
+        old = newValue;
+        logErrorP("Touch %d", !newValue);
+    }
+
     lv_timer_handler(); // let the GUI do its work
     Page* currentPage = Page::currentPage();
     if (currentPage != nullptr && _displayOn)

@@ -40,7 +40,6 @@ private:
 	static void lv_log(const char *buf);
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
-	void addGlobalEvents(lv_obj_t* sreen);
 	void showFirstPage();
 
 	void resetDisplayTimeout();

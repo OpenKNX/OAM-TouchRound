@@ -9,10 +9,14 @@ MainFunctionPage::~MainFunctionPage()
     if (_device != nullptr)
         _device->removeChangedHandler(_handler);
    
+    if (_eventClicked != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventClicked, this);
     if (_eventPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventPressed, this);
     if (_eventReleased != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventReleased, this);  
+    if (_eventShortClicked != nullptr)
+        lv_obj_remove_event_cb_with_user_data(_screen.screen, _eventShortClicked, this);
 }
 
 const char* MainFunctionPage::pageType()
@@ -41,10 +45,16 @@ void MainFunctionPage::setup()
        channelValueChanged(channel);
     };
     device.addChangedHandler(_handler);
-    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = max(1l, millis()); };
+    // _eventClicked = [](lv_event_t *e) { logError("Clicked", "Clicked"); ((MainFunctionPage*) e->user_data)->shortClicked(); };
+    // lv_obj_add_event_cb(_screen.screen, _eventClicked, LV_EVENT_SHORT_CLICKED, this);
+    _eventPressed = [](lv_event_t *e) { logError("MainFunctionPage", "Pressed"); /*((MainFunctionPage*) e->user_data)->_clickStarted = max(1l, millis());*/ };
     lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
-    _eventReleased = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->buttonReleased(); };
+    _eventReleased = [](lv_event_t *e) {  logError("MainFunctionPage", "Released");  /*((MainFunctionPage*) e->user_data)->buttonReleased();*/ };
     lv_obj_add_event_cb(_screen.screen, _eventReleased, LV_EVENT_RELEASED, this);
+    _eventClicked = [](lv_event_t *e) {  logError("MainFunctionPage", "Clicked");  /*((MainFunctionPage*) e->user_data)->buttonReleased();*/ };
+    lv_obj_add_event_cb(_screen.screen, _eventReleased, LV_EVENT_CLICKED, this);
+    _eventShortClicked = [](lv_event_t *e) {  logError("MainFunctionPage", "Short Clicked");  /*((MainFunctionPage*) e->user_data)->shortClicked();*/ };
+    lv_obj_add_event_cb(_screen.screen, _eventShortClicked, LV_EVENT_SHORT_CLICKED, this); 
   
     lv_label_set_text(_screen.label, device.getNameInUTF8());
     

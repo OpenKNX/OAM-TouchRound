@@ -9,8 +9,10 @@ private:
     MainFunctionScreen& _screen = *MainFunctionScreen::instance;
     virtual const char* pageType() override;
     MainFunctionChangedHandler _handler;
+    lv_event_cb_t _eventClicked = nullptr;
     lv_event_cb_t _eventPressed = nullptr;
     lv_event_cb_t _eventReleased = nullptr;
+    lv_event_cb_t _eventShortClicked = nullptr;
     KnxChannelBase* _device = nullptr;
     unsigned long _clickStarted = 0;
     bool _longPressed = false;

@@ -6,6 +6,7 @@
 class DeviceMainFunctionCell : public Cell
 {
     MainFunctionChangedHandler _handler;
+    lv_event_cb_t _eventClicked = nullptr;
     lv_event_cb_t _eventPressed = nullptr;
     lv_event_cb_t _eventReleased = nullptr;
     KnxChannelBase* _device;
@@ -23,6 +24,7 @@ class DeviceMainFunctionCell : public Cell
 protected:
     virtual const char* cellType() override;
 public:
+    virtual  ~DeviceMainFunctionCell() override;
     virtual void init(KnxChannelBase* device);
     virtual void setup() override;
     
