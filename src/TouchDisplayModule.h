@@ -37,7 +37,7 @@ private:
 	static void interruptTouchLeft();
 	static void interruptTouchRight();
 
-	static void lv_log(const char *buf);
+	static void lv_log(lv_log_level_t level, const char *buf);
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
 	void showFirstPage();

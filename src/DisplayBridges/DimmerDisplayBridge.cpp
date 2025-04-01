@@ -8,9 +8,9 @@ DimmerDisplayBridge::DimmerDisplayBridge(DetailDevicePage& detailDevicePage)
 void DimmerDisplayBridge::setup(uint8_t _channelIndex)
 {
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
-    _eventReleased =[](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->released(); };
+    _eventReleased =[](lv_event_t *e) { ((DimmerDisplayBridge*) lv_event_get_user_data(e))->released(); };
     lv_obj_add_event_cb(_screen.value, _eventReleased, LV_EVENT_RELEASED, this);
-    _eventButtonPressed = [](lv_event_t *e) { ((DimmerDisplayBridge*) e->user_data)->buttonClicked(); };
+    _eventButtonPressed = [](lv_event_t *e) { ((DimmerDisplayBridge*) lv_event_get_user_data(e))->buttonClicked(); };
     lv_obj_add_event_cb(_screen.button, _eventButtonPressed , LV_EVENT_CLICKED, this);
 
     lv_scr_load(_screen.screen);

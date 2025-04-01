@@ -323,11 +323,14 @@ void TouchDisplayModule::setup(bool configured)
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_log);
 #endif
+    lv_tick_set_cb(millis);
     ImageLoader::connectLittleFSwithLVGL();
   
+    logErrorP("Setup lv_xiao_disp_init");
     lv_xiao_disp_init();
+    logErrorP("Setup lv_xiao_touch_init");
     lv_xiao_touch_init();
-
+    logErrorP("init display finished");
    
     updateTheme();
     MessageScreen::instance = new MessageScreen();
@@ -340,13 +343,13 @@ void TouchDisplayModule::setup(bool configured)
     DimmerScreen::instance = new DimmerScreen();
     ButtonMessageScreen::instance = new ButtonMessageScreen();
 
-    // auto topLevelClickArea = lv_obj_create(lv_layer_top());
-    // lv_obj_set_size(topLevelClickArea, LV_HOR_RES, LV_VER_RES);
-    // lv_obj_set_style_bg_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_set_style_border_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_set_style_outline_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_add_flag(topLevelClickArea, LV_OBJ_FLAG_EVENT_BUBBLE);
-    // lv_obj_add_event_cb(topLevelClickArea, [](lv_event_t *e) { logError("TopLayer", "Pressed"); ((TouchDisplayModule*) e->user_data)->touched(e); }, LV_EVENT_PRESSED, this);
+    auto topLevelClickArea = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(topLevelClickArea, LV_HOR_RES, LV_VER_RES);
+    lv_obj_set_style_bg_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_border_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    lv_obj_set_style_outline_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
+    lv_obj_add_flag(topLevelClickArea, LV_OBJ_FLAG_EVENT_BUBBLE);
+    lv_obj_add_event_cb(topLevelClickArea, [](lv_event_t *e) { logError("TopLayer", "Pressed"); ((TouchDisplayModule*) lv_event_get_user_data(e))->touched(e); }, LV_EVENT_PRESSED, this);
   
 
     pinMode(TOUCH_LEFT_PIN, INPUT);
@@ -366,7 +369,7 @@ void TouchDisplayModule::setup(bool configured)
         lv_obj_set_style_bg_color(gestureLayer, lv_color_make(0, 255, 0), 0);
         lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_GESTURE_BUBBLE);
         lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e)
-                            { ((TouchDisplayModule *)e->user_data)->handleGesture(e); }, LV_EVENT_GESTURE, this);
+                            { ((TouchDisplayModule *)lv_event_get_user_data(e))->handleGesture(e); }, LV_EVENT_GESTURE, this);
     }
     // _displayOffRectangle = lv_obj_create(lv_layer_top());
     // lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
@@ -431,22 +434,23 @@ void TouchDisplayModule::setTheme(uint8_t theme)
     }
 }
 
-void TouchDisplayModule::touched(lv_event_t *event)
+void TouchDisplayModule::touched(lv_event_t *e)
 {
+    logErrorP("Touched");
     if (!_displayOn)
     {
         logErrorP("Stop bubbling");
-        lv_event_stop_bubbling(event);
+        lv_event_stop_bubbling(e);
     }
     else
     {
         lv_obj_t * screen = lv_scr_act();
-        lv_event_send(screen, LV_EVENT_PRESSED, NULL);
+        //lv_event_send(screen, lv_event_get_code(e), lv_event_get_param(e));
     }
     display(true);
 }
 
-void TouchDisplayModule::lv_log(const char *buf)
+void TouchDisplayModule::lv_log(lv_log_level_t level, const char *buf)
 {
     logInfo("lvgl", "%s", buf);
 }
@@ -536,6 +540,7 @@ void TouchDisplayModule::loop(bool configured)
     }
 
     lv_timer_handler(); // let the GUI do its work
+    
     Page* currentPage = Page::currentPage();
     if (currentPage != nullptr && _displayOn)
         currentPage->loop();

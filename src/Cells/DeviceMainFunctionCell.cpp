@@ -38,11 +38,11 @@ void DeviceMainFunctionCell::setup()
        channelValueChanged(channel);
     };
     device.addChangedHandler(_handler);
-    _eventClicked = [](lv_event_t *e) { ((DeviceMainFunctionCell*) e->user_data)->shortClicked(); };
+    _eventClicked = [](lv_event_t *e) { ((DeviceMainFunctionCell*) lv_event_get_user_data(e))->shortClicked(); };
     lv_obj_add_event_cb(cellObject.cell, _eventClicked, LV_EVENT_SHORT_CLICKED, this);
-    _eventPressed = [](lv_event_t *e) {  ((DeviceMainFunctionCell*) e->user_data)->_clickStarted = max(1l, millis()); };
+    _eventPressed = [](lv_event_t *e) {  ((DeviceMainFunctionCell*)lv_event_get_user_data(e))->_clickStarted = max(1l, millis()); };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_PRESSED, this);
-    _eventReleased = [](lv_event_t *e) { ((DeviceMainFunctionCell*) e->user_data)->buttonReleased(); };
+    _eventReleased = [](lv_event_t *e) { ((DeviceMainFunctionCell*) lv_event_get_user_data(e))->buttonReleased(); };
     lv_obj_add_event_cb(cellObject.cell, _eventReleased, LV_EVENT_RELEASED, this);
 
     lv_label_set_text(cellObject.label, device.getNameInUTF8());

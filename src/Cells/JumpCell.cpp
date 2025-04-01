@@ -19,7 +19,7 @@ JumpCell::~JumpCell()
 void JumpCell::setup()
 {
     CellObject& cellObject = *_cellObject;
-    _eventPressed = [](lv_event_t *e) { ((JumpCell*) e->user_data)->_clicked = true; };
+    _eventPressed = [](lv_event_t *e) { ((JumpCell*) lv_event_get_user_data(e))->_clicked = true; };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_CLICKED, this);
   
     logDebug("JumpCell", "Setup JumpCell %d", (int) ParamTCH_CHJumpToShort1 - 1); 

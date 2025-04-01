@@ -58,7 +58,7 @@ void ProgButtonPage::setup()
 
     lv_label_set_text(_screen.buttonText, "Programmier Modus");
   
-    _eventButtonPressed = [](lv_event_t *e) { ((ProgButtonPage*) e->user_data)->buttonClicked(); };
+    _eventButtonPressed = [](lv_event_t *e) { ((ProgButtonPage*) lv_event_get_user_data(e))->buttonClicked(); };
     lv_obj_add_event_cb(_screen.button, _eventButtonPressed, LV_EVENT_CLICKED, this);
  
     _progMode = knx.progMode();

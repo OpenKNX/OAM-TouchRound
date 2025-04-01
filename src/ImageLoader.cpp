@@ -1,31 +1,31 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
-#include "../Images/Type10.c"
-#include "../Images/Type11.c"
-#include "../Images/Type20.c"
-#include "../Images/Type30.c"
-#include "../Images/Type31.c"
-#include "../Images/Type32.c"
-#include "../Images/Type50.c"
-#include "../Images/Type60.c"
-#include "../Images/Type70.c"
-#include "../Images/Type71.c"
-#include "../Images/Type72.c"
-#include "../Images/Type73.c"
-#include "../Images/Type74.c"
-#include "../Images/Type75.c"
-#include "../Images/Type76.c"
-#include "../Images/Type80.c"
-#include "../Images/Type90.c"
-#include "../Images/Type91.c"
-#include "../Images/Type92.c"
-#include "../Images/missing_file.c"
-#include "../Images/System.c"
-#include "../Images/Error.c"
-#include "../Images/Clock.c"
-#include "../Images/Time.c"
-#include "../Images/Date.c"
-#include "../Images/DateTime.c"
+// #include "../Images/Type10.c"
+// #include "../Images/Type11.c"
+// #include "../Images/Type20.c"
+// #include "../Images/Type30.c"
+// #include "../Images/Type31.c"
+// #include "../Images/Type32.c"
+// #include "../Images/Type50.c"
+// #include "../Images/Type60.c"
+// #include "../Images/Type70.c"
+// #include "../Images/Type71.c"
+// #include "../Images/Type72.c"
+// #include "../Images/Type73.c"
+// #include "../Images/Type74.c"
+// #include "../Images/Type75.c"
+// #include "../Images/Type76.c"
+// #include "../Images/Type80.c"
+// #include "../Images/Type90.c"
+// #include "../Images/Type91.c"
+// #include "../Images/Type92.c"
+// #include "../Images/missing_file.c"
+// #include "../Images/System.c"
+// #include "../Images/Error.c"
+// #include "../Images/Clock.c"
+// #include "../Images/Time.c"
+// #include "../Images/Date.c"
+// #include "../Images/DateTime.c"
 
 #include "lvgl.h"
 #include "LittleFS.h"
@@ -56,7 +56,7 @@ public:
     }
 };
 
-void* ImageLoader::fs_open(_lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode) {
+void* ImageLoader::fs_open(lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mode) {
     const char *flags = (mode == LV_FS_MODE_WR) ? "w" : "r";
    
     auto result = new FileHelper();
@@ -136,109 +136,109 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
 
         lv_img_set_src(imageObject, filePath.c_str());
     }
-    else if (fileName == "Type10.png")
-    {
-        lv_img_set_src(imageObject, &Type10);
-    }
-    else if (fileName == "Type11.png")
-    {
-        lv_img_set_src(imageObject, &Type11);
-    }
-    else if (fileName == "Type20.png")
-    {
-        lv_img_set_src(imageObject, &Type20);
-    }
-    else if (fileName == "Type30.png")
-    {
-        lv_img_set_src(imageObject, &Type30);
-    }
-    else if (fileName == "Type31.png")
-    {
-        lv_img_set_src(imageObject, &Type31);
-    }
-    else if (fileName == "Type32.png")
-    {
-        lv_img_set_src(imageObject, &Type32);
-    }
-    else if (fileName == "Type50.png")
-    {
-        lv_img_set_src(imageObject, &Type50);
-    }
-    else if (fileName == "Type60.png")
-    {
-        lv_img_set_src(imageObject, &Type60);
-    }
-    else if (fileName == "Type70.png")
-    {
-        lv_img_set_src(imageObject, &Type70);
-    }
-    else if (fileName == "Type71.png")
-    {
-        lv_img_set_src(imageObject, &Type71);
-    }
-    else if (fileName == "Type72.png")
-    {
-        lv_img_set_src(imageObject, &Type72);
-    }
-    else if (fileName == "Type73.png")
-    {
-        lv_img_set_src(imageObject, &Type73);
-    }
-    else if (fileName == "Type74.png")
-    {
-        lv_img_set_src(imageObject, &Type74);
-    }
-    else if (fileName == "Type75.png")
-    {
-        lv_img_set_src(imageObject, &Type75);
-    }
-    else if (fileName == "Type76.png")
-    {
-        lv_img_set_src(imageObject, &Type76);
-    }
-    else if (fileName == "Type80.png")
-    {
-        lv_img_set_src(imageObject, &Type80);
-    }
-    else if (fileName == "Type90.png")
-    {
-        lv_img_set_src(imageObject, &Type90);
-    }
-    else if (fileName == "Type91.png")
-    {
-        lv_img_set_src(imageObject, &Type91);
-    }
-    else if (fileName == "Type92.png")
-    {
-        lv_img_set_src(imageObject, &Type92);
-    }
-    else if (fileName == "System.png")
-    {
-        lv_img_set_src(imageObject, &System);
-    }
-    else if (fileName == "Error.png")
-    {
-        lv_img_set_src(imageObject, &ErrorImg);
-    }
-    else if (fileName == "Clock.png")
-    {
-        lv_img_set_src(imageObject, &Clock);
-    }
-    else if (fileName == "Time.png")
-    {
-        lv_img_set_src(imageObject, &Time);
-    }
-    else if (fileName == "Date.png")
-    {
-        lv_img_set_src(imageObject, &Date);
-    }
-    else if (fileName == "DateTime.png")
-    {
-        lv_img_set_src(imageObject, &DateTime);
-    }
+    // else if (fileName == "Type10.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type10);
+    // }
+    // else if (fileName == "Type11.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type11);
+    // }
+    // else if (fileName == "Type20.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type20);
+    // }
+    // else if (fileName == "Type30.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type30);
+    // }
+    // else if (fileName == "Type31.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type31);
+    // }
+    // else if (fileName == "Type32.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type32);
+    // }
+    // else if (fileName == "Type50.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type50);
+    // }
+    // else if (fileName == "Type60.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type60);
+    // }
+    // else if (fileName == "Type70.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type70);
+    // }
+    // else if (fileName == "Type71.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type71);
+    // }
+    // else if (fileName == "Type72.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type72);
+    // }
+    // else if (fileName == "Type73.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type73);
+    // }
+    // else if (fileName == "Type74.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type74);
+    // }
+    // else if (fileName == "Type75.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type75);
+    // }
+    // else if (fileName == "Type76.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type76);
+    // }
+    // else if (fileName == "Type80.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type80);
+    // }
+    // else if (fileName == "Type90.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type90);
+    // }
+    // else if (fileName == "Type91.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type91);
+    // }
+    // else if (fileName == "Type92.png")
+    // {
+    //     lv_img_set_src(imageObject, &Type92);
+    // }
+    // else if (fileName == "System.png")
+    // {
+    //     lv_img_set_src(imageObject, &System);
+    // }
+    // else if (fileName == "Error.png")
+    // {
+    //     lv_img_set_src(imageObject, &ErrorImg);
+    // }
+    // else if (fileName == "Clock.png")
+    // {
+    //     lv_img_set_src(imageObject, &Clock);
+    // }
+    // else if (fileName == "Time.png")
+    // {
+    //     lv_img_set_src(imageObject, &Time);
+    // }
+    // else if (fileName == "Date.png")
+    // {
+    //     lv_img_set_src(imageObject, &Date);
+    // }
+    // else if (fileName == "DateTime.png")
+    // {
+    //     lv_img_set_src(imageObject, &DateTime);
+    // }
     else
     {
         logError("loadImage", "File not found: %s", fileName.c_str());
-        lv_img_set_src(imageObject, &missing_file);
+    //    lv_img_set_src(imageObject, &missing_file);
     }
 }
