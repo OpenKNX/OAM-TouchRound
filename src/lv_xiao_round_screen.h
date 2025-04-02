@@ -123,8 +123,7 @@ void lv_xiao_disp_init(void)
     int drawBufSize = SCREEN_HEIGHT * SCREEN_WIDTH * colorSize;
     static void* buf0 = new byte[drawBufSize];
     static void* buf1 = new byte[drawBufSize];
-    lv_display_set_buffers(disp, buf0, buf1, drawBufSize, LV_DISPLAY_RENDER_MODE_DIRECT);
-   // lv_display_set_buffers(disp, buf, NULL, SCREEN_WIDTH * LVGL_BUFF_SIZE, LV_DISPLAY_RENDER_MODE_DIRECT);
+    lv_display_set_buffers(disp, buf0, buf1, drawBufSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
     logError("lv_xiao_disp_init", "finished");
 }
 

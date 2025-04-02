@@ -58,7 +58,9 @@ void MainFunctionPage::setup()
   
     lv_label_set_text(_screen.label, device.getNameInUTF8());
     
+    logErrorP("show");
     _screen.show();
+    logErrorP("showFinished");
 }
 
 void MainFunctionPage::loop()
@@ -79,15 +81,19 @@ void MainFunctionPage::loop()
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
     lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
+    logErrorP("loadImage");
     ImageLoader::loadImage(_screen.image, channel.mainFunctionImage());
   
+    logErrorP("mainFunctionValue");
     if (channel.mainFunctionValue())
     {
+        logErrorP("on");
         lv_obj_set_style_img_recolor_opa(_screen.image, 255, 0);
         lv_obj_set_style_img_recolor(_screen.image, lv_color_make(255,255,0), 0);
     }
     else
     {
+        logErrorP("off");
         lv_obj_set_style_img_recolor_opa(_screen.image, 0, 0);
         lv_obj_set_style_img_recolor(_screen.image, lv_color_make(128,128,128), 0);
     }

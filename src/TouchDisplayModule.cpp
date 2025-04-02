@@ -324,6 +324,7 @@ void TouchDisplayModule::setup(bool configured)
     lv_log_register_print_cb(lv_log);
 #endif
     lv_tick_set_cb(millis);
+    //lv_lodepng_init();
     ImageLoader::connectLittleFSwithLVGL();
   
     logErrorP("Setup lv_xiao_disp_init");

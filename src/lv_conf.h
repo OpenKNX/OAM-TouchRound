@@ -648,8 +648,9 @@
 #endif
 
 /*PNG decoder library*/
-#define LV_USE_PNG 1
-
+//#define LV_USE_PNG 1
+#define LV_USE_LODEPNG 1
+//#define LV_USE_LIBPNG 1
 /*BMP decoder library*/
 #define LV_USE_BMP 0
 
