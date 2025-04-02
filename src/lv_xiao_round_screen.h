@@ -172,6 +172,11 @@ void chsc6x_get_xy(lv_coord_t * x, lv_coord_t * y)
         *x = temp[2];
         *y = temp[4];
         }
+        else
+        {
+            *x = 0;
+            *y = 0;
+        }
     }
 }
 
@@ -185,6 +190,8 @@ void chsc6x_read(lv_indev_t * indev, lv_indev_data_t * data)
         data->state = LV_INDEV_STATE_PRESSED;
         chsc6x_get_xy(&touchX, &touchY);
         /*Set the coordinates*/
+        if (touchX >= SCREEN_WIDTH) touchX = SCREEN_WIDTH - 1;
+        if (touchY >= SCREEN_HEIGHT) touchY = SCREEN_HEIGHT - 1;
         data->point.x = touchX;
         data->point.y = touchY;
     }
