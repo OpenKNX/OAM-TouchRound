@@ -168,14 +168,9 @@ void chsc6x_get_xy(lv_coord_t * x, lv_coord_t * y)
         Wire1.readBytes(temp, read_len);
 #endif
         if (temp[0] == 0x01) {
-        chsc6x_convert_xy(&temp[2], &temp[4]);
-        *x = temp[2];
-        *y = temp[4];
-        }
-        else
-        {
-            *x = 0;
-            *y = 0;
+            chsc6x_convert_xy(&temp[2], &temp[4]);
+            *x = temp[2];
+            *y = temp[4];
         }
     }
 }
