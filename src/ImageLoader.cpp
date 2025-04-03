@@ -239,6 +239,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
     else
     {
         logError("loadImage", "File not found: %s", fileName.c_str());
-    //    lv_img_set_src(imageObject, &missing_file);
+        lv_img_set_src(imageObject, &missing_file);
     }
 }

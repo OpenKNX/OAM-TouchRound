@@ -122,7 +122,7 @@ void lv_xiao_disp_init(void)
     int colorSize = lv_color_format_get_size(lv_display_get_color_format(disp));
     int drawBufSize = SCREEN_HEIGHT * SCREEN_WIDTH * colorSize;
     static void* buf0 = new byte[drawBufSize];
-    static void* buf1 = new byte[drawBufSize];
+    static void* buf1 =  NULL; // new byte[drawBufSize]; //   90 KB 
     lv_display_set_buffers(disp, buf0, buf1, drawBufSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
     logError("lv_xiao_disp_init", "finished");
 }
@@ -130,9 +130,16 @@ void lv_xiao_disp_init(void)
 
 
 /* touch driver : chsc6x */
-
+int lastLowRead = 0;
 bool chsc6x_is_pressed(void)
 {
+
+    if(digitalRead(TOUCH_INT) == LOW)
+    {
+        lastLowRead = millis();
+        return true;
+    }
+
     if(digitalRead(TOUCH_INT) != LOW) {
         delay(3);
         if(digitalRead(TOUCH_INT) != LOW)
