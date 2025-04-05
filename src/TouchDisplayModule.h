@@ -36,8 +36,11 @@ private:
 	
 	static void interruptTouchLeft();
 	static void interruptTouchRight();
-
+#if LVGL_VERSION_MAJOR >= 9
 	static void lv_log(lv_log_level_t level, const char *buf);
+#else
+	static void lv_log(const char *buf);
+#endif
 	void handleGesture(lv_event_t *event);
 	void touched(lv_event_t *event);
 	void showFirstPage();

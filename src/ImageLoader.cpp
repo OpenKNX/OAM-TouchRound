@@ -29,7 +29,6 @@
 #include "../Images/v9/DateTime.c"
 #else
 #include "../Images/v8/Type10.c"
-#include "../Images/v8/Type10.c"
 #include "../Images/v8/Type11.c"
 #include "../Images/v8/Type20.c"
 #include "../Images/v8/Type30.c"
@@ -167,7 +166,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
 
         lv_img_set_src(imageObject, filePath.c_str());
     }
-#endif
     else if (fileName == "Type10.png")
     {
         lv_img_set_src(imageObject, &Type10);
@@ -273,4 +271,5 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
         logError("loadImage", "File not found: %s", fileName.c_str());
         lv_img_set_src(imageObject, &missing_file);
     }
+    #endif
 }

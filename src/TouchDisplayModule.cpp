@@ -323,7 +323,9 @@ void TouchDisplayModule::setup(bool configured)
 #if LV_USE_LOG
     lv_log_register_print_cb(lv_log);
 #endif
+#if LVGL_VERSION_MAJOR >= 9
     lv_tick_set_cb(millis);
+#endif
     //lv_lodepng_init();
     ImageLoader::connectLittleFSwithLVGL();
   
@@ -452,7 +454,11 @@ void TouchDisplayModule::touched(lv_event_t *e)
     display(true);
 }
 
-void TouchDisplayModule::lv_log(lv_log_level_t level, const char *buf)
+void TouchDisplayModule::lv_log(
+#if LVGL_VERSION_MAJOR >= 9
+    lv_log_level_t level, 
+#endif
+    const char *buf)
 {
     logInfo("lvgl", "%s", buf);
 }
