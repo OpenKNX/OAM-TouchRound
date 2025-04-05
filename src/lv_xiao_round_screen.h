@@ -71,15 +71,22 @@ Arduino_GFX *gfx = new Arduino_GC9A01(bus, -1, screen_rotation, true);
 #else
 #error "Please define a graphics library for display."
 #endif
-
+#if LVGL_VERSION_MAJOR >= 9
 void xiao_disp_flush(lv_display_t * disp, const lv_area_t * area, uint8_t * color_p)
+#else
+void xiao_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p )
+#endif
 {
     uint32_t w = ( area->x2 - area->x1 + 1 );
     uint32_t h = ( area->y2 - area->y1 + 1 );
 #if defined(USE_TFT_ESPI_LIBRARY)
     tft.startWrite();
     tft.setAddrWindow( area->x1, area->y1, w, h );
+#if LVGL_VERSION_MAJOR >= 9
     tft.pushColors( ( uint16_t * )color_p, w * h, true );
+#else
+    tft.pushColors( ( uint16_t * )&color_p->full, w * h, true );
+#endif
     tft.endWrite();
 #elif defined(USE_ARDUINO_GFX_LIBRARY)
     gfx->draw16bitRGBBitmap(area->x1, area->y1, (uint16_t *)&color_p->full, w, h);
@@ -104,42 +111,44 @@ void xiao_disp_init(void)
 #endif
 }
 
-
-
 void lv_xiao_disp_init(void) 
 {
-    logError("lv_xiao_disp_init", "lv_xiao_disp_init");
     xiao_disp_init();
 
-
-    logError("lv_xiao_disp_init", "lv_display_create");
-   
+#if LVGL_VERSION_MAJOR >= 9
     lv_display_t * disp = lv_display_create(SCREEN_WIDTH, SCREEN_HEIGHT);
-    logError("lv_xiao_disp_init", "lv_display_set_flush_cb");
-    lv_display_set_flush_cb(disp, xiao_disp_flush);
-    logError("lv_xiao_disp_init", "lv_display_set_buffers");
-
+    lv_display_set_flush_cb(disp, xiao_disp_flush);   
     int colorSize = lv_color_format_get_size(lv_display_get_color_format(disp));
     int drawBufSize = SCREEN_HEIGHT * SCREEN_WIDTH * colorSize;
     static void* buf0 = new byte[drawBufSize];
     static void* buf1 =  NULL; // new byte[drawBufSize]; //   90 KB 
     lv_display_set_buffers(disp, buf0, buf1, drawBufSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
-    logError("lv_xiao_disp_init", "finished");
+#else
+    /*Initialize the display buffer*/
+    static lv_disp_draw_buf_t draw_buf;
+    static lv_color_t buf[ SCREEN_WIDTH * LVGL_BUFF_SIZE ];
+    lv_disp_draw_buf_init( &draw_buf, buf, NULL, SCREEN_WIDTH * LVGL_BUFF_SIZE );
+
+    /*Initialize the display driver for lvgl*/
+    static lv_disp_drv_t disp_drv;
+    lv_disp_drv_init( &disp_drv );
+    disp_drv.hor_res = SCREEN_WIDTH;
+    disp_drv.ver_res = SCREEN_HEIGHT;
+    disp_drv.flush_cb = xiao_disp_flush;
+    disp_drv.draw_buf = &draw_buf;
+    lv_disp_drv_register( &disp_drv );
+#endif
+
+
+
 }
 
 
 
 /* touch driver : chsc6x */
-int lastLowRead = 0;
+
 bool chsc6x_is_pressed(void)
 {
-
-    if(digitalRead(TOUCH_INT) == LOW)
-    {
-        lastLowRead = millis();
-        return true;
-    }
-
     if(digitalRead(TOUCH_INT) != LOW) {
         delay(3);
         if(digitalRead(TOUCH_INT) != LOW)
@@ -175,14 +184,19 @@ void chsc6x_get_xy(lv_coord_t * x, lv_coord_t * y)
         Wire1.readBytes(temp, read_len);
 #endif
         if (temp[0] == 0x01) {
-            chsc6x_convert_xy(&temp[2], &temp[4]);
-            *x = temp[2];
-            *y = temp[4];
+        chsc6x_convert_xy(&temp[2], &temp[4]);
+        *x = temp[2];
+        *y = temp[4];
         }
     }
 }
 
-void chsc6x_read(lv_indev_t * indev, lv_indev_data_t * data)
+
+#if LVGL_VERSION_MAJOR >= 9
+void chsc6x_read( lv_indev_t * indev_driver, lv_indev_data_t * data )
+#else
+void chsc6x_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
+#endif
 {
     lv_coord_t touchX, touchY;
     if( !chsc6x_is_pressed() )
@@ -193,7 +207,7 @@ void chsc6x_read(lv_indev_t * indev, lv_indev_data_t * data)
         chsc6x_get_xy(&touchX, &touchY);
         /*Set the coordinates*/
         if (touchX >= SCREEN_WIDTH) touchX = SCREEN_WIDTH - 1;
-        if (touchY >= SCREEN_HEIGHT) touchY = SCREEN_HEIGHT - 1;
+        if (touchY >= SCREEN_HEIGHT) touchY = SCREEN_HEIGHT - 1;        
         data->point.x = touchX;
         data->point.y = touchY;
     }
@@ -208,12 +222,19 @@ void lv_xiao_touch_init(void)
     Wire1.begin(); // Turn on the IIC bus for touch driver
 #endif
     /*Initialize the touch driver for lvgl*/
-    // static lv_indev_drv_t indev_drv;
-    // lv_indev_drv_init(&indev_drv);
-    // indev_drv.type = LV_INDEV_TYPE_POINTER;
-    // indev_drv.read_cb = chsc6x_read;
-    // lv_indev_drv_register(&indev_drv);
+
+#if LVGL_VERSION_MAJOR >= 9
     lv_indev_t * indev = lv_indev_create();
     lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
     lv_indev_set_read_cb(indev, chsc6x_read);
+   
+#else
+    static lv_indev_drv_t indev_drv;
+    lv_indev_drv_init(&indev_drv);
+    indev_drv.type = LV_INDEV_TYPE_POINTER;
+    indev_drv.read_cb = chsc6x_read;
+    lv_indev_drv_register(&indev_drv);
+#endif
+
+
 }
