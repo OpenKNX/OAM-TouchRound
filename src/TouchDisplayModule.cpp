@@ -536,18 +536,12 @@ void TouchDisplayModule::interruptTouchRight()
     _touchRightPressed = digitalRead(TOUCH_RIGHT_PIN) == HIGH;
 }
 
-bool old = false;
 void TouchDisplayModule::loop(bool configured)
 {
 
-    auto newValue = digitalRead(TOUCH_INT);
-    if (newValue != old)
-    {
-        old = newValue;
-        logErrorP("Touch %d", !newValue);
-        if (!newValue)
-            display(true);
-    }
+
+
+
 
     lv_timer_handler(); // let the GUI do its work
     
