@@ -78,6 +78,12 @@
         "type50.c": "cpp",
         "type71.c": "cpp",
         "missing_file.c": "cpp",
-        "type10.c": "cpp"
+        "type10.c": "cpp",
+        "time.c": "cpp",
+        "clock.c": "cpp",
+        "type11.c": "cpp",
+        "type20.c": "cpp",
+        "type30.c": "cpp",
+        "type32.c": "cpp"
     }
 }

@@ -1,31 +1,61 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
-#include "../Images/Type10.c"
-#include "../Images/Type11.c"
-#include "../Images/Type20.c"
-#include "../Images/Type30.c"
-#include "../Images/Type31.c"
-#include "../Images/Type32.c"
-#include "../Images/Type50.c"
-#include "../Images/Type60.c"
-#include "../Images/Type70.c"
-#include "../Images/Type71.c"
-#include "../Images/Type72.c"
-#include "../Images/Type73.c"
-#include "../Images/Type74.c"
-#include "../Images/Type75.c"
-#include "../Images/Type76.c"
-#include "../Images/Type80.c"
-#include "../Images/Type90.c"
-#include "../Images/Type91.c"
-#include "../Images/Type92.c"
-#include "../Images/missing_file.c"
-#include "../Images/System.c"
-#include "../Images/Error.c"
-#include "../Images/Clock.c"
-#include "../Images/Time.c"
-#include "../Images/Date.c"
-#include "../Images/DateTime.c"
+#if LVGL_VERSION_MAJOR >= 9
+#include "../Images/v9/Type10.c"
+#include "../Images/v9/Type11.c"
+#include "../Images/v9/Type20.c"
+#include "../Images/v9/Type30.c"
+#include "../Images/v9/Type31.c"
+#include "../Images/v9/Type32.c"
+#include "../Images/v9/Type50.c"
+#include "../Images/v9/Type60.c"
+#include "../Images/v9/Type70.c"
+#include "../Images/v9/Type71.c"
+#include "../Images/v9/Type72.c"
+#include "../Images/v9/Type73.c"
+#include "../Images/v9/Type74.c"
+#include "../Images/v9/Type75.c"
+#include "../Images/v9/Type76.c"
+#include "../Images/v9/Type80.c"
+#include "../Images/v9/Type90.c"
+#include "../Images/v9/Type91.c"
+#include "../Images/v9/Type92.c"
+#include "../Images/v9/missing_file.c"
+#include "../Images/v9/System.c"
+#include "../Images/v9/Error.c"
+#include "../Images/v9/Clock.c"
+#include "../Images/v9/Time.c"
+#include "../Images/v9/Date.c"
+#include "../Images/v9/DateTime.c"
+#else
+#include "../Images/v8/Type10.c"
+#include "../Images/v8/Type10.c"
+#include "../Images/v8/Type11.c"
+#include "../Images/v8/Type20.c"
+#include "../Images/v8/Type30.c"
+#include "../Images/v8/Type31.c"
+#include "../Images/v8/Type32.c"
+#include "../Images/v8/Type50.c"
+#include "../Images/v8/Type60.c"
+#include "../Images/v8/Type70.c"
+#include "../Images/v8/Type71.c"
+#include "../Images/v8/Type72.c"
+#include "../Images/v8/Type73.c"
+#include "../Images/v8/Type74.c"
+#include "../Images/v8/Type75.c"
+#include "../Images/v8/Type76.c"
+#include "../Images/v8/Type80.c"
+#include "../Images/v8/Type90.c"
+#include "../Images/v8/Type91.c"
+#include "../Images/v8/Type92.c"
+#include "../Images/v8/missing_file.c"
+#include "../Images/v8/System.c"
+#include "../Images/v8/Error.c"
+#include "../Images/v8/Clock.c"
+#include "../Images/v8/Time.c"
+#include "../Images/v8/Date.c"
+#include "../Images/v8/DateTime.c"
+#endif
 
 #include "lvgl.h"
 #include "LittleFS.h"
@@ -126,16 +156,18 @@ void ImageLoader::loadImage(lv_obj_t* imageObject,  std::string fileName)
         lv_img_set_src(imageObject, nullptr);
         return;
     }
-    // else if (LittleFS.exists(("/" + fileName).c_str()))
-    // {
-    //     std::string filePath;
-    //     filePath += driveLetter;
-    //     filePath += ":/";
-    //     filePath += fileName;
-    //     logInfoP("Load file: %s", filePath.c_str());
+#if LVGL_VERSION_MAJOR <= 8
+    else if (LittleFS.exists(("/" + fileName).c_str()))
+    {
+        std::string filePath;
+        filePath += driveLetter;
+        filePath += ":/";
+        filePath += fileName;
+        logInfoP("Load file: %s", filePath.c_str());
 
-    //     lv_img_set_src(imageObject, filePath.c_str());
-    // }
+        lv_img_set_src(imageObject, filePath.c_str());
+    }
+#endif
     else if (fileName == "Type10.png")
     {
         lv_img_set_src(imageObject, &Type10);
