@@ -146,14 +146,28 @@ void lv_xiao_disp_init(void)
 
 
 /* touch driver : chsc6x */
-
+unsigned long lastReadHIGH = 0; 
+bool waitForUnpressed = false;
 bool chsc6x_is_pressed(void)
 {
     if(digitalRead(TOUCH_INT) != LOW) {
-        delay(3);
-        if(digitalRead(TOUCH_INT) != LOW)
+        if (waitForUnpressed)
+        {
+            if (lastReadHIGH == 0)
+            {
+                lastReadHIGH = millis();
+            }
+            else if (millis() - lastReadHIGH > 3) 
+            {
+                waitForUnpressed = false;
+                return false;
+            }
+            return true;
+        }
         return false;
     }
+    lastReadHIGH = 0;
+    waitForUnpressed = true;
     return true;
 }
 
