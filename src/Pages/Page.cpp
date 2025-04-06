@@ -23,6 +23,12 @@ Page* Page::currentPage()
 
 void Page::showPage(Page* page)
 {
+    if (openknxTouchDisplayModule.touchPressStateForLgvl)
+    {
+        // Remove click state before change page
+        openknxTouchDisplayModule.touchPressStateForLgvl = false;
+        openknxTouchDisplayModule.loop(knx.configured());
+    }
     if (_currentPage != nullptr)
     {
         logDebug("Page", "Delete Page");

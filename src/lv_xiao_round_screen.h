@@ -146,28 +146,28 @@ void lv_xiao_disp_init(void)
 
 
 /* touch driver : chsc6x */
-unsigned long lastReadHIGH = 0; 
-bool waitForUnpressed = false;
+unsigned long xiao_UnpressedStart = 0; 
+bool xiao_waitForUnpressed = false;
 bool chsc6x_is_pressed(void)
 {
     if(digitalRead(TOUCH_INT) != LOW) {
-        if (waitForUnpressed)
+        if (xiao_waitForUnpressed)
         {
-            if (lastReadHIGH == 0)
+            if (xiao_UnpressedStart == 0)
             {
-                lastReadHIGH = millis();
+                xiao_UnpressedStart = millis();
+                return true;
             }
-            else if (millis() - lastReadHIGH > 3) 
+            else if (millis() - xiao_UnpressedStart < 20) 
             {
-                waitForUnpressed = false;
-                return false;
+                return true;
             }
-            return true;
+            xiao_waitForUnpressed = false;
         }
         return false;
     }
-    lastReadHIGH = 0;
-    waitForUnpressed = true;
+    xiao_UnpressedStart = 0;
+    xiao_waitForUnpressed = true;
     return true;
 }
 
@@ -205,6 +205,7 @@ void chsc6x_get_xy(lv_coord_t * x, lv_coord_t * y)
     }
 }
 
+extern bool isTouchPressed();
 
 #if LVGL_VERSION_MAJOR >= 9
 void chsc6x_read( lv_indev_t * indev_driver, lv_indev_data_t * data )
@@ -213,7 +214,7 @@ void chsc6x_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
 #endif
 {
     lv_coord_t touchX, touchY;
-    if( !chsc6x_is_pressed() )
+    if( !isTouchPressed() )
     {
         data->state = LV_INDEV_STATE_RELEASED;
     } else {

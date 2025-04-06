@@ -14,12 +14,8 @@ DeviceMainFunctionCell::~DeviceMainFunctionCell()
 {
     if (_device != nullptr)
         _device->removeChangedHandler(_handler);
-    if (_eventClicked != nullptr)
-        lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventClicked, this);
     if (_eventPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventPressed, this);
-    if (_eventReleased != nullptr)
-        lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventReleased, this);
 }
 
 void DeviceMainFunctionCell::init(KnxChannelBase* device)
@@ -38,30 +34,12 @@ void DeviceMainFunctionCell::setup()
        channelValueChanged(channel);
     };
     device.addChangedHandler(_handler);
-    _eventClicked = [](lv_event_t *e) { ((DeviceMainFunctionCell*) lv_event_get_user_data(e))->shortClicked(); };
-    lv_obj_add_event_cb(cellObject.cell, _eventClicked, LV_EVENT_SHORT_CLICKED, this);
-    _eventPressed = [](lv_event_t *e) {  ((DeviceMainFunctionCell*)lv_event_get_user_data(e))->_clickStarted = max(1l, millis()); };
+    _eventPressed = [](lv_event_t *e) {  ((DeviceMainFunctionCell*)lv_event_get_user_data(e))->_clickStarted = true; };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_PRESSED, this);
-    _eventReleased = [](lv_event_t *e) { ((DeviceMainFunctionCell*) lv_event_get_user_data(e))->buttonReleased(); };
-    lv_obj_add_event_cb(cellObject.cell, _eventReleased, LV_EVENT_RELEASED, this);
-
+ 
     lv_label_set_text(cellObject.label, device.getNameInUTF8());
 }
 
-void DeviceMainFunctionCell::loop()
-{
-    Cell::loop();
-    if (_shortPressed)
-    {
-        _shortPressed = false;
-        shortClicked();
-    }
-    if (_longPressed)
-    {
-        _longPressed = false;
-        longPressed();
-    }
-}
 
 void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
 {
@@ -81,27 +59,21 @@ void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
     }
 }
 
-void DeviceMainFunctionCell::shortClicked()
+void DeviceMainFunctionCell::shortPressed()
 {
-    handleClick(ParamTCH_CHShortPress1, ParamTCH_CHJumpToShort1);
+    if (_clickStarted)
+        handleClick(ParamTCH_CHShortPress1, ParamTCH_CHJumpToShort1);
 }
 
-void DeviceMainFunctionCell::buttonReleased()
+void DeviceMainFunctionCell::resetPressed()
 {
-    if (_clickStarted == 0)
-        return;
-    auto clickTime = millis() - _clickStarted;
-    _clickStarted = 0;
-    if (clickTime < 500)
-        _shortPressed = true;
-    else
-        _longPressed = true;
+    _clickStarted = false;
 }
 
 void DeviceMainFunctionCell::longPressed()
 {
-    logErrorP("Long Press");
-    handleClick(ParamTCH_CHLongPress1, ParamTCH_CHJumpToLong1);
+    if (_clickStarted)
+        handleClick(ParamTCH_CHLongPress1, ParamTCH_CHJumpToLong1);
 }
 
 void DeviceMainFunctionCell::handleClick(int function, int jumpToPage)

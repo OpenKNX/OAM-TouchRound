@@ -16,5 +16,8 @@ public:
     virtual ~CellPage();
     virtual std::string name() override;
     virtual std::string image() override;
+    void shortPressed() override;
+    void longPressed() override;
+    void resetPressed() override;
 };
 

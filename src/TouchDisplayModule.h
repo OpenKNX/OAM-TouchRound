@@ -1,6 +1,5 @@
 #include "OpenKNX.h"
 #include <lvgl.h>
-
 #define EXT1_PIN 28
 #define EXT2_PIN 29
 
@@ -20,7 +19,13 @@ class TouchDisplayModule : public OpenKNX::Module
 	uint8_t _theme = 0;
 	bool _detailDevicePageActive = false;
 	unsigned long _waitForEnablePageWhichWasRequested = 0;
+	
+	bool _touchPressState = false;
+	unsigned long _touchPressedTimer = 0;
+	Page* _pageAtPressStart = nullptr;
 public:
+	bool touchPressStateForLgvl = false;
+
 	void loop(bool configured) override;
 	void setup() override;
 	void loop1(bool configured) override;
@@ -42,11 +47,8 @@ private:
 	static void lv_log(const char *buf);
 #endif
 	void handleGesture(lv_event_t *event);
-	void touched(lv_event_t *event);
 	void showFirstPage();
-
 	void resetDisplayTimeout();
-	void display_pressed();
 	bool pageEnabled(uint8_t page);
 	void checkPageEnabledChanged();
 	
@@ -62,6 +64,7 @@ public:
 	void showProgButtonPage();
 	void showDetailDevicePage();
 	void showMainFunctionDevicePage();
+
 
 	void processInputKo(GroupObject &ko) override;
 	bool processCommand(const std::string cmd, bool diagnoseKo) override;

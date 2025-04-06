@@ -9,25 +9,20 @@ private:
     MainFunctionScreen& _screen = *MainFunctionScreen::instance;
     virtual const char* pageType() override;
     MainFunctionChangedHandler _handler;
-    lv_event_cb_t _eventClicked = nullptr;
     lv_event_cb_t _eventPressed = nullptr;
-    lv_event_cb_t _eventReleased = nullptr;
-    lv_event_cb_t _eventShortClicked = nullptr;
     KnxChannelBase* _device = nullptr;
-    unsigned long _clickStarted = 0;
-    bool _longPressed = false;
-    bool _shortPressed = false;
-
+    bool _clickStarted = false;
+  
     KnxChannelBase* getDevice();
     void channelValueChanged(KnxChannelBase& channel);
-    void shortClicked();
-    void longPressed();
-    void buttonReleased();
+    void shortPressed() override;
+    void longPressed() override;
+    void resetPressed() override;
+   
     void handleClick(int function, int jumpToPage);
 
 public:
     virtual ~MainFunctionPage() override;
-    void loop() override;
     void setup() override;
     virtual std::string name() override;
     virtual std::string image() override;

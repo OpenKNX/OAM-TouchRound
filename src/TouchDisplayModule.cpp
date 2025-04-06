@@ -205,23 +205,26 @@ void TouchDisplayModule::showErrorPage(const char *message)
 
 void TouchDisplayModule::nextPage()
 {
-    _detailDevicePageActive = false;
-    uint8_t currentChannel = _channelIndex;
-    uint8_t newPage = _channelIndex + 1;
-    while (currentChannel != ++_channelIndex)
+    if (knx.configured() && ParamTCH_VisibleChannels > 0)
     {
-        if (_channelIndex >= ParamTCH_VisibleChannels)
-            _channelIndex = 0;
-
-        uint8_t page = _channelIndex + 1;
-        if (ParamTCH_CHNavigation && pageEnabled(page))
+        _detailDevicePageActive = false;
+        uint8_t currentChannel = _channelIndex;
+        uint8_t newPage = _channelIndex + 1;
+        while (currentChannel != ++_channelIndex)
         {
-            newPage = page;
-            break;
+            if (_channelIndex >= ParamTCH_VisibleChannels)
+                _channelIndex = 0;
+
+            uint8_t page = _channelIndex + 1;
+            if (ParamTCH_CHNavigation && pageEnabled(page))
+            {
+                newPage = page;
+                break;
+            }
         }
+        _channelIndex = currentChannel; // restore current channel
+        activatePage(newPage);
     }
-    _channelIndex = currentChannel; // restore current channel
-    activatePage(newPage);
 }
 
 bool TouchDisplayModule::pageEnabled(uint8_t page)
@@ -291,26 +294,29 @@ bool TouchDisplayModule::pageEnabled(uint8_t page)
 
 void TouchDisplayModule::previousPage()
 {
-    if (_detailDevicePageActive)
+    if (knx.configured() && ParamTCH_VisibleChannels > 0)
     {
-        activatePage(_channelIndex + 1);
-        return;
-    }
-    uint8_t currentChannel = _channelIndex;
-    uint8_t newPage = _channelIndex + 1;
-    while (currentChannel != --_channelIndex)
-    {
-        if (_channelIndex >= ParamTCH_VisibleChannels)
-            _channelIndex = ParamTCH_VisibleChannels - 1;
-        uint8_t page = _channelIndex + 1;
-        if (ParamTCH_CHNavigation && pageEnabled(page))
+        if (_detailDevicePageActive)
         {
-            newPage = page;
-            break;
+            activatePage(_channelIndex + 1);
+            return;
         }
+        uint8_t currentChannel = _channelIndex;
+        uint8_t newPage = _channelIndex + 1;
+        while (currentChannel != --_channelIndex)
+        {
+            if (_channelIndex >= ParamTCH_VisibleChannels)
+                _channelIndex = ParamTCH_VisibleChannels - 1;
+            uint8_t page = _channelIndex + 1;
+            if (ParamTCH_CHNavigation && pageEnabled(page))
+            {
+                newPage = page;
+                break;
+            }
+        }
+        _channelIndex = currentChannel;
+        activatePage(newPage);
     }
-    _channelIndex = currentChannel;
-    activatePage(newPage);
 }
 
 
@@ -346,14 +352,6 @@ void TouchDisplayModule::setup(bool configured)
     DimmerScreen::instance = new DimmerScreen();
     ButtonMessageScreen::instance = new ButtonMessageScreen();
 
-    // auto topLevelClickArea = lv_obj_create(lv_layer_top());
-    // lv_obj_set_size(topLevelClickArea, LV_HOR_RES, LV_VER_RES);
-    // lv_obj_set_style_bg_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_set_style_border_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_set_style_outline_opa(topLevelClickArea, LV_OPA_TRANSP, 0);
-    // lv_obj_add_flag(topLevelClickArea, LV_OBJ_FLAG_EVENT_BUBBLE);
-    // lv_obj_add_event_cb(topLevelClickArea, [](lv_event_t *e) { logError("TopLayer", "Pressed"); ((TouchDisplayModule*) lv_event_get_user_data(e))->touched(e); }, LV_EVENT_PRESSED, this);
-  
 
     pinMode(TOUCH_LEFT_PIN, INPUT);
     pinMode(TOUCH_RIGHT_PIN, INPUT);
@@ -435,23 +433,6 @@ void TouchDisplayModule::setTheme(uint8_t theme)
         lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
         break;
     }
-}
-
-void TouchDisplayModule::touched(lv_event_t *e)
-{
-    logErrorP("Touched");
-    if (!_displayOn)
-    {
-        logErrorP("Stop bubbling");
-       // lv_event_stop_bubbling(e);
-    }
-    else
-    {
-    //    lv_obj_t * screen = lv_scr_act();
-
-    //    lv_display_send_event(screen, lv_event_get_code(e), lv_event_get_param(e));
-     }
-    display(true);
 }
 
 void TouchDisplayModule::lv_log(
@@ -536,12 +517,70 @@ void TouchDisplayModule::interruptTouchRight()
     _touchRightPressed = digitalRead(TOUCH_RIGHT_PIN) == HIGH;
 }
 
+bool isTouchPressed()
+{
+    return openknxTouchDisplayModule.touchPressStateForLgvl;
+}
+
+unsigned long lowReads = 0;
 void TouchDisplayModule::loop(bool configured)
 {
+    bool touchPressed = chsc6x_is_pressed();
+   
+    if (touchPressed != _touchPressState)
+    {
 
-
-
-
+        _touchPressState = touchPressed;
+        if (touchPressed)
+        {
+            logErrorP("Touch pressed");
+            if (!_displayOn)
+                display(true);
+            else
+            {
+                _pageAtPressStart = Page::currentPage();
+                _touchPressedTimer = max(1L, millis());
+                touchPressStateForLgvl = true;
+            }
+        }
+        else
+        {
+            logErrorP("Touch released");
+            touchPressStateForLgvl = false;
+      
+            if (_touchPressedTimer != 0)
+            {
+                auto page = Page::currentPage();   
+                unsigned long pressedTime = millis() - _touchPressedTimer; 
+                logErrorP("Short pressed %d", pressedTime);
+                if (page != nullptr)
+                {
+                    if (page == _pageAtPressStart)
+                        page->shortPressed();
+                    page->resetPressed();
+                }             
+                _pageAtPressStart = nullptr;
+                _touchPressedTimer = 0;
+            }
+        }
+    }
+    if (_touchPressedTimer != 0)
+    {
+        unsigned long pressedTime = millis() - _touchPressedTimer;
+        if (pressedTime > 800)
+        {
+            _touchPressedTimer = 0;
+            logErrorP("Long pressed %d", pressedTime);
+            auto page = Page::currentPage();  
+            if (page != nullptr)
+            {
+                if (page == _pageAtPressStart)
+                    page->longPressed();
+                page->resetPressed();
+            }
+            _pageAtPressStart = nullptr;
+        }
+    }
 
     lv_timer_handler(); // let the GUI do its work
     

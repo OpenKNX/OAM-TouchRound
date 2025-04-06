@@ -20,6 +20,9 @@ public:
     virtual ~Page();
     virtual void setup() = 0;
     virtual void loop() {}
+    virtual void resetPressed() {}
+    virtual void longPressed() {}
+    virtual void shortPressed() {}
     virtual std::string name() = 0;
     virtual std::string image() = 0;
     void init(uint8_t channelIndex);
@@ -30,6 +33,7 @@ public:
     static Page* createErrorPage(const char* message, uint8_t channelIndex);
     static Page* createProgButtonPage();
     static Page* createDeactivatedPage(uint8_t channelIndex);
+
 };
 
 

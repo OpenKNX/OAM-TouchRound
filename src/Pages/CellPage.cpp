@@ -60,6 +60,37 @@ void CellPage::loop()
     }
 }
 
+void CellPage::shortPressed()
+{
+    if (_cells == nullptr)
+        return;
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        _cells[cellIndex]->shortPressed();
+    }
+}
+
+void CellPage::longPressed()
+{
+    if (_cells == nullptr)
+        return;
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        _cells[cellIndex]->longPressed();
+    }
+}
+
+
+void CellPage::resetPressed()
+{
+    if (_cells == nullptr)
+        return;
+    for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
+    {
+        _cells[cellIndex]->resetPressed();
+    }
+}
+
 CellPage::~CellPage()
 {
     if (_cells == nullptr)

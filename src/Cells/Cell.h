@@ -22,5 +22,8 @@ public:
     virtual void loop() {};
 
     static Cell* createCell(uint8_t channelIndex, uint8_t cellIndex, CellObject& cellObject);
+    virtual void resetPressed() {};
+    virtual void shortPressed() {};
+    virtual void longPressed() {};
 };
 
