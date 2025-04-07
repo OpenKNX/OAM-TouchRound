@@ -6,8 +6,8 @@
 
   <op:ETS OpenKnxId="0xA6"
             ApplicationNumber="0x03"
-            ApplicationVersion="0.3"
-            ReplacesVersions="0.2 0.1 0.0"
+            ApplicationVersion="0.5"
+            ReplacesVersions="0.4 0.3 0.2 0.1 0.0"
             ApplicationRevision="0"
             ProductName="Rundes Touch-Display"
             ApplicationName="AB-TouchRound-Logic-Button"

@@ -21,6 +21,18 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
 # Touch Round
 
 <!-- DOC -->
+### Anzeige drehen
+
+<!-- DOC -->
+### Sensor Tasten Vorhanden
+
+<!-- DOC -->
+### Links-Rechts tauschen
+
+<!-- DOC -->
+### Seitenwechsel über Wischen im unteren Bereich
+
+<!-- DOC -->
 ### Anzeige ausschalten nach
 
 <!-- DOC -->

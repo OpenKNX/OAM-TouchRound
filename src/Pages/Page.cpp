@@ -135,7 +135,7 @@ Page* Page::createPage(uint8_t channelIndex)
 Page* Page::createDetailDevicePage(uint8_t deviceIndex)
 {
     auto page = new DetailDevicePage();
-    
+    page->setDevice(deviceIndex);
     return page;
 }
 

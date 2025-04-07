@@ -44,7 +44,7 @@ uint8_t screen_rotation = 3;
 // SDA: 26
 // SCL: 27
 
-uint8_t screen_rotation = 2;
+uint8_t screen_rotation = 0;
 #endif
 
 /* display driver : use TFT_eSPI or Arduino_GFX */
