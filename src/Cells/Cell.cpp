@@ -57,7 +57,7 @@ Cell *Cell::createCell(uint8_t channelIndex, uint8_t cellIndex, CellObject &cell
         {
             logDebug("Cell", "Device MainF unction Cell");
             auto deviceCell = new DeviceMainFunctionCell();
-            deviceCell->init(device);
+            deviceCell->init(device, deviceIndex);
             result = deviceCell;
         }
         break;

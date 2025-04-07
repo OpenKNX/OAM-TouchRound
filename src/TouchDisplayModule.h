@@ -62,7 +62,7 @@ public:
 	void previousPage();
 	void showErrorPage(const char* message);
 	void showProgButtonPage();
-	void showDetailDevicePage(int deviceIndex);
+	void showDetailDevicePage(uint8_t deviceIndex);
 	void showMainFunctionDevicePage();
 
 

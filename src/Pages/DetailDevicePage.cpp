@@ -26,7 +26,7 @@ KnxChannelBase* DetailDevicePage::getDevice()
     return _device;
 }
 
-void DetailDevicePage::setDeviceIndex(uint8_t deviceIndex)  
+void DetailDevicePage::setDevice(uint8_t deviceIndex)  
 {
     _deviceIndex = deviceIndex;
 }

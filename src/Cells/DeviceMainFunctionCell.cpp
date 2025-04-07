@@ -18,9 +18,10 @@ DeviceMainFunctionCell::~DeviceMainFunctionCell()
         lv_obj_remove_event_cb_with_user_data(_cellObject->cell, _eventPressed, this);
 }
 
-void DeviceMainFunctionCell::init(KnxChannelBase* device)
+void DeviceMainFunctionCell::init(KnxChannelBase* device, uint8_t deviceIndex)
 {
     _device = device;
+    _deviceIndex = deviceIndex;
 }
 
 void DeviceMainFunctionCell::setup()
@@ -94,7 +95,7 @@ void DeviceMainFunctionCell::handleClick(int function, int jumpToPage)
         return;
     case 2:
         logDebugP("Detailseite");
-        openknxTouchDisplayModule.showDetailDevicePage(_device->getDeviceIndex());
+        openknxTouchDisplayModule.showDetailDevicePage(_deviceIndex);
         return;
     case 3:
         logDebugP("Absprung zu Seite %d", jumpToPage);
