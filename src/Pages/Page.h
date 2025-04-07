@@ -29,7 +29,7 @@ public:
  
    
     static Page* createPage(uint8_t channelIndex);
-    static Page* createDetailDevicePage(uint8_t channelIndex);
+    static Page* createDetailDevicePage(uint8_t deviceIndex);
     static Page* createErrorPage(const char* message, uint8_t channelIndex);
     static Page* createProgButtonPage();
     static Page* createDeactivatedPage(uint8_t channelIndex);

@@ -8,11 +8,13 @@ class ChannelBridge;
 class DetailDevicePage : public Page
 {
     static DeviceBinderFactory* _widgetFactory;
+    uint8_t _deviceIndex = 255;
 protected:
     ChannelBridge* _bridge = nullptr;
     KnxChannelBase* _device = nullptr;
     virtual const char* pageType() override;
     KnxChannelBase* getDevice();
+
 
 public:
     virtual ~DetailDevicePage() override;
@@ -21,4 +23,5 @@ public:
     void setup() override;
     virtual std::string name() override;
     virtual std::string image() override;
+    void setDeviceIndex(uint8_t deviceIndex);
 };

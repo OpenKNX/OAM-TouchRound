@@ -181,11 +181,11 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     Page::showPage(Page::createPage(_channelIndex));
 }
 
-void TouchDisplayModule::showDetailDevicePage()
+void TouchDisplayModule::showDetailDevicePage(int deviceIndex)
 {
-    logDebugP("Show Detail Device Page %d", _channelIndex + 1);
+    logDebugP("Show Detail Device %d", deviceIndex + 1);
     _detailDevicePageActive = true;
-    Page::showPage(Page::createDetailDevicePage(_channelIndex));
+    Page::showPage(Page::createDetailDevicePage(deviceIndex));
 }
 
 void TouchDisplayModule::showProgButtonPage()
