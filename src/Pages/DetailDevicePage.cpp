@@ -22,7 +22,7 @@ DetailDevicePage::~DetailDevicePage()
 KnxChannelBase* DetailDevicePage::getDevice()
 {
     if (_device == nullptr)
-       _device = openknxSmartHomeBridgeModule.getChannel(ParamTCH_CHDeviceSelection1 - 1);
+       _device = openknxSmartHomeBridgeModule.getChannel(_deviceIndex);
     return _device;
 }
 
@@ -37,9 +37,6 @@ void DetailDevicePage::createDeviceBinder()
         _widgetFactory = new DeviceBinderFactory();
     if (_deviceIndex >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
     {
-        // std::ostringstream message;
-        // message << "Gerät " << _channelIndex + 1 << " nicht verfügbar\nIn der ETS unter Geräte|Allgemein\ndie Verfügbare Geräte prüfen";
-        // openknxTouchDisplayModule.showErrorPage(message.str().c_str());
         openknxTouchDisplayModule.showErrorPage("Gerät nicht verfügbar");
         return;
     }
