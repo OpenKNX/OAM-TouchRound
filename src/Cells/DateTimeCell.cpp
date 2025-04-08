@@ -32,9 +32,10 @@ void DateTimeCell::setup()
     updateTime(true);
 }
 
-void DateTimeCell::loop()
+void DateTimeCell::loop(bool configured)
 {
-    updateTime(false);
+    if (configured)
+        updateTime(false);
 }
 
 void DateTimeCell::updateTime(bool forceUpdate)

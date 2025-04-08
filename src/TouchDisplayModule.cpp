@@ -362,16 +362,8 @@ void TouchDisplayModule::setup(bool configured)
         {
             pinMode(TOUCH_LEFT_PIN, INPUT);
             pinMode(TOUCH_RIGHT_PIN, INPUT);
-            if (ParamTCH_LeftRightChanged)
-            {
-                attachInterrupt(digitalPinToInterrupt(TOUCH_LEFT_PIN), TouchDisplayModule::interruptTouchRight, CHANGE);
-                attachInterrupt(digitalPinToInterrupt(TOUCH_RIGHT_PIN), TouchDisplayModule::interruptTouchLeft, CHANGE);  
-            }
-            else
-            {
-                attachInterrupt(digitalPinToInterrupt(TOUCH_LEFT_PIN), TouchDisplayModule::interruptTouchLeft, CHANGE);
-                attachInterrupt(digitalPinToInterrupt(TOUCH_RIGHT_PIN), TouchDisplayModule::interruptTouchRight, CHANGE);
-            }
+            attachInterrupt(digitalPinToInterrupt(TOUCH_LEFT_PIN), TouchDisplayModule::interruptTouchLeft, CHANGE);
+            attachInterrupt(digitalPinToInterrupt(TOUCH_RIGHT_PIN), TouchDisplayModule::interruptTouchRight, CHANGE);
         }
     }
 
@@ -385,18 +377,18 @@ void TouchDisplayModule::setup(bool configured)
             lv_obj_set_y(gestureLayer, LV_VER_RES - gestureLayerHeight);
             lv_obj_set_size(gestureLayer, LV_HOR_RES, gestureLayerHeight);
             lv_obj_set_style_border_width(gestureLayer, 0, 0);
-            lv_obj_set_style_opa(gestureLayer, LV_OPA_0, 128);
-            lv_obj_set_style_bg_color(gestureLayer, lv_color_make(128, 128, 128), 0);
+            lv_obj_set_style_opa(gestureLayer, LV_OPA_0, 0);
+            lv_obj_set_style_bg_color(gestureLayer, lv_color_make(10, 10, 10), 0);
             lv_obj_clear_flag(gestureLayer, LV_OBJ_FLAG_GESTURE_BUBBLE);
             lv_obj_add_event_cb(gestureLayer, [](lv_event_t *e)
             { ((TouchDisplayModule *)lv_event_get_user_data(e))->handleGesture(e); }, LV_EVENT_GESTURE, this);
         }
     }
-    // _displayOffRectangle = lv_obj_create(lv_layer_top());
-    // lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
-    // lv_obj_set_style_bg_color(_displayOffRectangle, lv_color_black(), 0);
-    // lv_obj_set_style_border_width(_displayOffRectangle, 0, 0);
-    // lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
+    _displayOffRectangle = lv_obj_create(lv_layer_top());
+    lv_obj_set_size(_displayOffRectangle, LV_HOR_RES, LV_VER_RES);
+    lv_obj_set_style_bg_color(_displayOffRectangle, lv_color_black(), 0);
+    lv_obj_set_style_border_width(_displayOffRectangle, 0, 0);
+    lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
     if (!configured)
     {
         showProgButtonPage();
@@ -606,7 +598,7 @@ void TouchDisplayModule::loop(bool configured)
     
     Page* currentPage = Page::currentPage();
     if (currentPage != nullptr && _displayOn)
-        currentPage->loop();
+        currentPage->loop(configured);
 
     if (_lastTimeoutReset != 0)
     {
@@ -632,7 +624,16 @@ void TouchDisplayModule::loop(bool configured)
     if (_touchLeftPressed)
     {
         if (_displayOn)
-            previousPage();
+        {
+            if (ParamTCH_LeftRightChanged)
+            { 
+                nextPage(); 
+            }
+            else 
+            { 
+                previousPage();
+            }
+        }
         else
             display(true);
       
@@ -642,7 +643,16 @@ void TouchDisplayModule::loop(bool configured)
     if (_touchRightPressed)
     {
         if (_displayOn)
-            nextPage();
+        {
+            if (ParamTCH_LeftRightChanged)
+            { 
+                previousPage(); 
+            }
+            else 
+            { 
+                nextPage();
+            }
+        }
         else
             display(true);
             

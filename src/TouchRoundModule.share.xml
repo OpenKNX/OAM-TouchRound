@@ -188,8 +188,8 @@
                 <Parameter Offset="4" BitOffset="1" Id="%AID%_UP-%TT%00011" Name="SensorKeys" ParameterType="%AID%_PT-OnOffYesNo" Text="Sensor Tasten Vorhanden" Value="1" />
                 <!-- Sensor Keys Changed -->
                 <Parameter Offset="4" BitOffset="2" Id="%AID%_UP-%TT%00012" Name="LeftRightChanged" ParameterType="%AID%_PT-OnOffYesNo" Text="Links-Rechts tauschen" Value="0" />
-                  <!-- Slide -->
-                <Parameter Offset="8" BitOffset="3" Id="%AID%_UP-%TT%00014" Name="Slide" ParameterType="%AID%_PT-OnOffYesNo" Text="Seitenwechsel über Wischen im unteren Bereich" Value="1" />
+                <!-- Slide -->
+                <Parameter Offset="4" BitOffset="3" Id="%AID%_UP-%TT%00014" Name="Slide" ParameterType="%AID%_PT-OnOffYesNo" Text="Seitenwechsel über Wischen im unteren Bereich" Value="1" />
                 <!-- Day/Night Objekt -->
                 <Parameter Offset="4" BitOffset="4" Id="%AID%_UP-%TT%00009" Name="DayNightObject" ParameterType="%AID%_PT-TCHDayNightObject" Text="Bei Nacht anders" Value="0" />
                 <!-- ^^^^ Need 4 bits ^^^^-->

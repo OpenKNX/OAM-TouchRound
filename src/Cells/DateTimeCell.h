@@ -13,6 +13,6 @@ class DateTimeCell : public Cell
     protected:
         virtual const char* cellType() override;
         virtual void setup() override;
-        virtual void loop() override;
+        virtual void loop(bool configured) override;
         void updateTime(bool forceUpdate);
 };

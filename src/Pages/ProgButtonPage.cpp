@@ -19,7 +19,7 @@ ProgButtonPage::~ProgButtonPage()
 }
 
 
-void ProgButtonPage::loop()
+void ProgButtonPage::loop(bool configured)
 {
     if (_progMode != knx.progMode())
     {

@@ -30,9 +30,9 @@ void JumpCell::setup()
     delete page;
 }
 
-void JumpCell::loop()
+void JumpCell::loop(bool configured)
 {
-    Cell::loop();
+    Cell::loop(configured);
     if (_clicked)
     {
         _clicked = false;

@@ -49,14 +49,14 @@ void CellPage::setup()
 
 }
 
-void CellPage::loop()
+void CellPage::loop(bool configured)
 {
-    Page::loop();
+    Page::loop(configured);
     if (_cells == nullptr)
         return;
     for (size_t cellIndex = 0; cellIndex < _numberOfCells; cellIndex++)
     {
-        _cells[cellIndex]->loop();
+        _cells[cellIndex]->loop(configured);
     }
 }
 

@@ -19,7 +19,7 @@ public:
     static Page* currentPage();
     virtual ~Page();
     virtual void setup() = 0;
-    virtual void loop() {}
+    virtual void loop(bool configured) {}
     virtual void resetPressed() {}
     virtual void longPressed() {}
     virtual void shortPressed() {}

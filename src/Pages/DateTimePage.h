@@ -9,7 +9,7 @@ class DateTimePage : public Page
 protected:
     virtual const char* pageType() override;
     virtual void setup() override;
-    virtual void loop() override;
+    virtual void loop(bool configured) override;
     void updateTime(bool forceUpdate);
     const char* dayOfWeekString(uint8_t dayOfWeek);
     virtual std::string name() override;

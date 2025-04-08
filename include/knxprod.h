@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 3
-#define MAIN_ApplicationVersion 5
+#define MAIN_ApplicationVersion 6
 #define MAIN_ParameterSize 14329
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -434,7 +434,7 @@
 #define TCH_LeftRightChanged                    2987      // 1 Bit, Bit 5
 #define     TCH_LeftRightChangedMask 0x20
 #define     TCH_LeftRightChangedShift 5
-#define TCH_Slide                               2991      // 1 Bit, Bit 4
+#define TCH_Slide                               2987      // 1 Bit, Bit 4
 #define     TCH_SlideMask 0x10
 #define     TCH_SlideShift 4
 #define TCH_DayNightObject                      2987      // 4 Bits, Bit 3-0

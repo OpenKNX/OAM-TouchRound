@@ -74,9 +74,10 @@ const char* DateTimePage::dayOfWeekString(uint8_t dayOfWeek)
 }
 
 
-void DateTimePage::loop()
+void DateTimePage::loop(bool configured)
 {
-   updateTime(false);
+    if (configured)
+        updateTime(false);
 }
 
 std::string DateTimePage::name()

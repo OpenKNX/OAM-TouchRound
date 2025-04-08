@@ -11,7 +11,7 @@ protected:
     CellScreen* _screen;
     virtual const char* pageType() override; 
     virtual void setup() override;
-    virtual void loop() override;
+    virtual void loop(bool configured) override;
 public:
     virtual ~CellPage();
     virtual std::string name() override;

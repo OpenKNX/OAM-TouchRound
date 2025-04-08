@@ -19,7 +19,7 @@ public:
     void init(uint8_t channelIndex, uint8_t cellIndex, CellObject& cellObject);
     virtual ~Cell() {};
     virtual void setup() {};
-    virtual void loop() {};
+    virtual void loop(bool configured) {};
 
     static Cell* createCell(uint8_t channelIndex, uint8_t cellIndex, CellObject& cellObject);
     virtual void resetPressed() {};
