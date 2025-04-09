@@ -13,7 +13,7 @@ void DimmerDisplayBridge::setup(uint8_t _channelIndex)
     _eventButtonPressed = [](lv_event_t *e) { ((DimmerDisplayBridge*) lv_event_get_user_data(e))->buttonClicked(); };
     lv_obj_add_event_cb(_screen.button, _eventButtonPressed , LV_EVENT_CLICKED, this);
 
-    lv_scr_load(_screen.screen);
+    _screen.show();
 }
 
 DimmerDisplayBridge::~DimmerDisplayBridge()

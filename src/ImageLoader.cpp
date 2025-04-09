@@ -120,7 +120,6 @@ lv_fs_res_t ImageLoader::fs_tell(lv_fs_drv_t *drv, void *file_p, uint32_t *pos_p
    
     FileHelper *fileHelper = (FileHelper*)file_p;
     *pos_p = fileHelper->position();
-    logDebug("fs_tell", "Position %d", (int) *pos_p);
     return LV_FS_RES_OK;
 }
 

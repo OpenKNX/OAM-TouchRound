@@ -95,7 +95,7 @@ void DeviceMainFunctionCell::handleClick(int function, int jumpToPage)
         return;
     case 2:
         logDebugP("Detailseite");
-        openknxTouchDisplayModule.showDetailDevicePage(_deviceIndex);
+        openknxTouchDisplayModule.showDetailDevicePage(_channelIndex, _deviceIndex);
         return;
     case 3:
         logDebugP("Absprung zu Seite %d", jumpToPage);

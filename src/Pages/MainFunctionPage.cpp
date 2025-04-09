@@ -44,28 +44,22 @@ void MainFunctionPage::setup()
   
     lv_label_set_text(_screen.label, device.getNameInUTF8());
     
-    logErrorP("show");
     _screen.show();
-    logErrorP("showFinished");
 }
 
 
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
     lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
-    logErrorP("loadImage");
     ImageLoader::loadImage(_screen.image, channel.mainFunctionImage());
   
-    logErrorP("mainFunctionValue");
     if (channel.mainFunctionValue())
     {
-        logErrorP("on");
         lv_obj_set_style_img_recolor_opa(_screen.image, 255, 0);
         lv_obj_set_style_img_recolor(_screen.image, lv_color_make(255,255,0), 0);
     }
     else
     {
-        logErrorP("off");
         lv_obj_set_style_img_recolor_opa(_screen.image, 0, 0);
         lv_obj_set_style_img_recolor(_screen.image, lv_color_make(128,128,128), 0);
     }
@@ -75,7 +69,6 @@ void MainFunctionPage::shortPressed()
 {
     if (_clickStarted)
     {
-        logErrorP("handle shortPressed");
         handleClick(ParamTCH_CHShortPress1, ParamTCH_CHJumpToShort1);
     }
 }
@@ -84,14 +77,12 @@ void MainFunctionPage::longPressed()
 {
     if (_clickStarted)
     {
-        logErrorP("handle longPressed");   
         handleClick(ParamTCH_CHLongPress1, ParamTCH_CHJumpToLong1);
     }      
 }
 
 void MainFunctionPage::resetPressed()
 {
-    logErrorP("handle resetPressed");
     _clickStarted = false;
 }
    
@@ -114,7 +105,7 @@ void MainFunctionPage::handleClick(int function, int jumpToPage)
         return;
     case 2:
         logDebugP("Detailseite");
-        openknxTouchDisplayModule.showDetailDevicePage(ParamTCH_CHDeviceSelection1 - 1);
+        openknxTouchDisplayModule.showDetailDevicePage(_channelIndex, ParamTCH_CHDeviceSelection1 - 1);
         return;
     case 3:
         logDebugP("Absprung zu Seite %d", jumpToPage);

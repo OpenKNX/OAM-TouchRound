@@ -9,7 +9,7 @@ void DeactivatedPage::setup()
 {
     lv_label_set_text(screen.label, "");
     lv_label_set_text(screen.message, "Seite ist deaktiviert");
-    lv_disp_load_scr(screen.screen);
+    screen.show();
 }
 
 std::string DeactivatedPage::name()

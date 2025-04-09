@@ -181,11 +181,11 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     Page::showPage(Page::createPage(_channelIndex));
 }
 
-void TouchDisplayModule::showDetailDevicePage(uint8_t deviceIndex)
+void TouchDisplayModule::showDetailDevicePage(uint8_t channelIndex, uint8_t deviceIndex)
 {
     logDebugP("Show Detail Device %d", deviceIndex + 1);
     _detailDevicePageActive = true;
-    Page::showPage(Page::createDetailDevicePage(deviceIndex));
+    Page::showPage(Page::createDetailDevicePage(channelIndex, deviceIndex));
 }
 
 void TouchDisplayModule::showProgButtonPage()
@@ -339,11 +339,8 @@ void TouchDisplayModule::setup(bool configured)
     //lv_lodepng_init();
     ImageLoader::connectLittleFSwithLVGL();
   
-    logErrorP("Setup lv_xiao_disp_init");
     lv_xiao_disp_init();
-    logErrorP("Setup lv_xiao_touch_init");
     lv_xiao_touch_init();
-    logErrorP("init display finished");
    
     updateTheme();
     MessageScreen::instance = new MessageScreen();
@@ -462,6 +459,11 @@ void TouchDisplayModule::resetDisplayTimeout()
         _lastTimeoutReset = millis();
 }
 
+bool TouchDisplayModule::isDisplayOn()
+{
+    return _displayOn;
+}
+
 void TouchDisplayModule::display(bool on)
 {
     if (on)
@@ -475,6 +477,7 @@ void TouchDisplayModule::display(bool on)
     {
         logDebug("Display", "Turn display on.");
         _displayOn = true;
+        Page::handleLoop(knx.configured()); // Update page
         digitalWrite(XIAO_BL, HIGH);
         if (_displayOffRectangle != nullptr)
             lv_obj_add_flag(_displayOffRectangle, LV_OBJ_FLAG_HIDDEN);
@@ -545,7 +548,6 @@ void TouchDisplayModule::loop(bool configured)
         _touchPressState = touchPressed;
         if (touchPressed)
         {
-            logErrorP("Touch pressed");
             if (!_displayOn)
                 display(true);
             else
@@ -557,19 +559,19 @@ void TouchDisplayModule::loop(bool configured)
         }
         else
         {
-            logErrorP("Touch released");
             touchPressStateForLgvl = false;
       
             if (_touchPressedTimer != 0)
             {
                 auto page = Page::currentPage();   
                 unsigned long pressedTime = millis() - _touchPressedTimer; 
-                logErrorP("Short pressed %d", pressedTime);
                 if (page != nullptr)
                 {
                     if (page == _pageAtPressStart)
                         page->shortPressed();
-                    page->resetPressed();
+                    auto currentPage = Page::currentPage();
+                    if (currentPage == page)
+                        page->resetPressed();
                 }             
                 _pageAtPressStart = nullptr;
                 _touchPressedTimer = 0;
@@ -582,24 +584,25 @@ void TouchDisplayModule::loop(bool configured)
         if (pressedTime > 800)
         {
             _touchPressedTimer = 0;
-            logErrorP("Long pressed %d", pressedTime);
             auto page = Page::currentPage();  
             if (page != nullptr)
             {
                 if (page == _pageAtPressStart)
                     page->longPressed();
-                page->resetPressed();
+                auto currentPage = Page::currentPage();
+                if (currentPage == page)
+                {
+                    page->resetPressed();
+                }
             }
             _pageAtPressStart = nullptr;
         }
     }
 
     lv_timer_handler(); // let the GUI do its work
-    
-    Page* currentPage = Page::currentPage();
-    if (currentPage != nullptr && _displayOn)
-        currentPage->loop(configured);
 
+    Page::handleLoop(configured);
+  
     if (_lastTimeoutReset != 0)
     {
         unsigned int now = millis();

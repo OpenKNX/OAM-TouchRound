@@ -9,7 +9,7 @@ const char* DateTimePage::pageType()
 void DateTimePage::setup()
 {
     updateTime(true);
-    lv_disp_load_scr(DateTimeScreen::instance->screen);
+    DateTimeScreen::instance->show();
 }
 
 void DateTimePage::updateTime(bool forceUpdate)

@@ -1,10 +1,8 @@
+#pragma once
 #include "OpenKNX.h"
 #include <lvgl.h>
-#define EXT1_PIN 28
-#define EXT2_PIN 29
+ 
 
-#define DISPLAY_SLEEP_DELAY 10000
-#define VISU_MAX_PAGE 5
 class Page;
 
 class TouchDisplayModule : public OpenKNX::Module
@@ -58,11 +56,12 @@ private:
 public:
 	void activatePage(uint8_t channel, bool displayOn = true);
 	void display(bool on);
+	bool isDisplayOn();
 	void nextPage();
 	void previousPage();
 	void showErrorPage(const char* message);
 	void showProgButtonPage();
-	void showDetailDevicePage(uint8_t deviceIndex);
+	void showDetailDevicePage(uint8_t channelIndex, uint8_t deviceIndex);
 	void showMainFunctionDevicePage();
 
 

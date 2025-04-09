@@ -10,6 +10,7 @@
 #include "../Screens/MessageScreen.h"
 
 Page* Page::_currentPage = nullptr;
+Page* Page::_pageToSet = nullptr;
 
 const std::string Page::logPrefix()
 {
@@ -29,14 +30,31 @@ void Page::showPage(Page* page)
         openknxTouchDisplayModule.touchPressStateForLgvl = false;
         openknxTouchDisplayModule.loop(knx.configured());
     }
-    if (_currentPage != nullptr)
+    if (_pageToSet != nullptr)
     {
-        logDebug("Page", "Delete Page");
-        delete _currentPage;
+        logError("Page", "Page set multiple times");
+        delete _pageToSet;
     }
-    _currentPage = page;
-    logDebug("Page", "Show Page");
-    _currentPage->setup();
+    _pageToSet = page; 
+}
+void Page::handleLoop(bool configured)
+{
+    if (_pageToSet != nullptr)
+    {
+        if (_currentPage != nullptr)
+        {
+            logDebug("Page", "Delete Page");
+            delete _currentPage;
+        }
+        _currentPage = _pageToSet;
+        _pageToSet = nullptr;
+        logDebug("Page", "Setup Page %s", _currentPage->name().c_str());
+        _currentPage->setup();
+    }
+    if (_currentPage != nullptr && openknxTouchDisplayModule.isDisplayOn())
+    {
+        _currentPage->loop(configured);
+    }
 }
 
 void Page::errorInSetup(const char* message)
@@ -132,10 +150,11 @@ Page* Page::createPage(uint8_t channelIndex)
     return result;
 }
 
-Page* Page::createDetailDevicePage(uint8_t deviceIndex)
+Page* Page::createDetailDevicePage(uint8_t channelIndex, uint8_t deviceIndex)
 {
     auto page = new DetailDevicePage();
     page->setDevice(deviceIndex);
+    page->init(channelIndex);
     return page;
 }
 

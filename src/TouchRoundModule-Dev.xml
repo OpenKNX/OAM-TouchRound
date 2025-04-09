@@ -67,14 +67,14 @@
       <op:verify File="../lib/OFM-FunctionBlocks/library.json" ModuleVersion="%FCB_VerifyVersion%" />
     </op:define>
 
-    <op:define prefix="BTN"
+    <!-- <op:define prefix="BTN"
               share="../lib/OFM-VirtualButton/src/VirtualButton.share.xml"
               template="../lib/OFM-VirtualButton/src/VirtualButton.templ.xml"
               NumChannels="1"
               KoOffset="400"
               ModuleType="13" >
       <op:verify File="../lib/OFM-VirtualButton/library.json" ModuleVersion="%BTN_VerifyVersion%" />
-    </op:define>
+    </op:define> -->
 
     <generate />
 </KNX>
