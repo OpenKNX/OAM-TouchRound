@@ -8,7 +8,7 @@ class SwitchDisplayBridge : public SwitchBridge
     lv_event_cb_t _eventButtonPressed = nullptr;
     DetailDevicePage& _detailDevicePage;
     SwitchScreen& _screen = *SwitchScreen::instance;
-public:
+ public:
     SwitchDisplayBridge(DetailDevicePage& detailDevicePage);
     virtual ~SwitchDisplayBridge() override;
     virtual void setup(uint8_t _channelIndex) override;

@@ -1,6 +1,8 @@
 #include "DeviceBinderFactory.h"
 #include "DisplayBridges/SwitchDisplayBridge.h"
 #include "DisplayBridges/DimmerDisplayBridge.h"
+#include "DisplayBridges/DisplayDisplayBridge.h"
+#include "DisplayBridges/SensorDisplayBridge.h"
 
 const std::string DeviceBinderFactory::name()
 {
@@ -17,6 +19,20 @@ SwitchBridge* DeviceBinderFactory::createSwitch(KnxChannelSwitch& channel, uint8
 DimmerBridge* DeviceBinderFactory::createDimmer(KnxChannelDimmer& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
     auto result = new DimmerDisplayBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
+}
+
+DisplayBridge* DeviceBinderFactory::createDisplay(KnxChannelDisplay& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
+{
+    auto result = new DisplayDisplayBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
+}
+
+SensorBridge* DeviceBinderFactory::createSensor(KnxChannelSensor& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
+{
+    auto result = new SensorDisplayBridge(*_currentDevicePage);
     channel.add(result);
     return result;
 }

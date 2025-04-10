@@ -45,19 +45,8 @@ void DeviceMainFunctionCell::setup()
 void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
 {
     CellObject& cellObject = *_cellObject;
-    ImageLoader::loadImage(cellObject.image, channel.mainFunctionImage());
-
- //   lv_label_set_text(cell.value, channel.currentValueAsString().c_str());
-    if (channel.mainFunctionValue())
-    {
-        lv_obj_set_style_img_recolor_opa(cellObject.image, 255, 0);
-        lv_obj_set_style_img_recolor(cellObject.image, lv_color_make(255,255,0), 0);
-    }
-    else
-    {
-        lv_obj_set_style_img_recolor_opa(cellObject.image, 0, 0);
-        lv_obj_set_style_img_recolor(cellObject.image, lv_color_make(128,128,128), 0);
-    }
+    auto image = channel.mainFunctionImage();
+    ImageLoader::loadImage(cellObject.image, image.imageFile, image.allowRecolor, channel.mainFunctionValue());
 }
 
 void DeviceMainFunctionCell::shortPressed()

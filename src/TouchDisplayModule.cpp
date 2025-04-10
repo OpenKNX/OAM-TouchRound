@@ -10,6 +10,7 @@
 #include "./Screens/SwitchScreen.h"
 #include "./Screens/DimmerScreen.h"
 #include "./Screens/MessageScreen.h"
+#include "./Screens/AlarmScreen.h"
 #include "./Pages/ProgButtonPage.h"
 #include "./ImageLoader.h"
 
@@ -352,6 +353,7 @@ void TouchDisplayModule::setup(bool configured)
     SwitchScreen::instance = new SwitchScreen();
     DimmerScreen::instance = new DimmerScreen();
     ButtonMessageScreen::instance = new ButtonMessageScreen();
+    AlarmScreen::instance = new AlarmScreen();
 
     if (configured)
     {

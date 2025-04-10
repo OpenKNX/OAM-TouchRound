@@ -47,19 +47,8 @@ void DateTimeCell::updateTime(bool forceUpdate)
     {
         _lastValid = timeValid;
         forceUpdate = true;
-        if (timeValid)
-        {
-            lv_obj_set_style_img_recolor_opa(cellObject.image, 255, 0);
-            lv_obj_set_style_img_recolor(cellObject.image, lv_color_make(255,255,0), 0);
-        }
-        else
-        {
-            lv_obj_set_style_img_recolor_opa(cellObject.image, 0, 0);
-            lv_obj_set_style_img_recolor(cellObject.image, lv_color_make(128,128,128), 0);
-        }
+        ImageLoader::colorState(cellObject.image, true, timeValid);
     }
-   
-
     if (timeValid)
     {
         auto localTime = openknx.time.getLocalTime();

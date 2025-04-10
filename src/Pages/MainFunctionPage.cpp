@@ -51,18 +51,8 @@ void MainFunctionPage::setup()
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
     lv_label_set_text(_screen.value, channel.currentValueAsString().c_str());
-    ImageLoader::loadImage(_screen.image, channel.mainFunctionImage());
-  
-    if (channel.mainFunctionValue())
-    {
-        lv_obj_set_style_img_recolor_opa(_screen.image, 255, 0);
-        lv_obj_set_style_img_recolor(_screen.image, lv_color_make(255,255,0), 0);
-    }
-    else
-    {
-        lv_obj_set_style_img_recolor_opa(_screen.image, 0, 0);
-        lv_obj_set_style_img_recolor(_screen.image, lv_color_make(128,128,128), 0);
-    }
+    MainFunctionStateImage image = channel.mainFunctionImage();
+    ImageLoader::loadImage(_screen.image, image.imageFile, image.allowRecolor, channel.mainFunctionValue());
 }
 
 void MainFunctionPage::shortPressed()
@@ -126,6 +116,6 @@ std::string MainFunctionPage::image()
 {
     KnxChannelBase* device = getDevice();
     if (device != nullptr)
-        return device->mainFunctionImage(); 
+        return device->mainFunctionImage().imageFile; 
     return "";  
 }
