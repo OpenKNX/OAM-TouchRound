@@ -35,7 +35,7 @@ void DateTimePage::updateTime(bool forceUpdate)
             _lastMonth = localTime.month;
             _lastHour = localTime.hour;
             _lastMinute = localTime.minute;
-            
+
             lv_label_set_text(instance.weekday, dayOfWeekString(localTime.dayOfWeek));
 
             char buffer[50];
