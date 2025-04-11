@@ -24,16 +24,25 @@ void DateTimePage::updateTime(bool forceUpdate)
     if (timeValid)
     {
         auto localTime = openknx.time.getLocalTime();
-        auto time = localTime.toTime_t();
-        if (time != _lastTime || forceUpdate)
+        if (forceUpdate || (
+            _lastYear != localTime.year ||
+            _lastMonth != localTime.month ||
+            _lastHour != localTime.hour ||
+            _lastMinute != localTime.minute
+        ))
         {
+            _lastYear = localTime.year;
+            _lastMonth = localTime.month;
+            _lastHour = localTime.hour;
+            _lastMinute = localTime.minute;
+            
             lv_label_set_text(instance.weekday, dayOfWeekString(localTime.dayOfWeek));
 
             char buffer[50];
             sprintf(buffer, "%02d.%02d.%04d", (int)localTime.day, (int)localTime.month, (int)localTime.year);
             lv_label_set_text(instance.date, buffer);
        
-            sprintf(buffer, "%02d:%02d:%02d", (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
+            sprintf(buffer, "%02d:%02d", (int) localTime.hour, (int)localTime.minute /* , (int)localTime.second*/);
             lv_label_set_text(instance.time, buffer);
             lv_label_set_text(instance.message, "");
         }

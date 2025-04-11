@@ -52,9 +52,17 @@ void DateTimeCell::updateTime(bool forceUpdate)
     if (timeValid)
     {
         auto localTime = openknx.time.getLocalTime();
-        auto time = localTime.toTime_t();
-        if (time != _lastTime || forceUpdate)
+        if (forceUpdate || (
+            _lastYear != localTime.year ||
+            _lastMonth != localTime.month ||
+            _lastHour != localTime.hour ||
+            _lastMinute != localTime.minute
+        ))
         {
+            _lastYear = localTime.year;
+            _lastMonth = localTime.month;
+            _lastHour = localTime.hour;
+            _lastMinute = localTime.minute;    
             char buffer[50] = {0};
             if (_showTime && _showDate)
             {
@@ -66,7 +74,7 @@ void DateTimeCell::updateTime(bool forceUpdate)
             }
             else if (_showTime)
             {
-                sprintf(buffer, "%02d:%02d:%02d", (int) localTime.hour, (int)localTime.minute, (int)localTime.second);
+                sprintf(buffer, "%02d:%02d", (int) localTime.hour, (int)localTime.minute/*, (int)localTime.second*/);
             }
             lv_label_set_text(cellObject.label, buffer);
         }

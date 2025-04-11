@@ -4,7 +4,10 @@
 class DateTimePage : public Page
 {
     bool _lastValid = false;   
-    time_t _lastTime;
+    uint8_t _lastYear = 0;
+    uint8_t _lastMonth = 0;
+    uint8_t _lastHour = 0;
+    uint8_t _lastMinute = 0;
 
 protected:
     virtual const char* pageType() override;

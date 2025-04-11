@@ -7,7 +7,10 @@ class DateTimeCell : public Cell
         bool _showDate = false;
         bool _showTime = false;
         bool _lastValid = false;   
-        time_t _lastTime;
+        uint8_t _lastYear = 0;
+        uint8_t _lastMonth = 0;
+        uint8_t _lastHour = 0;
+        uint8_t _lastMinute = 0;
     public:
         DateTimeCell(bool showDate, bool showTime);
     protected:
