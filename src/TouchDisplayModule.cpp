@@ -165,8 +165,8 @@ void TouchDisplayModule::activatePage(uint8_t page, bool displayOn)
     }
     if (displayOn)
         display(true);
-
-    _lastTimeoutReset = millis();
+    else
+        resetDisplayTimeout();
     auto current = _channelIndex;
     _channelIndex = page - 1;
     if (current == _channelIndex && Page::currentPage() != nullptr && !_detailDevicePageActive)
@@ -324,7 +324,7 @@ void TouchDisplayModule::previousPage()
 void TouchDisplayModule::setup(bool configured)
 {
     if (configured)
-        _lastTimeoutReset = millis();
+        resetDisplayTimeout();
 
     if (configured)
     {
@@ -457,8 +457,10 @@ void TouchDisplayModule::lv_log(
 
 void TouchDisplayModule::resetDisplayTimeout()
 {
-    if (_lastTimeoutReset != 0)
-        _lastTimeoutReset = millis();
+    if (_pageTimeout > 0 || _displayTimeoutMs > 0)
+    {
+        _lastTimeoutReset = max(1L, millis());
+    }
 }
 
 bool TouchDisplayModule::isDisplayOn()
@@ -555,7 +557,6 @@ void TouchDisplayModule::loop(bool configured)
             else
             {
                 _pageAtPressStart = Page::currentPage();
-                _touchPressedTimer = max(1L, millis());
                 touchPressStateForLgvl = true;
             }
         }
@@ -566,7 +567,6 @@ void TouchDisplayModule::loop(bool configured)
             if (_touchPressedTimer != 0)
             {
                 auto page = Page::currentPage();   
-                unsigned long pressedTime = millis() - _touchPressedTimer; 
                 if (page != nullptr)
                 {
                     if (page == _pageAtPressStart)
@@ -620,7 +620,7 @@ void TouchDisplayModule::loop(bool configured)
             logDebugP("Default page timeout %d", _pageTimeout);
             activatePage(_defaultPage, false);
         }
-        if (pastMs > _pageTimeout && pastMs > _displayTimeoutMs)
+        if ((_pageTimeout && pastMs > _pageTimeout) && (_displayTimeoutMs && pastMs > _displayTimeoutMs))
         {
             _lastTimeoutReset = 0;
         }
