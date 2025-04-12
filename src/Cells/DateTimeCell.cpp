@@ -29,6 +29,7 @@ void DateTimeCell::setup()
     {
         ImageLoader::loadImage(cellObject.image, "Time.png");
     }
+    lv_label_set_text(cellObject.value, "");
     updateTime(true);
 }
 

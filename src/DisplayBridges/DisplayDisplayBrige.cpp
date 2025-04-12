@@ -18,8 +18,17 @@ DisplayDisplayBridge::~DisplayDisplayBridge()
 
 void DisplayDisplayBridge::setValue(double value)
 {
+    updateValue();
+}
+
+void DisplayDisplayBridge::setValue(const char* value)
+{
+    updateValue();
+}
+
+void DisplayDisplayBridge::updateValue()
+{  
     auto& device = *_channel;
     lv_label_set_text(_screen.value, device.currentValueAsString().c_str());
     ImageLoader::loadImage(_screen.image, device.mainFunctionImage().imageFile, device.mainFunctionImage().allowRecolor, device.mainFunctionValue());
-
 }

@@ -12,4 +12,6 @@ public:
     virtual ~DisplayDisplayBridge() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setValue(double value) override;
+    virtual void setValue(const char* value) override;
+    void updateValue();
 };  

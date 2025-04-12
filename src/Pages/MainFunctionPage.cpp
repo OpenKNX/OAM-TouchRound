@@ -34,16 +34,17 @@ void MainFunctionPage::setup()
         return;
     }
     auto& device = *_device;
+    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = true; };
+    lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
+  
+    lv_label_set_text(_screen.label, device.getNameInUTF8());
+
     _handler = [this](KnxChannelBase& channel)
     {
        channelValueChanged(channel);
     };
     device.addChangedHandler(_handler);
-    _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = true; };
-    lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
-  
-    lv_label_set_text(_screen.label, device.getNameInUTF8());
-    
+
     _screen.show();
 }
 

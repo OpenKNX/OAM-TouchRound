@@ -28,6 +28,7 @@ void JumpCell::setup()
     lv_label_set_text(cellObject.label, page->name().c_str());
     ImageLoader::loadImage(cellObject.image, page->image().c_str());
     delete page;
+    lv_label_set_text(cellObject.value, "");
 }
 
 void JumpCell::loop(bool configured)

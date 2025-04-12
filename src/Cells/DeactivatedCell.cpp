@@ -12,4 +12,5 @@ void DeactivatedCell::setup()
     CellObject& cellObject = *_cellObject;
     lv_label_set_text(cellObject.label, "Deaktiviert");
     lv_img_set_src(cellObject.image, nullptr);
+    lv_label_set_text(cellObject.value, "");
 }

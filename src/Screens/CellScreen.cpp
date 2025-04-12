@@ -117,14 +117,16 @@ _height(height)
     lv_obj_set_size(cell, width, height);
     lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     label = lv_label_create(cell);
-    lv_label_set_text(label, "Test");
     if (labelTop)
         lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
     else
         lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
 
     image = lv_img_create(cell);  
-  
     lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);  
+
+    value = lv_label_create(cell);
+    lv_obj_set_align(value, LV_ALIGN_CENTER);
+    lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_CENTER, 0);
 }
 
