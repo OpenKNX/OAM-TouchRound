@@ -51,12 +51,10 @@ void DeviceMainFunctionCell::channelValueChanged(KnxChannelBase& channel)
     CellObject& cellObject = *_cellObject;
     if (channel.mainFunctionPreferValueDisplay())
     {
-        logErrorP("Show Text");
         lv_label_set_text(cellObject.value, channel.currentValueAsString().c_str());
     }
     else
     {
-        logErrorP("Show Image");
         auto image = channel.mainFunctionImage();
         ImageLoader::loadImage(cellObject.image, image.imageFile, image.allowRecolor, channel.mainFunctionValue());            
     }
