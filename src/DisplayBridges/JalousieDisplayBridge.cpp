@@ -2,7 +2,7 @@
 #include "../ImageLoader.h"
 
 JalousieDisplayBridge::JalousieDisplayBridge(DetailDevicePage& detailDevicePage)
-    : RolladenDisplayBridge(_screen, detailDevicePage)
+    : RolladenDisplayBridge(*JalousieScreen::instance, detailDevicePage)
 {
 }
 
@@ -10,8 +10,8 @@ void JalousieDisplayBridge::setup(uint8_t _channelIndex)
 {   
     _eventSliderSlatReleased = [](lv_event_t *e) { ((JalousieDisplayBridge*) lv_event_get_user_data(e))->sliderSlatReleased(); };  
     lv_obj_add_event_cb(_screen.sliderSlat, _eventSliderSlatReleased, LV_EVENT_RELEASED, this);
-    
     RolladenDisplayBridge::setup(_channelIndex);
+   
 }
 
 JalousieDisplayBridge::~JalousieDisplayBridge()

@@ -2,7 +2,7 @@
 #include "../ImageLoader.h"
 
 RolladenDisplayBridge::RolladenDisplayBridge(DetailDevicePage& detailDevicePage)
-    : _detailDevicePage(detailDevicePage)
+    : RolladenDisplayBridge(*RolladenScreen::instance, detailDevicePage)
 {
 
 }

@@ -34,10 +34,10 @@ RolladenBridge* DeviceBinderFactory::createRolladen(KnxChannelRolladen& channel,
 
 RolladenBridge* DeviceBinderFactory::createJalousien(KnxChannelJalousie& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
-    return nullptr;
-    // auto result = new JalousieDisplayBridge(*_currentDevicePage);
-    // channel.add(result);
-    // return result;
+    logError("DeviceBinderFactory", "Jolousie");
+    auto result = new JalousieDisplayBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
 }
 
 

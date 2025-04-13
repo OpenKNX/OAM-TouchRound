@@ -10,7 +10,7 @@ class RolladenDisplayBridge : public RolladenBridge
     lv_event_cb_t _eventButtonStopPressed = nullptr;
     lv_event_cb_t _eventButtonMainFunctionPressed = nullptr;
     lv_event_cb_t _eventSliderReleased = nullptr;
-    RolladenScreen& _screen = *RolladenScreen::instance;
+    RolladenScreen& _screen;
 protected:
     DetailDevicePage& _detailDevicePage;
     RolladenDisplayBridge(RolladenScreen& screen, DetailDevicePage& detailDevicePage);
