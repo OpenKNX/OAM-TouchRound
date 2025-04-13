@@ -60,6 +60,7 @@ const lv_image_dsc_t Type20 = {
     .header = {
         .magic = LV_IMAGE_HEADER_MAGIC,
         .cf = LV_COLOR_FORMAT_RGB565,
+        .flags = 0,
         .w = 32,
         .h = 32,
       },
