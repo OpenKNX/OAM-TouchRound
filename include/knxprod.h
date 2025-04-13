@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 3
-#define MAIN_ApplicationVersion 7
+#define MAIN_ApplicationVersion 9
 #define MAIN_ParameterSize 14522
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"

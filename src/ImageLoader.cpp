@@ -147,12 +147,18 @@ const std::string ImageLoader::logPrefix()
     return "ImageLoader";
 }
 
+void ImageLoader::unloadImage(lv_obj_t* imageObject)
+{
+    lv_img_set_src(imageObject, nullptr);
+    lv_obj_add_flag(imageObject, LV_OBJ_FLAG_HIDDEN);
+}
+
 void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool useStateColor, bool state)
 {
     if (fileName == "")
     {
-        lv_img_set_src(imageObject, nullptr);
-        useStateColor = false;
+        unloadImage(imageObject);
+        return;
     }
 #if LVGL_VERSION_MAJOR <= 8
     else if (LittleFS.exists(("/" + fileName).c_str()))
@@ -272,6 +278,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     }
     #endif
     colorState(imageObject, useStateColor, state);
+    lv_obj_clear_flag(imageObject, LV_OBJ_FLAG_HIDDEN);
 } 
 
 void ImageLoader::colorState(lv_obj_t* imageObject, bool useStateColor, bool state)

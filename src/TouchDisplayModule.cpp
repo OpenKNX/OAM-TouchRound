@@ -548,7 +548,7 @@ void TouchDisplayModule::loop(bool configured)
    
     if (touchPressed != _touchPressState)
     {
-
+        logErrorP("Touch %d", (int) touchPressed);
         _touchPressState = touchPressed;
         if (touchPressed)
         {
@@ -558,6 +558,7 @@ void TouchDisplayModule::loop(bool configured)
             {
                 _pageAtPressStart = Page::currentPage();
                 touchPressStateForLgvl = true;
+                _touchPressedTimer = max(1L, millis());
             }
         }
         else
@@ -570,7 +571,9 @@ void TouchDisplayModule::loop(bool configured)
                 if (page != nullptr)
                 {
                     if (page == _pageAtPressStart)
+                    {
                         page->shortPressed();
+                    }
                     auto currentPage = Page::currentPage();
                     if (currentPage == page)
                         page->resetPressed();
@@ -590,7 +593,9 @@ void TouchDisplayModule::loop(bool configured)
             if (page != nullptr)
             {
                 if (page == _pageAtPressStart)
+                {
                     page->longPressed();
+                }
                 auto currentPage = Page::currentPage();
                 if (currentPage == page)
                 {

@@ -1,6 +1,7 @@
 #include "DeactivatedCell.h"
 #include "CellParameterDefines.h"
 #include "../Screens/CellScreen.h"
+#include "../ImageLoader.h"
 
 const char* DeactivatedCell::cellType()
 {
@@ -11,6 +12,6 @@ void DeactivatedCell::setup()
 {
     CellObject& cellObject = *_cellObject;
     lv_label_set_text(cellObject.label, "Deaktiviert");
-    lv_img_set_src(cellObject.image, nullptr);
+    ImageLoader::unloadImage(cellObject.image);
     lv_label_set_text(cellObject.value, "");
 }

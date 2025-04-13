@@ -36,7 +36,6 @@ void MainFunctionPage::setup()
     auto& device = *_device;
     _eventPressed = [](lv_event_t *e) { ((MainFunctionPage*) e->user_data)->_clickStarted = true; };
     lv_obj_add_event_cb(_screen.screen, _eventPressed, LV_EVENT_PRESSED, this);
-  
     lv_label_set_text(_screen.label, device.getNameInUTF8());
 
     _handler = [this](KnxChannelBase& channel)
@@ -47,7 +46,6 @@ void MainFunctionPage::setup()
 
     _screen.show();
 }
-
 
 void MainFunctionPage::channelValueChanged(KnxChannelBase& channel)
 {
