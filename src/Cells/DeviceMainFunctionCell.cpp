@@ -30,7 +30,7 @@ void DeviceMainFunctionCell::setup()
     CellObject& cellObject = *_cellObject;
     lv_label_set_text(cellObject.label, device.getNameInUTF8());
     
-    _eventPressed = [](lv_event_t *e) { logError("Cell", "Click Started");  ((DeviceMainFunctionCell*)lv_event_get_user_data(e))->_clickStarted = true; };
+    _eventPressed = [](lv_event_t *e) {((DeviceMainFunctionCell*)lv_event_get_user_data(e))->_clickStarted = true; };
     lv_obj_add_event_cb(cellObject.cell, _eventPressed, LV_EVENT_PRESSED, this);
  
     lv_label_set_text(cellObject.label, device.getNameInUTF8());

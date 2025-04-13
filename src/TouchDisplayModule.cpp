@@ -548,7 +548,6 @@ void TouchDisplayModule::loop(bool configured)
    
     if (touchPressed != _touchPressState)
     {
-        logErrorP("Touch %d", (int) touchPressed);
         _touchPressState = touchPressed;
         if (touchPressed)
         {
