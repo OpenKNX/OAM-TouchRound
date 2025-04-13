@@ -57,9 +57,10 @@ void Page::handleLoop(bool configured)
     }
 }
 
-void Page::errorInSetup(const char* message)
+void Page::errorInSetup(const char* label,  const char* message)
 {
     MessageScreen& screen = *MessageScreen::instance;
+    lv_label_set_text(screen.label, label);
     lv_label_set_text(screen.message, message);
     lv_disp_load_scr(screen.screen);
 }

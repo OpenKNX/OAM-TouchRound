@@ -14,7 +14,7 @@ void CellPage::setup()
     logDebugP("setup %d cells", (int) _numberOfCells);
     if (_numberOfCells == 0)
     {
-        errorInSetup("Seite hat keine Felder");
+        errorInSetup(name().c_str(), "Seite hat keine Felder");
         return;
     }
     switch (_numberOfCells)
@@ -29,7 +29,7 @@ void CellPage::setup()
         _screen = CellScreen4::instance;
         break;
     default:
-        errorInSetup("Zellenanzahl nicht unterstützt");
+        errorInSetup(name().c_str(), "Zellenanzahl nicht unterstützt");
         break;
     }
   

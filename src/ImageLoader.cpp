@@ -1,6 +1,9 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
 #if LVGL_VERSION_MAJOR >= 9
+#include "../Images/v9/chevron_up.c"
+#include "../Images/v9/chevron_down.c"
+#include "../Images/v9/stop_circle.c"
 #include "../Images/v9/Type10.c"
 #include "../Images/v9/Type11.c"
 #include "../Images/v9/Type20.c"
@@ -28,6 +31,9 @@
 #include "../Images/v9/Date.c"
 #include "../Images/v9/DateTime.c"
 #else
+#include "../Images/v8/chevron_up.c"
+#include "../Images/v8/chevron_down.c"
+#include "../Images/v8/stop_circle.c"
 #include "../Images/v8/Type10.c"
 #include "../Images/v8/Type11.c"
 #include "../Images/v8/Type20.c"
@@ -170,6 +176,18 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
         logInfoP("Load file: %s", filePath.c_str());
 
         lv_img_set_src(imageObject, filePath.c_str());
+    }
+    else if (fileName == "chevron_up.png")
+    {
+        lv_img_set_src(imageObject, &chevron_up);
+    }
+    else if (fileName == "chevron_down.png")
+    {
+        lv_img_set_src(imageObject, &chevron_down);
+    }
+    else if (fileName == "stop_circle.png")
+    {
+        lv_img_set_src(imageObject, &stop_circle);
     }
     else if (fileName == "Type10.png")
     {

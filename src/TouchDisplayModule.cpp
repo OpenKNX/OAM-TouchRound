@@ -11,6 +11,8 @@
 #include "./Screens/DimmerScreen.h"
 #include "./Screens/MessageScreen.h"
 #include "./Screens/AlarmScreen.h"
+#include "./Screens/RolladenScreen.h"
+#include "./Screens/JalousieScreen.h"
 #include "./Pages/ProgButtonPage.h"
 #include "./ImageLoader.h"
 
@@ -354,6 +356,8 @@ void TouchDisplayModule::setup(bool configured)
     DimmerScreen::instance = new DimmerScreen();
     ButtonMessageScreen::instance = new ButtonMessageScreen();
     AlarmScreen::instance = new AlarmScreen();
+    RolladenScreen::instance = new RolladenScreen();
+    JalousieScreen::instance = new JalousieScreen();
 
     if (configured)
     {

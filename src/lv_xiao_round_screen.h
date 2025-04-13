@@ -219,6 +219,8 @@ void chsc6x_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
         data->state = LV_INDEV_STATE_RELEASED;
     } else {
         data->state = LV_INDEV_STATE_PRESSED;
+        touchX = data->point.x;
+        touchY = data->point.y;
         chsc6x_get_xy(&touchX, &touchY);
         /*Set the coordinates*/
         if (touchX >= SCREEN_WIDTH) touchX = SCREEN_WIDTH - 1;

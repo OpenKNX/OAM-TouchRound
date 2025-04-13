@@ -13,7 +13,7 @@ protected:
     virtual const std::string logPrefix();
     virtual const char* pageType() = 0;
     uint8_t _channelIndex; // page channel index
-    void errorInSetup(const char* message);
+    void errorInSetup(const char* label, const char* message);
     virtual void loop(bool configured) {}
   
 public:

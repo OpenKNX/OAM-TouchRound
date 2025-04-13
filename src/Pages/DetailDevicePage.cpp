@@ -45,14 +45,18 @@ void DetailDevicePage::createDeviceBinder()
     KnxChannelBase* device = getDevice();
     if (device == nullptr)
     {
-        errorInSetup("Gerät ist deaktiviert");
+        char label[30];
+        snprintf(label, sizeof(label), "Seite %d", _channelIndex + 1);
+        char message[30];
+        snprintf(message, sizeof(message), "Gerät %d ist deaktiviert", _deviceIndex + 1);
+        errorInSetup(label, message);
         return;
     }
     _widgetFactory->_currentDevicePage = this;
     _bridge = device->createBridgeDevice(*_widgetFactory);
     if (_bridge == nullptr)
     {
-        errorInSetup("Gerät wird zur Anzeige\nnoch nicht unterstützt");
+        errorInSetup(name().c_str(), "Detailseite des Gerätetype\nwird zur Anzeige\nnoch nicht unterstützt.\nBitte die\nHauptfunktionseite\nkonfigurieren.");
         return;
     }
 }

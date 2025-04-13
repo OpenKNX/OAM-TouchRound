@@ -10,7 +10,6 @@ DimmerScreen::DimmerScreen()
     lv_obj_set_align(value, LV_ALIGN_CENTER);
     lv_arc_set_value(value, 0);
     lv_arc_set_bg_angles(value, 160, 20);
-    lv_arc_set_value(value, 0);
     lv_obj_set_style_arc_width(value, 20, LV_PART_INDICATOR | LV_STATE_DEFAULT);
 
     

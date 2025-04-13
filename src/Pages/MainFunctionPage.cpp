@@ -30,7 +30,11 @@ void MainFunctionPage::setup()
     _device = getDevice();
     if (_device == nullptr)
     {
-        errorInSetup("Gerät ist deaktiviert");
+        char label[30];
+        snprintf(label, sizeof(label), "Seite %d", _channelIndex + 1);
+        char message[30];
+        snprintf(message, sizeof(message), "Gerät %d ist deaktiviert", (int) ParamTCH_CHDeviceSelection1);
+        errorInSetup(label, message);
         return;
     }
     auto& device = *_device;

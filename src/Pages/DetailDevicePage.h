@@ -13,13 +13,14 @@ protected:
     ChannelBridge* _bridge = nullptr;
     KnxChannelBase* _device = nullptr;
     virtual const char* pageType() override;
-    KnxChannelBase* getDevice();
-
+ 
 
 public:
+ 
     virtual ~DetailDevicePage() override;
     virtual void createDeviceBinder();
 
+    KnxChannelBase* getDevice();
     void setup() override;
     virtual std::string name() override;
     virtual std::string image() override;
