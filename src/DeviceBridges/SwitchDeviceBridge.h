@@ -3,14 +3,14 @@
 #include "Switch/KnxChannelSwitch.h"
 #include "../Screens/SwitchScreen.h"
 
-class SwitchDisplayBridge : public SwitchBridge
+class SwitchDeviceBridge : public SwitchBridge
 {
     lv_event_cb_t _eventButtonPressed = nullptr;
     DetailDevicePage& _detailDevicePage;
     SwitchScreen& _screen = *SwitchScreen::instance;
  public:
-    SwitchDisplayBridge(DetailDevicePage& detailDevicePage);
-    virtual ~SwitchDisplayBridge() override;
+    SwitchDeviceBridge(DetailDevicePage& detailDevicePage);
+    virtual ~SwitchDeviceBridge() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setPower(bool on) override;
     void buttonClicked();

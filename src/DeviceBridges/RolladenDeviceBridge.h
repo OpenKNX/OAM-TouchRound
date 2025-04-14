@@ -3,7 +3,7 @@
 #include "Rolladen/KnxChannelRolladen.h"
 #include "../Screens/RolladenScreen.h"
 
-class RolladenDisplayBridge : public RolladenBridge
+class RolladenDeviceBridge : public RolladenBridge
 {
     lv_event_cb_t _eventButtonUpPressed = nullptr;
     lv_event_cb_t _eventButtonDownPressed = nullptr;
@@ -12,10 +12,10 @@ class RolladenDisplayBridge : public RolladenBridge
     RolladenScreen& _screen;
 protected:
     DetailDevicePage& _detailDevicePage;
-    RolladenDisplayBridge(RolladenScreen& screen, DetailDevicePage& detailDevicePage);
+    RolladenDeviceBridge(RolladenScreen& screen, DetailDevicePage& detailDevicePage);
  public:
-    RolladenDisplayBridge(DetailDevicePage& detailDevicePage);
-    virtual ~RolladenDisplayBridge() override;
+    RolladenDeviceBridge(DetailDevicePage& detailDevicePage);
+    virtual ~RolladenDeviceBridge() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setPosition(uint8_t position) override;
     virtual void setMovement(MoveState movement) override;

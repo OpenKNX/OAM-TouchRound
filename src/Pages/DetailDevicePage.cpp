@@ -1,9 +1,9 @@
 #include "DetailDevicePage.h"
 #include "../TouchDisplayModule.h"
 #include "SmartHomeBridgeModule.h"
-#include "../DeviceBinderFactory.h"
+#include "../DeviceBridgeFactory.h"
 
-DeviceBinderFactory* DetailDevicePage::_widgetFactory = nullptr;
+DeviceBridgeFactory* DetailDevicePage::_widgetFactory = nullptr;
 
 const char* DetailDevicePage::pageType()
 {
@@ -31,10 +31,10 @@ void DetailDevicePage::setDevice(uint8_t deviceIndex)
     _deviceIndex = deviceIndex;
 }
 
-void DetailDevicePage::createDeviceBinder()
+void DetailDevicePage::createDeviceBridge()
 {
     if (_widgetFactory == nullptr)
-        _widgetFactory = new DeviceBinderFactory();
+        _widgetFactory = new DeviceBridgeFactory();
     if (_deviceIndex >= openknxSmartHomeBridgeModule.getNumberOfUsedChannels())
     {
         openknxTouchDisplayModule.showErrorPage("Gerät nicht verfügbar");
@@ -65,7 +65,7 @@ void DetailDevicePage::setup()
 {
     if (_deviceIndex == 255)
         _deviceIndex = ParamTCH_CHDeviceSelection1 - 1;
-    createDeviceBinder();
+    createDeviceBridge();
 }
 
 std::string DetailDevicePage::name()

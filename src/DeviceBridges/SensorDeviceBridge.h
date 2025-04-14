@@ -3,13 +3,13 @@
 #include "Sensor/KnxChannelSensor.h"
 #include "../Screens/AlarmScreen.h"
 
-class SensorDisplayBridge : public SensorBridge
+class SensorDeviceBridge : public SensorBridge
 {
     DetailDevicePage& _detailDevicePage;
     AlarmScreen& _screen = *AlarmScreen::instance;
 public:
-    SensorDisplayBridge(DetailDevicePage& detailDevicePage);
-    virtual ~SensorDisplayBridge() override;
+    SensorDeviceBridge(DetailDevicePage& detailDevicePage);
+    virtual ~SensorDeviceBridge() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setDetected(bool detected) override;
 };  

@@ -1,12 +1,12 @@
-#include "FanDisplayBridge.h"
+#include "FanDeviceBridge.h"
 #include "../ImageLoader.h"
 
-FanDisplayBridge::FanDisplayBridge(DetailDevicePage& detailDevicePage)
+FanDeviceBridge::FanDeviceBridge(DetailDevicePage& detailDevicePage)
     : _detailDevicePage(detailDevicePage)
 {
 }
 
-void FanDisplayBridge::setup(uint8_t _channelIndex)
+void FanDeviceBridge::setup(uint8_t _channelIndex)
 {   
     if (ParamBRI_CHFanAutomatic)
         lv_obj_clear_flag(_screen.buttonAuto, LV_OBJ_FLAG_HIDDEN);
@@ -15,17 +15,17 @@ void FanDisplayBridge::setup(uint8_t _channelIndex)
  
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
    
-    _eventButtonPressed = [](lv_event_t *e) { ((FanDisplayBridge*) lv_event_get_user_data(e))->buttonClicked(); };
+    _eventButtonPressed = [](lv_event_t *e) { ((FanDeviceBridge*) lv_event_get_user_data(e))->buttonClicked(); };
     lv_obj_add_event_cb(_screen.buttonAuto, _eventButtonPressed, LV_EVENT_CLICKED, this);
    
-    _eventIconPressed = [](lv_event_t *e) { ((FanDisplayBridge*) lv_event_get_user_data(e))->imageClicked(); };
+    _eventIconPressed = [](lv_event_t *e) { ((FanDeviceBridge*) lv_event_get_user_data(e))->imageClicked(); };
     lv_obj_add_event_cb(_screen.image, _eventIconPressed, LV_EVENT_CLICKED, this);
     
     _screen.show();
     mainFunctionValueChanged();
 }
 
-FanDisplayBridge::~FanDisplayBridge()
+FanDeviceBridge::~FanDeviceBridge()
 {
     if (_eventButtonPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.buttonAuto, _eventButtonPressed, this);
@@ -33,7 +33,7 @@ FanDisplayBridge::~FanDisplayBridge()
         lv_obj_remove_event_cb_with_user_data(_screen.image, _eventIconPressed, this);
 }
 
-void FanDisplayBridge::setAutomatic(bool automatic)
+void FanDeviceBridge::setAutomatic(bool automatic)
 {
     _automatic = automatic;
     if (automatic)
@@ -42,18 +42,18 @@ void FanDisplayBridge::setAutomatic(bool automatic)
         lv_obj_clear_state(_screen.buttonAuto, LV_STATE_CHECKED);   
 }
 
-void FanDisplayBridge::setPower(bool power)
+void FanDeviceBridge::setPower(bool power)
 {
     _channel->commandPower(this, power);
 }
 
-void FanDisplayBridge::buttonClicked()
+void FanDeviceBridge::buttonClicked()
 {
     auto& device = *_channel;
     device.commandAutomatic(this, !_automatic);
 }
 
-void FanDisplayBridge::mainFunctionValueChanged()
+void FanDeviceBridge::mainFunctionValueChanged()
 {
     auto& device = *_channel;
     auto image = device.mainFunctionImage();
@@ -62,7 +62,7 @@ void FanDisplayBridge::mainFunctionValueChanged()
     lv_label_set_text(_screen.value, device.currentValueAsString().c_str());
 }
 
-void FanDisplayBridge::imageClicked()
+void FanDeviceBridge::imageClicked()
 {    
     _channel->commandMainFunctionClick();
 }

@@ -1,32 +1,32 @@
-#include "DisplayDisplayBridge.h"
+#include "DisplayDeviceBridge.h"
 #include "../ImageLoader.h"
 
-DisplayDisplayBridge::DisplayDisplayBridge(DetailDevicePage& detailDevicePage)
+DisplayDeviceBridge::DisplayDeviceBridge(DetailDevicePage& detailDevicePage)
     : _detailDevicePage(detailDevicePage)
 {
 }
 
-void DisplayDisplayBridge::setup(uint8_t _channelIndex)
+void DisplayDeviceBridge::setup(uint8_t _channelIndex)
 {   
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
     _screen.show();
 }
 
-DisplayDisplayBridge::~DisplayDisplayBridge()
+DisplayDeviceBridge::~DisplayDeviceBridge()
 {
 }
 
-void DisplayDisplayBridge::setValue(double value)
-{
-    updateValue();
-}
-
-void DisplayDisplayBridge::setValue(const char* value)
+void DisplayDeviceBridge::setValue(double value)
 {
     updateValue();
 }
 
-void DisplayDisplayBridge::updateValue()
+void DisplayDeviceBridge::setValue(const char* value)
+{
+    updateValue();
+}
+
+void DisplayDeviceBridge::updateValue()
 {  
     auto& device = *_channel;
     lv_label_set_text(_screen.value, device.currentValueAsString().c_str());

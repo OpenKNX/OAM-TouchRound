@@ -1,34 +1,34 @@
-#include "RolladenDisplayBridge.h"
+#include "RolladenDeviceBridge.h"
 #include "../ImageLoader.h"
 
-RolladenDisplayBridge::RolladenDisplayBridge(DetailDevicePage& detailDevicePage)
-    : RolladenDisplayBridge(*RolladenScreen::instance, detailDevicePage)
+RolladenDeviceBridge::RolladenDeviceBridge(DetailDevicePage& detailDevicePage)
+    : RolladenDeviceBridge(*RolladenScreen::instance, detailDevicePage)
 {
 
 }
 
-RolladenDisplayBridge::RolladenDisplayBridge(RolladenScreen& screen, DetailDevicePage& detailDevicePage)
+RolladenDeviceBridge::RolladenDeviceBridge(RolladenScreen& screen, DetailDevicePage& detailDevicePage)
     : _screen(screen), _detailDevicePage(detailDevicePage)
 {
 }
 
-void RolladenDisplayBridge::setup(uint8_t _channelIndex)
+void RolladenDeviceBridge::setup(uint8_t _channelIndex)
 {   
     lv_label_set_text(_screen.label, _channel->getNameInUTF8());
-    _eventButtonUpPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonUpPressed(); };
+    _eventButtonUpPressed = [](lv_event_t *e) { ((RolladenDeviceBridge*) lv_event_get_user_data(e))->buttonUpPressed(); };
     lv_obj_add_event_cb(_screen.buttonUp, _eventButtonUpPressed, LV_EVENT_CLICKED, this);
-    _eventButtonDownPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonDownPressed(); };
+    _eventButtonDownPressed = [](lv_event_t *e) { ((RolladenDeviceBridge*) lv_event_get_user_data(e))->buttonDownPressed(); };
     lv_obj_add_event_cb(_screen.buttonDown, _eventButtonDownPressed, LV_EVENT_CLICKED, this);  
-    _eventButtonMainFunctionPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonMainFunctionPressed(); };
+    _eventButtonMainFunctionPressed = [](lv_event_t *e) { ((RolladenDeviceBridge*) lv_event_get_user_data(e))->buttonMainFunctionPressed(); };
     lv_obj_add_event_cb(_screen.icon, _eventButtonMainFunctionPressed, LV_EVENT_CLICKED, this);  
-    _eventSliderReleased = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->sliderReleased(); };  
+    _eventSliderReleased = [](lv_event_t *e) { ((RolladenDeviceBridge*) lv_event_get_user_data(e))->sliderReleased(); };  
     lv_obj_add_event_cb(_screen.sliderPosition, _eventSliderReleased, LV_EVENT_RELEASED, this);
     
     mainFunctionValueChanged();
     _screen.show();
 }
 
-RolladenDisplayBridge::~RolladenDisplayBridge()
+RolladenDeviceBridge::~RolladenDeviceBridge()
 {
     if (_eventButtonUpPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.buttonUp, _eventButtonUpPressed, this);
@@ -40,14 +40,14 @@ RolladenDisplayBridge::~RolladenDisplayBridge()
         lv_obj_remove_event_cb_with_user_data(_screen.sliderPosition, _eventSliderReleased, this);
 }
 
-void RolladenDisplayBridge::mainFunctionValueChanged() 
+void RolladenDeviceBridge::mainFunctionValueChanged() 
 {
     auto& device = *_detailDevicePage.getDevice();
     auto image = device.mainFunctionImage();
     ImageLoader::loadImage(_screen.icon, image.imageFile, image.allowRecolor, device.mainFunctionValue());
 }
 
-void RolladenDisplayBridge::setPosition(uint8_t position)
+void RolladenDeviceBridge::setPosition(uint8_t position)
 {
     lv_slider_set_value(_screen.sliderPosition,100 - position, LV_ANIM_ON);
     char buffer[10];
@@ -55,7 +55,7 @@ void RolladenDisplayBridge::setPosition(uint8_t position)
     lv_label_set_text(_screen.value, buffer);
 }
 
-void RolladenDisplayBridge::setMovement(MoveState movement)
+void RolladenDeviceBridge::setMovement(MoveState movement)
 {
     switch (movement)
     {
@@ -72,25 +72,25 @@ void RolladenDisplayBridge::setMovement(MoveState movement)
     }
 }
 
-void RolladenDisplayBridge::sliderReleased()
+void RolladenDeviceBridge::sliderReleased()
 {
     uint8_t value = 100 - lv_slider_get_value(_screen.sliderPosition);
     _channel->commandPosition(this, value);
 }
 
-void RolladenDisplayBridge::buttonUpPressed()
+void RolladenDeviceBridge::buttonUpPressed()
 {
     _channel->commandPosition(this, 0);
 }
    
 
-void RolladenDisplayBridge::buttonDownPressed()
+void RolladenDeviceBridge::buttonDownPressed()
 {
     _channel->commandPosition(this, 100);
 }
 
 
-void RolladenDisplayBridge::buttonMainFunctionPressed()
+void RolladenDeviceBridge::buttonMainFunctionPressed()
 {    
     _channel->commandMainFunctionClick();
 }

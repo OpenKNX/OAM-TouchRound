@@ -1,13 +1,13 @@
 #pragma once
 #include "OpenKNX.h"
 #include "Page.h"
-#include "../DeviceBinderFactory.h"
+#include "../DeviceBridgeFactory.h"
 
 class ChannelBridge;
 
 class DetailDevicePage : public Page
 {
-    static DeviceBinderFactory* _widgetFactory;
+    static DeviceBridgeFactory* _widgetFactory;
     uint8_t _deviceIndex = 255;
 protected:
     ChannelBridge* _bridge = nullptr;
@@ -18,7 +18,7 @@ protected:
 public:
  
     virtual ~DetailDevicePage() override;
-    virtual void createDeviceBinder();
+    virtual void createDeviceBridge();
 
     KnxChannelBase* getDevice();
     void setup() override;
