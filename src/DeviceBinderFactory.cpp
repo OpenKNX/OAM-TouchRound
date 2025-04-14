@@ -5,6 +5,7 @@
 #include "DisplayBridges/SensorDisplayBridge.h"
 #include "DisplayBridges/RolladenDisplayBridge.h"
 #include "DisplayBridges/JalousieDisplayBridge.h"
+#include "DisplayBridges/FanDisplayBridge.h"
 
 const std::string DeviceBinderFactory::name()
 {
@@ -51,6 +52,13 @@ DisplayBridge* DeviceBinderFactory::createDisplay(KnxChannelDisplay& channel, ui
 SensorBridge* DeviceBinderFactory::createSensor(KnxChannelSensor& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
     auto result = new SensorDisplayBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
+}
+
+FanBridge* DeviceBinderFactory::createFan(KnxChannelFan& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
+{
+    auto result = new FanDisplayBridge(*_currentDevicePage);
     channel.add(result);
     return result;
 }

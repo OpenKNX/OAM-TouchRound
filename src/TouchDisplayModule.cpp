@@ -13,6 +13,7 @@
 #include "./Screens/AlarmScreen.h"
 #include "./Screens/RolladenScreen.h"
 #include "./Screens/JalousieScreen.h"
+#include "./Screens/FanScreen.h"
 #include "./Pages/ProgButtonPage.h"
 #include "./ImageLoader.h"
 
@@ -334,7 +335,7 @@ void TouchDisplayModule::setup(bool configured)
     }
     lv_init();
 #if LV_USE_LOG
-    lv_log_register_print_cb(lv_log);
+ //   lv_log_register_print_cb(lv_log);
 #endif
 #if LVGL_VERSION_MAJOR >= 9
     lv_tick_set_cb(millis);
@@ -358,6 +359,7 @@ void TouchDisplayModule::setup(bool configured)
     AlarmScreen::instance = new AlarmScreen();
     RolladenScreen::instance = new RolladenScreen();
     JalousieScreen::instance = new JalousieScreen();
+    FanScreen::instance = new FanScreen();
 
     if (configured)
     {
