@@ -7,7 +7,6 @@ class RolladenDisplayBridge : public RolladenBridge
 {
     lv_event_cb_t _eventButtonUpPressed = nullptr;
     lv_event_cb_t _eventButtonDownPressed = nullptr;
-    lv_event_cb_t _eventButtonStopPressed = nullptr;
     lv_event_cb_t _eventButtonMainFunctionPressed = nullptr;
     lv_event_cb_t _eventSliderReleased = nullptr;
     RolladenScreen& _screen;
@@ -24,7 +23,6 @@ protected:
 
     void buttonUpPressed();
     void buttonDownPressed();
-    void buttonStopPressed();
     void buttonMainFunctionPressed();
     void sliderReleased();
 };  

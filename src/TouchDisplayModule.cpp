@@ -555,8 +555,9 @@ void TouchDisplayModule::loop(bool configured)
     if (touchPressed != _touchPressState)
     {
         _touchPressState = touchPressed;
+        logDebugP("Touch %d", touchPressed);
         if (touchPressed)
-        {
+        {   
             if (!_displayOn)
                 display(true);
             else
@@ -568,8 +569,7 @@ void TouchDisplayModule::loop(bool configured)
         }
         else
         {
-            touchPressStateForLgvl = false;
-      
+            touchPressStateForLgvl = false; 
             if (_touchPressedTimer != 0)
             {
                 auto page = Page::currentPage();   
@@ -587,6 +587,7 @@ void TouchDisplayModule::loop(bool configured)
                 _touchPressedTimer = 0;
             }
         }
+        resetDisplayTimeout();
     }
     if (_touchPressedTimer != 0)
     {

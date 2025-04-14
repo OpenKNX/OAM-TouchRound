@@ -22,12 +22,12 @@ JalousieDisplayBridge::~JalousieDisplayBridge()
 
 void JalousieDisplayBridge::sliderSlatReleased() 
 {
-    uint8_t value = lv_slider_get_value(_screen.sliderSlat);
+    uint8_t value = 100 - lv_slider_get_value(_screen.sliderSlat);
     logErrorP("Slider Slat released %d", value); 
     _channel->commandPosition(this, value);
 }
 
 void JalousieDisplayBridge::setSlatPosition(uint8_t position)
 {
-    lv_slider_set_value(_screen.sliderSlat, position, LV_ANIM_ON);
+    lv_slider_set_value(_screen.sliderSlat, 100 - position, LV_ANIM_ON);
 }

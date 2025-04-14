@@ -10,7 +10,6 @@ class RolladenScreen: public ScreenWithLabel
     lv_obj_t* value;
     lv_obj_t* buttonUp;
     lv_obj_t* buttonDown;
-    lv_obj_t* buttonStop;
     lv_obj_t* sliderPosition;
 
     RolladenScreen();

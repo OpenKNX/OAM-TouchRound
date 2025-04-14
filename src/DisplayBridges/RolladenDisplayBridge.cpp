@@ -19,8 +19,6 @@ void RolladenDisplayBridge::setup(uint8_t _channelIndex)
     lv_obj_add_event_cb(_screen.buttonUp, _eventButtonUpPressed, LV_EVENT_CLICKED, this);
     _eventButtonDownPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonDownPressed(); };
     lv_obj_add_event_cb(_screen.buttonDown, _eventButtonDownPressed, LV_EVENT_CLICKED, this);  
-    _eventButtonStopPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonStopPressed(); };
-    lv_obj_add_event_cb(_screen.buttonStop, _eventButtonStopPressed, LV_EVENT_CLICKED, this);  
     _eventButtonMainFunctionPressed = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->buttonMainFunctionPressed(); };
     lv_obj_add_event_cb(_screen.icon, _eventButtonMainFunctionPressed, LV_EVENT_CLICKED, this);  
     _eventSliderReleased = [](lv_event_t *e) { ((RolladenDisplayBridge*) lv_event_get_user_data(e))->sliderReleased(); };  
@@ -36,8 +34,6 @@ RolladenDisplayBridge::~RolladenDisplayBridge()
         lv_obj_remove_event_cb_with_user_data(_screen.buttonUp, _eventButtonUpPressed, this);
     if (_eventButtonDownPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.buttonDown, _eventButtonDownPressed, this);
-    if (_eventButtonStopPressed != nullptr)
-        lv_obj_remove_event_cb_with_user_data(_screen.buttonStop, _eventButtonStopPressed, this);
     if (_eventButtonMainFunctionPressed != nullptr)
         lv_obj_remove_event_cb_with_user_data(_screen.icon, _eventButtonMainFunctionPressed, this);
     if (_eventSliderReleased != nullptr)
@@ -53,7 +49,7 @@ void RolladenDisplayBridge::mainFunctionValueChanged()
 
 void RolladenDisplayBridge::setPosition(uint8_t position)
 {
-    lv_slider_set_value(_screen.sliderPosition, position, LV_ANIM_ON);
+    lv_slider_set_value(_screen.sliderPosition,100 - position, LV_ANIM_ON);
     char buffer[10];
     snprintf(buffer, sizeof(buffer), "%d%%", (int) position);
     lv_label_set_text(_screen.value, buffer);
@@ -61,36 +57,40 @@ void RolladenDisplayBridge::setPosition(uint8_t position)
 
 void RolladenDisplayBridge::setMovement(MoveState movement)
 {
-
+    switch (movement)
+    {
+        case MoveState::MoveStateHold:
+            lv_obj_set_style_img_recolor(_screen.buttonUp, lv_color_make(255, 255, 0), 0);
+            break;
+        case MoveState::MoveStateDown:
+            lv_obj_set_style_img_recolor(_screen.buttonDown, lv_color_make(255, 255, 0), 0);
+            break;
+        default:
+            lv_obj_set_style_img_recolor(_screen.buttonUp, lv_color_make(128, 128, 128), 0);
+            lv_obj_set_style_img_recolor(_screen.buttonDown, lv_color_make(128, 128, 128), 0);
+            break;
+    }
 }
 
 void RolladenDisplayBridge::sliderReleased()
 {
-    uint8_t value = lv_slider_get_value(_screen.sliderPosition);
-    logErrorP("Slider released %d", value); 
+    uint8_t value = 100 - lv_slider_get_value(_screen.sliderPosition);
     _channel->commandPosition(this, value);
 }
 
 void RolladenDisplayBridge::buttonUpPressed()
 {
-    logErrorP("Up pressed");
     _channel->commandPosition(this, 0);
 }
    
 
 void RolladenDisplayBridge::buttonDownPressed()
 {
-    logErrorP("Down pressed");
     _channel->commandPosition(this, 100);
 }
 
-void RolladenDisplayBridge::buttonStopPressed()
-{
-    logErrorP("Stop pressed");
-}
 
 void RolladenDisplayBridge::buttonMainFunctionPressed()
 {    
-    logErrorP("Main function pressed");
     _channel->commandMainFunctionClick();
 }
