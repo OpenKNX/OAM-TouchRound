@@ -19,7 +19,7 @@ RGBScreen::RGBScreen()
 
     // Create an image to overlay the HSV gradient
     lv_obj_t* hsvImage = lv_img_create(hsvContainer);
-    lv_img_set_src(hsvImage, &hsv_gradient_image); // Assuming hsv_gradient_image is a pre-generated image of the HSV color wheel
+    // lv_img_set_src(hsvImage, &hsv_gradient_image); // Assuming hsv_gradient_image is a pre-generated image of the HSV color wheel
     lv_obj_align(hsvImage, LV_ALIGN_CENTER, 0, 0);
 
     // Update touch event to handle H, S, and V selection based on the HSV gradient
@@ -43,9 +43,9 @@ RGBScreen::RGBScreen()
             int s = (int)(sqrt(dx * dx + dy * dy) / radius * 100);
 
             // Retrieve the actual color from the HSV gradient image
-            int imgX = (dx + radius) * hsv_gradient_image.header.w / (2 * radius);
-            int imgY = (dy + radius) * hsv_gradient_image.header.h / (2 * radius);
-            lv_color_t color = lv_img_buf_get_px_color(&hsv_gradient_image, imgX, imgY);
+            // int imgX = (dx + radius) * hsv_gradient_image.header.w / (2 * radius);
+            // int imgY = (dy + radius) * hsv_gradient_image.header.h / (2 * radius);
+            // lv_color_t color = lv_img_buf_get_px_color(&hsv_gradient_image, imgX, imgY);
 
             // Use the color or update H, S, and V values here
         }
