@@ -16,6 +16,7 @@
 #include "./Screens/FanScreen.h"
 #include "./Pages/ProgButtonPage.h"
 #include "./ImageLoader.h"
+#include "./Screens/RGBScreen.h"
 
 const std::string TouchDisplayModule::name()
 {
@@ -360,6 +361,7 @@ void TouchDisplayModule::setup(bool configured)
     RolladenScreen::instance = new RolladenScreen();
     JalousieScreen::instance = new JalousieScreen();
     FanScreen::instance = new FanScreen();
+    RGBScreen::instance = new RGBScreen();
 
     if (configured)
     {

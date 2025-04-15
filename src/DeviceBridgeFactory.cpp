@@ -6,6 +6,7 @@
 #include "DeviceBridges/RolladenDeviceBridge.h"
 #include "DeviceBridges/JalousieDeviceBridge.h"
 #include "DeviceBridges/FanDeviceBridge.h"
+#include "DeviceBridges/RGBDeviceBridge.h"
 
 const std::string DeviceBridgeFactory::name()
 {
@@ -59,6 +60,13 @@ SensorBridge* DeviceBridgeFactory::createSensor(KnxChannelSensor& channel, uint8
 FanBridge* DeviceBridgeFactory::createFan(KnxChannelFan& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
     auto result = new FanDeviceBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
+}
+
+RGBBridge* DeviceBridgeFactory::createRGB(KnxChannelRGB& channel, uint8_t channelIndex, uint8_t deviceType)
+{
+    auto result = new RGBDeviceBridge(*_currentDevicePage);
     channel.add(result);
     return result;
 }
