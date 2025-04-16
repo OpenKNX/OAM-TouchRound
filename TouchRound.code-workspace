@@ -25,6 +25,12 @@
 			"path": "../OFM-FunctionBlocks"
 		},
 		{
+			"path": "../OFM-SensorModule"
+		},
+		{
+			"path": "../OGM-SensorDevices"
+		},
+		{
 			"path": "../knx"
 		}
 	],

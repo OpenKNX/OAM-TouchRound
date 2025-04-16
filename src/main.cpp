@@ -6,7 +6,8 @@
 #include "FunctionBlocksModule.h"
 #include "SmartHomeBridgeModule.h"
 #include "Logic.h"
-
+#include "SensorModule.h"
+#include "SensorDevices.h"
 
 void setup()
 {
@@ -18,6 +19,8 @@ void setup()
     openknx.addModule(1, openknxTouchDisplayModule);
     openknx.addModule(1, openknxLogic);
     openknx.addModule(2, openknxFunctionBlocksModule);
+    openknx.addModule(3, openknxSensorModule);
+    openknx.addModule(4, openknxSensorDevicesModule);
     openknx.setup();
 }
 

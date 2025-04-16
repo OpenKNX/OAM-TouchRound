@@ -9,6 +9,7 @@
   <op:config name="%FCB_VerifyVersion%" value="0.4" />
   <op:config name="%BTN_VerifyVersion%" value="0.5" />
   <op:config name="%TCH_VerifyVersion%" value="0.1" />
+  <op:config name="%SENS_VerifyVersion%" value="4.3" />
 
   <op:config name="%ReleaseApplicationVersion%" value="0.1" />
   <op:config name="%ReleaseReplacesVersions%" value="0.0" />
