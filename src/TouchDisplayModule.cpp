@@ -336,7 +336,7 @@ void TouchDisplayModule::setup(bool configured)
     }
     lv_init();
 #if LV_USE_LOG
- //   lv_log_register_print_cb(lv_log);
+    lv_log_register_print_cb(lv_log);
 #endif
 #if LVGL_VERSION_MAJOR >= 9
     lv_tick_set_cb(millis);
@@ -461,6 +461,15 @@ void TouchDisplayModule::lv_log(
     const char *buf)
 {
     logInfo("lvgl", "%s", buf);
+}
+
+void TouchDisplayModule::showInformations()
+{
+#ifdef MODULE_TouchDisplayModule_Version
+    openknx.logger.logWithPrefixAndValues(logPrefix(), "Touch Display %s", MODULE_TouchDisplayModule_Version);
+#else
+    openknx.logger.logWithPrefix(logPrefix(), "Touch Display");
+#endif
 }
 
 void TouchDisplayModule::resetDisplayTimeout()
@@ -689,6 +698,15 @@ void TouchDisplayModule::loop1(bool configured)
 
 bool TouchDisplayModule::processCommand(const std::string cmd, bool diagnoseKo)
 {
+    if (cmd == "lvgl")
+    {
+        openknx.logger.logWithPrefixAndValues(logPrefix(), "lvgl version: %d.%d.%d", LVGL_VERSION_MAJOR, LVGL_VERSION_MINOR, LVGL_VERSION_PATCH);
+        lv_mem_monitor_t mon;
+        lv_mem_monitor(&mon);
+        printf("Free lvgl memory: %d bytes, Largest free block: %d bytes\n", mon.free_size, mon.free_biggest_size);
+        openknx.logger.logWithPrefixAndValues(logPrefix(), "Free: %d bytes, Largest free block: %d bytes",  mon.free_size, mon.free_biggest_size);
+        return true;
+    }
     if (cmd == "pn")
     {
         openknxTouchDisplayModule.nextPage();
@@ -735,6 +753,7 @@ void TouchDisplayModule::showHelp()
 {
     if (!knx.configured())
         return;
+    openknx.console.printHelpLine("lvgl", "Show lvgl information");
     openknx.console.printHelpLine("pn", "Next page");
     openknx.console.printHelpLine("pp", "Previous page");
     openknx.console.printHelpLine("p<nn>", "Show page <nn>");

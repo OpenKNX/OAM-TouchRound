@@ -295,7 +295,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
         logError("loadImage", "File not found: %s", fileName.c_str());
         lv_img_set_src(imageObject, &missing_file);
     }
-   // #endif
+    // #endif
     colorState(imageObject, useStateColor, state);
     lv_obj_clear_flag(imageObject, LV_OBJ_FLAG_HIDDEN);
 } 

@@ -63,6 +63,7 @@ public:
 	void showProgButtonPage();
 	void showDetailDevicePage(uint8_t channelIndex, uint8_t deviceIndex);
 	void showMainFunctionDevicePage();
+	virtual void showInformations() override;
 
 
 	void processInputKo(GroupObject &ko) override;
