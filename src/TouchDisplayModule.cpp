@@ -1,5 +1,5 @@
-#include <TouchDisplayModule.h>
 #include <Arduino.h>
+#include "TouchDisplayModule.h"
 #include "lvgl.h"
 #include "lv_xiao_round_screen.h"
 #include "knxprod.h"
@@ -339,6 +339,12 @@ void TouchDisplayModule::setup(bool configured)
     lv_log_register_print_cb(lv_log);
 #endif
 #if LVGL_VERSION_MAJOR >= 9
+#if defined(LV_USE_PNG) && LV_USE_PNG && defined(LV_PNG_H)
+    lv_png_init();
+#endif
+#if LV_USE_LODEPNG
+    lv_lodepng_init();
+#endif
     lv_tick_set_cb(millis);
 #endif
     //lv_lodepng_init();

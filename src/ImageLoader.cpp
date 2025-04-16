@@ -68,18 +68,25 @@
 class FileHelper
 {
 private:
-    File file;
+        File file;
 public:
     bool open(const char *path, const char *mode) {
+//        logInfo("fs_open", "Open file '%s' with mode '%s'", path, mode);
         file = LittleFS.open(path, mode);
         return file.available();
     }
 
     size_t readBytes(char *buf, size_t nbyte) {
+//        logInfo("fs_read", "Read %zu bytes from file", nbyte);
         return file.readBytes(buf, nbyte);
     }
     bool seek(uint32_t pos, SeekMode mode) {
-        return file.seek(pos, mode);
+//       logInfo("fs_seek", "Seek to position %zu with mode %d", pos, mode);
+        bool result = file.seek(pos, mode);
+        if (!result) {
+            logError("fs_seek", "Seek failed");
+        }
+        return result;
     }
     size_t position() {
         return file.position();
@@ -87,6 +94,7 @@ public:
 
     ~FileHelper() 
     {
+//        logInfo("fs_close", "Close file");
         file.close();
     }
 };
@@ -100,6 +108,7 @@ void* ImageLoader::fs_open(lv_fs_drv_t * drv, const char * path, lv_fs_mode_t mo
         delete result;
         return nullptr;  // Fehler beim Öffnen der Datei
     }
+//  logInfo("fs_open", "File '%s' opened successfully", path);
     return result;
 }
 
@@ -166,7 +175,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
         unloadImage(imageObject);
         return;
     }
-#if LVGL_VERSION_MAJOR <= 8
     else if (LittleFS.exists(("/" + fileName).c_str()))
     {
         std::string filePath;
@@ -177,7 +185,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
 
         lv_img_set_src(imageObject, filePath.c_str());
     }
-#endif
     else if (fileName == "chevron_up.png")
     {
         lv_img_set_src(imageObject, &chevron_up);

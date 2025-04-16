@@ -84,6 +84,7 @@
         "type11.c": "cpp",
         "type20.c": "cpp",
         "type30.c": "cpp",
-        "type32.c": "cpp"
+        "type32.c": "cpp",
+        "lv_global.h": "c"
     }
 }
