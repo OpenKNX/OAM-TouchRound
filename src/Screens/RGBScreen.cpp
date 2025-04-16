@@ -44,7 +44,7 @@ RGBScreen::RGBScreen()
 {
     // Create a custom circular area for H and S values
     lv_obj_t* hsvContainer = lv_obj_create(screen);
-    int circleDiameter = 70; // Diameter of the HVL circle
+    int circleDiameter = 50; // Diameter of the HVL circle
   
     lv_obj_set_size(hsvContainer, circleDiameter, circleDiameter);
     lv_obj_align(hsvContainer, LV_ALIGN_CENTER, 0, 0);
