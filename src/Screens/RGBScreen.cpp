@@ -44,9 +44,9 @@ RGBScreen::RGBScreen()
 {
     // Create a custom circular area for H and S values
     lv_obj_t* hsvContainer = lv_obj_create(screen);
-    int radius = 80; // Half the size of the canvas
+    int circleDiameter = 70; // Diameter of the HVL circle
   
-    lv_obj_set_size(hsvContainer, radius * 2, radius * 2);
+    lv_obj_set_size(hsvContainer, circleDiameter, circleDiameter);
     lv_obj_align(hsvContainer, LV_ALIGN_CENTER, 0, 0);
     lv_obj_set_style_radius(hsvContainer, LV_RADIUS_CIRCLE, 0);
 
@@ -56,21 +56,22 @@ RGBScreen::RGBScreen()
 
     // Create a canvas to draw the gradient
     lv_obj_t* canvas = lv_canvas_create(hsvContainer);
-    lv_obj_set_size(canvas, radius, radius);
+    lv_obj_set_size(canvas, circleDiameter, circleDiameter);
     lv_obj_align(canvas, LV_ALIGN_CENTER, 0, 0);
 
     // Allocate memory for the canvas buffer
 #if LVGL_VERSION_MAJOR >= 9   
-    static lv_color32_t* cbuf = new lv_color32_t[radius * radius];
-    lv_canvas_set_buffer(canvas, cbuf, radius, radius, LV_COLOR_FORMAT_NATIVE);
+    static lv_color32_t* cbuf = new lv_color32_t[circleDiameter * circleDiameter];
+    lv_canvas_set_buffer(canvas, cbuf, circleDiameter, circleDiameter, LV_COLOR_FORMAT_NATIVE);
 #else
-    static lv_color_t* cbuf = new lv_color_t[radius * radius];
-    lv_canvas_set_buffer(canvas, cbuf, radius, radius, LV_IMG_CF_TRUE_COLOR);
+    static lv_color_t* cbuf = new lv_color_t[circleDiameter * circleDiameter];
+    lv_canvas_set_buffer(canvas, cbuf, circleDiameter, circleDiameter, LV_IMG_CF_TRUE_COLOR);
 #endif
 
+    int radius = circleDiameter / 2;
     // Draw the circular HSV gradient
-    for (int y = 0; y < radius; y++) {
-        for (int x = 0; x < radius; x++) {
+    for (int y = 0; y < circleDiameter ; y++) {
+        for (int x = 0; x < circleDiameter; x++) {
             int dx = x - radius;
             int dy = y - radius;
             float distance = sqrtf(dx * dx + dy * dy);
@@ -103,15 +104,15 @@ RGBScreen::RGBScreen()
 
     // Create a slider for V value
     valueSlider = lv_slider_create(screen);
-    lv_obj_set_width(valueSlider, 200);
-    lv_obj_align(valueSlider, LV_ALIGN_TOP_MID, 0, 30);
+    lv_obj_set_width(valueSlider, 138);
+    lv_obj_align(valueSlider, LV_ALIGN_TOP_MID, 0, 45);
     lv_slider_set_range(valueSlider, 0, 100);
     lv_slider_set_value(valueSlider, 50, LV_ANIM_OFF);
 
     labelValue = lv_label_create(screen);
     lv_obj_set_width(labelValue, LV_SIZE_CONTENT);
     lv_obj_set_height(labelValue, LV_SIZE_CONTENT);
-    lv_obj_align(labelValue, LV_ALIGN_CENTER, 0, 50);
+    lv_obj_align(labelValue, LV_ALIGN_LEFT_MID, 20, 0);
     lv_label_set_text(labelValue, "V: 50");
 
     lv_obj_add_event_cb(valueSlider, [](lv_event_t* e) {
