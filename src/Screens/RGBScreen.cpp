@@ -46,6 +46,7 @@ static void hsv_event_handler(lv_event_t* e) {
 
 RGBScreen::RGBScreen()
 {
+    logError("RGBScreen", "Constructor");
     // Create a custom circular area for H and S values
     lv_obj_t* hsvContainer = lv_obj_create(screen);
     int circleDiameter = 100; // Diameter of the HVL circle
@@ -71,7 +72,7 @@ RGBScreen::RGBScreen()
     static lv_color_t* cbuf = new lv_color_t[circleDiameter * circleDiameter];
     lv_canvas_set_buffer(canvas, cbuf, circleDiameter, circleDiameter, LV_IMG_CF_TRUE_COLOR);
 #endif
-
+logError("RGBScreen", "create canvas");
     int radius = circleDiameter / 2;
     // Draw the circular HSV gradient
     for (int y = 0; y < circleDiameter ; y++) {
@@ -102,7 +103,7 @@ RGBScreen::RGBScreen()
             }
         }
     }
-
+    logError("RGBScreen", "Add event");
     // Update touch event to handle H, S, and V selection based on the HSV gradient
     lv_obj_add_event_cb(hsvContainer, hsv_event_handler, LV_EVENT_PRESSING, canvas);
 

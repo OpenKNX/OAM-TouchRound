@@ -66,6 +66,7 @@ FanBridge* DeviceBridgeFactory::createFan(KnxChannelFan& channel, uint8_t _chann
 
 RGBBridge* DeviceBridgeFactory::createRGB(KnxChannelRGB& channel, uint8_t channelIndex, uint8_t deviceType)
 {
+    logError("DeviceBridgeFactory", "RGBDeviceBridge");
     auto result = new RGBDeviceBridge(*_currentDevicePage);
     channel.add(result);
     return result;

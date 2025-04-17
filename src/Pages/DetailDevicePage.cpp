@@ -45,6 +45,7 @@ void DetailDevicePage::createDeviceBridge()
     KnxChannelBase* device = getDevice();
     if (device == nullptr)
     {
+        logErrorP("Device Widget not created");
         char label[30];
         snprintf(label, sizeof(label), "Seite %d", _channelIndex + 1);
         char message[30];
@@ -52,8 +53,10 @@ void DetailDevicePage::createDeviceBridge()
         errorInSetup(label, message);
         return;
     }
+    logErrorP("Device Widget created");
     _widgetFactory->_currentDevicePage = this;
     _bridge = device->createBridgeDevice(*_widgetFactory);
+    logErrorP("Bridge created");
     if (_bridge == nullptr)
     {
         errorInSetup(name().c_str(), "Detailseite des Gerätetype\nwird zur Anzeige\nnoch nicht unterstützt.\nBitte die\nHauptfunktionseite\nkonfigurieren.");
@@ -66,6 +69,7 @@ void DetailDevicePage::setup()
     if (_deviceIndex == 255)
         _deviceIndex = ParamTCH_CHDeviceSelection1 - 1;
     createDeviceBridge();
+    logErrorP("Setup complete");
 }
 
 std::string DetailDevicePage::name()

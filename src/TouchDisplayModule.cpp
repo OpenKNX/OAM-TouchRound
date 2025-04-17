@@ -698,9 +698,12 @@ void TouchDisplayModule::loop(bool configured)
         logDebugP("Stop waiting for requested page because of timeout");
     }
 }
+
+#ifdef OPENKNX_DUALCORE
 void TouchDisplayModule::loop1(bool configured)
 {
 }
+#endif
 
 bool TouchDisplayModule::processCommand(const std::string cmd, bool diagnoseKo)
 {

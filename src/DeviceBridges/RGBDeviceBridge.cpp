@@ -13,6 +13,7 @@ RGBDeviceBridge::~RGBDeviceBridge()
 
 void RGBDeviceBridge::setup(uint8_t channelIndex)
 {
+    logError("RGBDeviceBridge", "Setup");
     _eventColorChanged = [](lv_event_t* e) {
         RGBDeviceBridge* self = static_cast<RGBDeviceBridge*>(lv_event_get_user_data(e));
         int value = lv_slider_get_value(self->_screen.valueSlider);
@@ -20,19 +21,23 @@ void RGBDeviceBridge::setup(uint8_t channelIndex)
         self->_channel->commandRGB(self, value);
         self->updateText();
     };
+    logError("RGBDeviceBridge", "Add event");
     lv_obj_add_event_cb(_screen.valueSlider, _eventColorChanged, LV_EVENT_VALUE_CHANGED, this);
 
+    logError("RGBDeviceBridge", "Show");
     _screen.show();
 }
 
 void RGBDeviceBridge::updateText()
 {
+    logError("RGBDeviceBridge", "update Text");
     int value = lv_slider_get_value(_screen.valueSlider);
     lv_label_set_text_fmt(_screen.labelValue, "V: %d", value);
 }
 
 void RGBDeviceBridge::updateColor(uint16_t hue, uint8_t saturation, uint8_t value)
 {
+    logError("RGBDeviceBridge", "updateColor");
     // Update the RGB screen with the new color values
     // This can include updating the visual representation on the screen
     lv_slider_set_value(_screen.valueSlider, value, LV_ANIM_OFF);
@@ -41,6 +46,7 @@ void RGBDeviceBridge::updateColor(uint16_t hue, uint8_t saturation, uint8_t valu
 
 void RGBDeviceBridge::setRGB(uint32_t rgb)
 {
+    logError("RGBDeviceBridge", "setRGB");
     // Logic to set the RGB color
     uint8_t r = (rgb >> 16) & 0xFF;
     uint8_t g = (rgb >> 8) & 0xFF;
@@ -69,6 +75,7 @@ void RGBDeviceBridge::setRGB(uint32_t rgb)
 
 void RGBDeviceBridge::setPower(bool on)
 {
+    logError("RGBDeviceBridge", "setPower");
     // Logic to turn the RGB device on or off
     if (on)
     {

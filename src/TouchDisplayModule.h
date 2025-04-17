@@ -26,7 +26,9 @@ public:
 
 	void loop(bool configured) override;
 	void setup() override;
+#ifdef OPENKNX_DUALCORE
 	void loop1(bool configured) override;
+#endif
 	void setup(bool configured) override;
 	
 	const std::string name() override;
