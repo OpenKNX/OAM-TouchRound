@@ -33,7 +33,11 @@ static void hsv_event_handler(lv_event_t* e) {
     
 
         logError("ColorPicker", "H: %d, S: %d, V: %d", h, s);
+        #if LVGL_VERSION_MAJOR >= 9   
         logError("ColorPicker", "R: %d, G: %d, B: %d", color.red, color.green, color.blue);
+        #else
+       // logError("ColorPicker", "R: %d, G: %d, B: %d", color, color.g, color.b);
+        #endif
 
         // Use the color or update H, S, and V values here
         // For example, you can log or display the color
@@ -44,7 +48,7 @@ RGBScreen::RGBScreen()
 {
     // Create a custom circular area for H and S values
     lv_obj_t* hsvContainer = lv_obj_create(screen);
-    int circleDiameter = 50; // Diameter of the HVL circle
+    int circleDiameter = 100; // Diameter of the HVL circle
   
     lv_obj_set_size(hsvContainer, circleDiameter, circleDiameter);
     lv_obj_align(hsvContainer, LV_ALIGN_CENTER, 0, 0);
