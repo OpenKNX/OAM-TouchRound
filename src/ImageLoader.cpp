@@ -11,7 +11,13 @@
 #include "../Images/v9/Type31.c"
 #include "../Images/v9/Type32.c"
 #include "../Images/v9/Type50.c"
-#include "../Images/v9/Type60.c"
+#include "../Images/v9/Type60_0.c"
+#include "../Images/v9/Type60_1.c"
+#include "../Images/v9/Type60_2.c"
+#include "../Images/v9/Type60_3.c"
+#include "../Images/v9/Type60_4.c"
+#include "../Images/v9/Type60_5.c"
+#include "../Images/v9/Type60_9.c"
 #include "../Images/v9/Type70.c"
 #include "../Images/v9/Type71.c"
 #include "../Images/v9/Type72.c"
@@ -26,10 +32,12 @@
 #include "../Images/v9/missing_file.c"
 #include "../Images/v9/System.c"
 #include "../Images/v9/Error.c"
-#include "../Images/v9/Clock.c"
 #include "../Images/v9/Time.c"
 #include "../Images/v9/Date.c"
 #include "../Images/v9/DateTime.c"
+#include "../Images/v9/Bild1.c"
+#include "../Images/v9/Bild2.c"
+#include "../Images/v9/Bild3.c"
 #else
 #include "../Images/v8/chevron_up.c"
 #include "../Images/v8/chevron_down.c"
@@ -185,6 +193,10 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
 
         lv_img_set_src(imageObject, filePath.c_str());
     }
+    else if (fileName == "missing_file.png")
+    {
+        lv_img_set_src(imageObject, &missing_file);
+    }
     else if (fileName == "chevron_up.png")
     {
         lv_img_set_src(imageObject, &chevron_up);
@@ -196,6 +208,19 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     else if (fileName == "stop_circle.png")
     {
         lv_img_set_src(imageObject, &stop_circle);
+    }
+#if LVGL_VERSION_MAJOR >= 9
+    else if (fileName == "Bild1.png")
+    {
+        lv_img_set_src(imageObject, &Bild1);
+    }
+    else if (fileName == "Bild2.png")
+    {
+        lv_img_set_src(imageObject, &Bild2);
+    }
+    else if (fileName == "Bild3.png")
+    {
+        lv_img_set_src(imageObject, &Bild3);
     }
     else if (fileName == "Type10.png")
     {
@@ -225,9 +250,33 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &Type50);
     }
-    else if (fileName == "Type60.png")
+    else if (fileName == "Type60_0.png")
     {
-        lv_img_set_src(imageObject, &Type60);
+        lv_img_set_src(imageObject, &Type60_0);
+    }
+    else if (fileName == "Type60_1.png")
+    {
+        lv_img_set_src(imageObject, &Type60_1);
+    }
+    else if (fileName == "Type60_2.png")
+    {
+        lv_img_set_src(imageObject, &Type60_2);
+    }
+    else if (fileName == "Type60_3.png")
+    {
+        lv_img_set_src(imageObject, &Type60_3);
+    }
+    else if (fileName == "Type60_4.png")
+    {
+        lv_img_set_src(imageObject, &Type60_4);
+    }
+    else if (fileName == "Type60_5.png")
+    {
+        lv_img_set_src(imageObject, &Type60_5);
+    }
+    else if (fileName == "Type60_9.png")
+    {
+        lv_img_set_src(imageObject, &Type60_9);
     }
     else if (fileName == "Type70.png")
     {
@@ -281,10 +330,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &ErrorImg);
     }
-    else if (fileName == "Clock.png")
-    {
-        lv_img_set_src(imageObject, &Clock);
-    }
     else if (fileName == "Time.png")
     {
         lv_img_set_src(imageObject, &Time);
@@ -297,6 +342,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &DateTime);
     }
+#endif
     else
     {
         logError("loadImage", "File not found: %s", fileName.c_str());

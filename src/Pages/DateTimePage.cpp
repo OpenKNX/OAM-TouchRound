@@ -96,5 +96,5 @@ std::string DateTimePage::name()
 
 std::string DateTimePage::image()
 {
-    return "Clock.png";
+    return "DateTime.png";
 }
