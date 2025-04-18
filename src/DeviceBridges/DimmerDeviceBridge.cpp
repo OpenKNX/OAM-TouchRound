@@ -27,6 +27,7 @@ DimmerDeviceBridge::~DimmerDeviceBridge()
 
 void DimmerDeviceBridge::setBrightness(uint8_t brightness)
 {
+    logErrorP("setBrightness %d", (int) brightness);
     lv_arc_set_value(_screen.slider, brightness);  
     ImageLoader::loadImage(_screen.image, _channel->mainFunctionImage().imageFile, _channel->mainFunctionImage().allowRecolor, brightness != 0); 
     updateText(); 

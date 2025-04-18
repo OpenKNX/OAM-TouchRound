@@ -223,6 +223,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &Bild3);
     }
+#endif
     else if (fileName == "Type10.png")
     {
         lv_img_set_src(imageObject, &Type10);
@@ -251,6 +252,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &Type50);
     }
+#if LVGL_VERSION_MAJOR >= 9
     else if (fileName == "Type60_0.png")
     {
         lv_img_set_src(imageObject, &Type60_0);
@@ -283,6 +285,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &Type70);
     }
+#endif
     else if (fileName == "Type71.png")
     {
         lv_img_set_src(imageObject, &Type71);
@@ -343,7 +346,7 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &DateTime);
     }
-#endif
+
     else
     {
         logError("loadImage", "File not found: %s", fileName.c_str());

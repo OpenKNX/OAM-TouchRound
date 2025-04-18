@@ -8,6 +8,15 @@ public:
     virtual CellObject& getCell(uint8_t index) = 0;
 };
 
+enum CellLocation
+{
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight,
+    Top,
+    Bottom
+};
 
 class CellObject
 {
@@ -19,7 +28,7 @@ public:
     lv_obj_t* label;
     lv_obj_t* value;
     lv_obj_t* image;
-    CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop);
+    CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, CellLocation cellLocation);
 };
 
 

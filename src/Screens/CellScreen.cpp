@@ -4,8 +4,8 @@ CellScreen2* CellScreen2::instance = nullptr;
 
 
 CellScreen2::CellScreen2() :
-cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
-cellObject2(*this, LV_HOR_RES, LV_VER_RES / 2, true)
+cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, CellLocation::Top),
+cellObject2(*this, LV_HOR_RES, LV_VER_RES / 2, CellLocation::Bottom)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -32,9 +32,9 @@ CellObject& CellScreen2::getCell(uint8_t index)
 CellScreen3* CellScreen3::instance = nullptr;
 
 CellScreen3::CellScreen3() :
-cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, false),
-cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true),
-cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true)
+cellObject1(*this, LV_HOR_RES, LV_VER_RES / 2, CellLocation::Top),
+cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::BottomLeft),
+cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::BottomRight)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -68,10 +68,10 @@ CellScreen4* CellScreen4::instance = nullptr;
 
 
 CellScreen4::CellScreen4() :
-cellObject1(*this, LV_HOR_RES / 2, LV_VER_RES / 2, false),
-cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, false),
-cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true), 
-cellObject4(*this, LV_HOR_RES / 2, LV_VER_RES / 2, true)
+cellObject1(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::TopLeft),
+cellObject2(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::TopRight),
+cellObject3(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::BottomLeft), 
+cellObject4(*this, LV_HOR_RES / 2, LV_VER_RES / 2, CellLocation::BottomRight)
 {
     lv_obj_set_align(cellObject1.cell, LV_ALIGN_TOP_LEFT);
     lv_obj_set_x(cellObject1.cell, 0);
@@ -108,23 +108,26 @@ CellObject& CellScreen4::getCell(uint8_t index)
 }
 
 
-CellObject::CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, bool labelTop) :
+CellObject::CellObject(CellScreen& cellPage, lv_coord_t width, lv_coord_t height, CellLocation cellLocation) :
 _cellPage(cellPage),
 _width(width),
 _height(height)
-{
+{  
+    bool isTop = cellLocation == CellLocation::Top || cellLocation == CellLocation::TopLeft || cellLocation == CellLocation::TopRight;
+    bool isLeft = cellLocation == CellLocation::TopLeft || cellLocation == CellLocation::BottomLeft;
+    
     cell = lv_obj_create(cellPage.screen);
     lv_obj_set_size(cell, width, height);
     lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     label = lv_label_create(cell);
-    if (labelTop)
-        lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
-    else
+    if (isTop)
         lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
-
+    else
+        lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
+ 
     image = lv_img_create(cell);  
-    lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);  
 
+    lv_obj_align(image, LV_ALIGN_CENTER, isLeft ? 20 : -20, isTop ? -10 : 10);  
     value = lv_label_create(cell);
     lv_obj_set_align(value, LV_ALIGN_CENTER);
     lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_CENTER, 0);
