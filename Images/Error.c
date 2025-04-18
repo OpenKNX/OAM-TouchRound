@@ -90,9 +90,15 @@ const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_ERROR uin
 
 const lv_img_dsc_t ErrorImg = {
     .header = {
+#if LVGL_VERSION_MAJOR < 9
+        .cf = LV_IMG_CF_ALPHA_4BIT,
+        .always_zero = 0,
+        .reserved = 0,
+    #else
         .magic = LV_IMAGE_HEADER_MAGIC,
         .cf = LV_COLOR_FORMAT_A4,
         .flags = 0,
+    #endif
         .w = 64,
         .h = 64
         },

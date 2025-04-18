@@ -1,11 +1,7 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
 #include "TouchDisplayModule.h"
-#if LVGL_VERSION_MAJOR < 9
-#define magic reserved 
-#define flags always_zero 
-#define LV_COLOR_FORMAT_A4 LV_IMG_CF_ALPHA_4BIT
-#endif
+
 
 #include "../Images/up.c"
 #include "../Images/down.c"
@@ -46,11 +42,7 @@
 #include "../Images/Bild3.c"
 
 
-#if LVGL_VERSION_MAJOR < 9
-#undef magic 
-#undef flags 
-#undef LV_COLOR_FORMAT_A4
-#endif
+
 
 //#else
 // #include "../Images/v8/chevron_up.c"
