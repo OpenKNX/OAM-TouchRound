@@ -25,4 +25,5 @@ public:
     virtual std::string name() override;
     virtual std::string image() override;
     void setDevice(uint8_t deviceIndex);
+    virtual void loop(bool configured) override;
 };

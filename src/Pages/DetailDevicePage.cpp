@@ -26,6 +26,15 @@ KnxChannelBase* DetailDevicePage::getDevice()
     return _device;
 }
 
+void DetailDevicePage::loop(bool configured)
+{
+    if (!configured)
+        return;
+    KnxChannelBase* device = getDevice();
+    if (device != nullptr)
+        device->loop();
+}
+
 void DetailDevicePage::setDevice(uint8_t deviceIndex)  
 {
     _deviceIndex = deviceIndex;

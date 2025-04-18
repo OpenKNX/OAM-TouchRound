@@ -1,7 +1,7 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
 #include "TouchDisplayModule.h"
-
+#include "lvgl.h"
 
 #include "../Images/up.c"
 #include "../Images/down.c"
@@ -43,40 +43,6 @@
 
 
 
-
-//#else
-// #include "../Images/v8/chevron_up.c"
-// #include "../Images/v8/chevron_down.c"
-// #include "../Images/v8/stop_circle.c"
-// #include "../Images/v8/Type10.c"
-// #include "../Images/v8/Type11.c"
-// #include "../Images/v8/Type20.c"
-// #include "../Images/v8/Type30.c"
-// #include "../Images/v8/Type31.c"
-// #include "../Images/v8/Type32.c"
-// #include "../Images/v8/Type50.c"
-// #include "../Images/v8/Type60.c"
-// #include "../Images/v8/Type70.c"
-// #include "../Images/v8/Type71.c"
-// #include "../Images/v8/Type72.c"
-// #include "../Images/v8/Type73.c"
-// #include "../Images/v8/Type74.c"
-// #include "../Images/v8/Type75.c"
-// #include "../Images/v8/Type76.c"
-// #include "../Images/v8/Type80.c"
-// #include "../Images/v8/Type90.c"
-// #include "../Images/v8/Type91.c"
-// #include "../Images/v8/Type92.c"
-// #include "../Images/v8/missing_file.c"
-// #include "../Images/v8/System.c"
-// #include "../Images/v8/Error.c"
-// #include "../Images/v8/Clock.c"
-// #include "../Images/v8/Time.c"
-// #include "../Images/v8/Date.c"
-// #include "../Images/v8/DateTime.c"
-//#endif
-
-#include "lvgl.h"
 #include "LittleFS.h"
 
 class FileHelper
@@ -347,7 +313,6 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     {
         lv_img_set_src(imageObject, &DateTime);
     }
-
     else
     {
         logError("loadImage", "File not found: %s", fileName.c_str());

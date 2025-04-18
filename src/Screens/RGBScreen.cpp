@@ -6,8 +6,7 @@
 RGBScreen* RGBScreen::instance = nullptr;
 
 // Static function to handle touch events
-static void hsv_event_handler(lv_event_t* e) {
-    lv_obj_t* canvas = static_cast<lv_obj_t*>(lv_event_get_user_data(e));
+void RGBScreen::hsv_event_handler(lv_event_t* e) {
     lv_point_t point;
     lv_indev_get_point(lv_indev_get_act(), &point);
     lv_obj_t* obj = (lv_obj_t*)lv_event_get_target(e);
@@ -34,11 +33,17 @@ static void hsv_event_handler(lv_event_t* e) {
 
         logError("ColorPicker", "H: %d, S: %d, V: %d", h, s);
         #if LVGL_VERSION_MAJOR >= 9   
-        logError("ColorPicker", "R: %d, G: %d, B: %d", color.red, color.green, color.blue);
+        red = color.red;
+        green = color.green;
+        blue = color.blue;
         #else
-       // logError("ColorPicker", "R: %d, G: %d, B: %d", color, color.g, color.b);
+        red = color & 0xFF;
+        green = (color >> 8) & 0xFF;
+        blue = (color >> 16) & 0xFF;
         #endif
-
+        logError("ColorPicker", "R: %d, G: %d, B: %d", (int) red, (int) green, (int) blue);
+      
+        hasNewColor = true;
         // Use the color or update H, S, and V values here
         // For example, you can log or display the color
     }
@@ -51,18 +56,20 @@ RGBScreen::RGBScreen()
     lv_obj_t* hsvContainer = lv_obj_create(screen);
     int circleDiameter = 100; // Diameter of the HVL circle
   
+    lv_color_t bg = lv_obj_get_style_bg_color(screen, LV_PART_MAIN);
+
     lv_obj_set_size(hsvContainer, circleDiameter, circleDiameter);
-    lv_obj_align(hsvContainer, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(hsvContainer, LV_ALIGN_CENTER, -40, 10);
     lv_obj_set_style_radius(hsvContainer, LV_RADIUS_CIRCLE, 0);
+    lv_obj_clear_flag(hsvContainer, LV_OBJ_FLAG_SCROLLABLE);
+
 
     // Generate the HSV gradient programmatically
-    lv_obj_set_style_bg_img_src(hsvContainer, nullptr, 0); // Remove any pre-set image
-    lv_obj_set_style_bg_opa(hsvContainer, LV_OPA_TRANSP, 0); // Make the background transparent
-
     // Create a canvas to draw the gradient
-    lv_obj_t* canvas = lv_canvas_create(hsvContainer);
+    canvas = lv_canvas_create(hsvContainer);
     lv_obj_set_size(canvas, circleDiameter, circleDiameter);
     lv_obj_align(canvas, LV_ALIGN_CENTER, 0, 0);
+
 
     // Allocate memory for the canvas buffer
 #if LVGL_VERSION_MAJOR >= 9   
@@ -90,13 +97,13 @@ logError("RGBScreen", "create canvas");
                 // Convert HSV to RGB
                 lv_color_t color = lv_color_hsv_to_rgb(h, s, 100);
 #if LVGL_VERSION_MAJOR >= 9  
-                lv_canvas_set_px(canvas, x, y, color, LV_OPA_0);
+                lv_canvas_set_px(canvas, x, y, color, LV_OPA_100);
 #else
                 lv_canvas_set_px(canvas, x, y, color);
 #endif
             } else {
 #if LVGL_VERSION_MAJOR >= 9  
-                lv_canvas_set_px(canvas, x, y, lv_color_hex(0xFFFFFF), LV_OPA_100); // Set outside the circle to transparent
+                lv_canvas_set_px(canvas, x, y, bg, LV_OPA_TRANSP); // Set outside the circle to transparent
 #else
                 lv_canvas_set_px(canvas, x, y, lv_color_hex(0xFFFFFF)); // Set outside the circle to white
 #endif
@@ -105,24 +112,22 @@ logError("RGBScreen", "create canvas");
     }
     logError("RGBScreen", "Add event");
     // Update touch event to handle H, S, and V selection based on the HSV gradient
-    lv_obj_add_event_cb(hsvContainer, hsv_event_handler, LV_EVENT_PRESSING, canvas);
+    auto eventPressing = [](lv_event_t *e) { ((RGBScreen*) lv_event_get_user_data(e))->hsv_event_handler(e); };
+    lv_obj_add_event_cb(hsvContainer, eventPressing, LV_EVENT_PRESSING, this);
 
     // Create a slider for V value
     valueSlider = lv_slider_create(screen);
     lv_obj_set_width(valueSlider, 138);
     lv_obj_align(valueSlider, LV_ALIGN_TOP_MID, 0, 45);
     lv_slider_set_range(valueSlider, 0, 100);
-    lv_slider_set_value(valueSlider, 50, LV_ANIM_OFF);
 
-    labelValue = lv_label_create(screen);
-    lv_obj_set_width(labelValue, LV_SIZE_CONTENT);
-    lv_obj_set_height(labelValue, LV_SIZE_CONTENT);
-    lv_obj_align(labelValue, LV_ALIGN_LEFT_MID, 20, 0);
-    lv_label_set_text(labelValue, "V: 50");
+    image = lv_img_create(screen);  
+    //lv_img_set_src(image, &lamp_outline);       
+    lv_obj_align(image, LV_ALIGN_CENTER, 65, -10);  
 
-    lv_obj_add_event_cb(valueSlider, [](lv_event_t* e) {
-        RGBScreen* self = static_cast<RGBScreen*>(lv_event_get_user_data(e));
-        int value = lv_slider_get_value(self->valueSlider);
-        lv_label_set_text_fmt(self->labelValue, "V: %d", value);
-    }, LV_EVENT_VALUE_CHANGED, this);
+    value = lv_label_create(screen);
+    lv_obj_set_width(value, LV_SIZE_CONTENT);
+    lv_obj_set_height(value, LV_SIZE_CONTENT);
+    lv_obj_align(value, LV_ALIGN_CENTER, 65, 50);
+
 }
