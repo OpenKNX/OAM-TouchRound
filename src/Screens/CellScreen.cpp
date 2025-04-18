@@ -113,6 +113,7 @@ _cellPage(cellPage),
 _width(width),
 _height(height)
 {  
+    bool wideCell = cellLocation == CellLocation::Top || cellLocation == CellLocation::Bottom;
     bool isTop = cellLocation == CellLocation::Top || cellLocation == CellLocation::TopLeft || cellLocation == CellLocation::TopRight;
     bool isLeft = cellLocation == CellLocation::TopLeft || cellLocation == CellLocation::BottomLeft;
     
@@ -127,7 +128,7 @@ _height(height)
  
     image = lv_img_create(cell);  
 
-    lv_obj_align(image, LV_ALIGN_CENTER, isLeft ? 20 : -20, isTop ? -10 : 10);  
+    lv_obj_align(image, LV_ALIGN_CENTER,  wideCell ? 0 : isLeft ? 20 : -20, isTop ? -10 : 10);  
     value = lv_label_create(cell);
     lv_obj_set_align(value, LV_ALIGN_CENTER);
     lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_CENTER, 0);
