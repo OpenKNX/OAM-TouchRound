@@ -1,5 +1,6 @@
 #include "ImageLoader.h"
 #include "OpenKNX.h"
+#include "TouchDisplayModule.h"
 #if LVGL_VERSION_MAJOR >= 9
 #include "../Images/v9/chevron_up.c"
 #include "../Images/v9/chevron_down.c"
@@ -360,12 +361,12 @@ void ImageLoader::colorState(lv_obj_t* imageObject, bool useStateColor, bool sta
         if (state)
         {
             lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
-            lv_obj_set_style_img_recolor(imageObject, lv_color_make(255, 255, 0), 0);
+            lv_obj_set_style_img_recolor(imageObject, openknxTouchDisplayModule.getActiveColor(), 0);
         }
         else
         {
             lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
-            lv_obj_set_style_img_recolor(imageObject, lv_color_make(0, 0, 0), 0);
+            lv_obj_set_style_img_recolor(imageObject, openknxTouchDisplayModule.getInactiveColor(), 0);
         }
     }
     else

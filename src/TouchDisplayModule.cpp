@@ -442,6 +442,8 @@ void TouchDisplayModule::updateTheme()
     }
 }
 
+
+
 void TouchDisplayModule::setTheme(uint8_t theme)
 {
     lv_disp_t *display = lv_disp_get_default();
@@ -458,6 +460,20 @@ void TouchDisplayModule::setTheme(uint8_t theme)
         lv_theme_default_init(display, lv_palette_main(LV_PALETTE_GREY), lv_palette_main(LV_PALETTE_YELLOW), 1, LV_FONT_DEFAULT);
         break;
     }
+    lv_obj_t *btn = lv_btn_create(lv_scr_act());
+    _colorActive = lv_obj_get_style_bg_color(btn, LV_PART_MAIN | LV_STATE_PRESSED);
+    _colorInactive = lv_obj_get_style_text_color(btn, LV_PART_MAIN);
+    lv_obj_del(btn); 
+}
+
+lv_color_t TouchDisplayModule::getActiveColor()
+{
+    return _colorActive;
+}
+
+lv_color_t TouchDisplayModule::getInactiveColor()
+{
+    return _colorInactive;
 }
 
 void TouchDisplayModule::lv_log(
@@ -698,7 +714,6 @@ void TouchDisplayModule::loop(bool configured)
         logDebugP("Stop waiting for requested page because of timeout");
     }
 }
-
 #ifdef OPENKNX_DUALCORE
 void TouchDisplayModule::loop1(bool configured)
 {

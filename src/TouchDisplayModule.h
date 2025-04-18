@@ -21,6 +21,8 @@ class TouchDisplayModule : public OpenKNX::Module
 	bool _touchPressState = false;
 	unsigned long _touchPressedTimer = 0;
 	Page* _pageAtPressStart = nullptr;
+	lv_color_t _colorActive;
+	lv_color_t _colorInactive;
 public:
 	bool touchPressStateForLgvl = false;
 
@@ -66,7 +68,8 @@ public:
 	void showDetailDevicePage(uint8_t channelIndex, uint8_t deviceIndex);
 	void showMainFunctionDevicePage();
 	virtual void showInformations() override;
-
+	lv_color_t getInactiveColor();
+	lv_color_t getActiveColor();
 
 	void processInputKo(GroupObject &ko) override;
 	bool processCommand(const std::string cmd, bool diagnoseKo) override;

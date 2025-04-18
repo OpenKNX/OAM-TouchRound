@@ -85,6 +85,8 @@
         "type20.c": "cpp",
         "type30.c": "cpp",
         "type32.c": "cpp",
-        "lv_global.h": "c"
+        "lv_global.h": "c",
+        "type70.c": "cpp",
+        "chevron_up.c": "cpp"
     }
 }

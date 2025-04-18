@@ -14,7 +14,8 @@ DimmerScreen::DimmerScreen()
    
     image = lv_img_create(screen);     
     lv_obj_align(image, LV_ALIGN_CENTER, 0, -32);  
-
+    lv_obj_add_flag(image, LV_OBJ_FLAG_CLICKABLE); 
+    
     value = lv_label_create(screen);
     lv_obj_set_width(value, LV_SIZE_CONTENT); 
     lv_obj_set_height(value, LV_SIZE_CONTENT); 
