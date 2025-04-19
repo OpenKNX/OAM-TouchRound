@@ -1,5 +1,5 @@
-#include "ImageLoader.h"
 #include "OpenKNX.h"
+#include "ImageLoader.h"
 #include "TouchDisplayModule.h"
 #include "lvgl.h"
 
@@ -40,7 +40,7 @@
 #include "../Images/Bild1.c"
 #include "../Images/Bild2.c"
 #include "../Images/Bild3.c"
-
+#include "../Images/alert.c"
 
 
 #include "LittleFS.h"
@@ -168,6 +168,10 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     else if (fileName == "missing_file.png")
     {
         lv_img_set_src(imageObject, &missing_file);
+    }
+    else if (fileName == "alert.png")
+    {
+        lv_img_set_src(imageObject, &alert);
     }
     else if (fileName == "up.png")
     {
@@ -322,19 +326,29 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     lv_obj_clear_flag(imageObject, LV_OBJ_FLAG_HIDDEN);
 } 
 
+void ImageLoader::colorImage(lv_obj_t* imageObject, uint8_t red, uint8_t green, uint8_t blue)
+{
+    lv_color_t color = lv_color_make(red, green, blue);
+    colorImage(imageObject, color);
+}
+
+void ImageLoader::colorImage(lv_obj_t* imageObject, lv_color_t color)
+{
+    lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
+    lv_obj_set_style_img_recolor(imageObject, color, 0);
+}
+
 void ImageLoader::colorState(lv_obj_t* imageObject, bool useStateColor, bool state)
 {
     if (useStateColor)
     {
         if (state)
         {
-            lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
-            lv_obj_set_style_img_recolor(imageObject, openknxTouchDisplayModule.getActiveColor(), 0);
+            colorImage(imageObject, openknxTouchDisplayModule.getActiveColor());
         }
         else
         {
-            lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
-            lv_obj_set_style_img_recolor(imageObject, openknxTouchDisplayModule.getInactiveColor(), 0);
+            colorImage(imageObject, openknxTouchDisplayModule.getInactiveColor());
         }
     }
     else

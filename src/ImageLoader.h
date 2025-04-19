@@ -16,5 +16,7 @@ public:
     static void loadImage(lv_obj_t* imageObject, std::string imageFile, bool useStateColor = false, bool state = false);
     static void unloadImage(lv_obj_t* imageObject);
     static void colorState(lv_obj_t* imageObject, bool useStateColor, bool state);
+    static void colorImage(lv_obj_t* imageObject, uint8_t red, uint8_t green, uint8_t blue);
+    static void colorImage(lv_obj_t* imageObject, lv_color_t color);
     static void connectLittleFSwithLVGL();
 };

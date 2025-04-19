@@ -19,6 +19,8 @@ void DoorWindowDeviceBridge::setup(uint8_t _channelIndex)
     _eventIconPressed = [](lv_event_t *e) { ((DoorWindowDeviceBridge*) lv_event_get_user_data(e))->imageClicked(); };
     lv_obj_add_event_cb(_screen.image, _eventIconPressed, LV_EVENT_CLICKED, this);
     
+    ImageLoader::loadImage(_screen.obstruction, "alert.png");
+    ImageLoader::colorImage(_screen.obstruction, 255, 0, 0);
     _screen.show();
     mainFunctionValueChanged();
 }
