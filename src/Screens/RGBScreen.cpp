@@ -5,70 +5,6 @@
 
 RGBScreen* RGBScreen::instance = nullptr;
 
-// Static function to handle touch events
-void RGBScreen::hsv_event_handler(lv_event_t* e) {
-    lv_point_t point;
-    lv_indev_get_point(lv_indev_get_act(), &point);
-    lv_obj_t* obj = (lv_obj_t*)lv_event_get_target(e);
-    isPressed = lv_event_get_code(e) != LV_EVENT_RELEASED;
-    lv_area_t area;
-    lv_obj_get_coords(obj, &area);
-
-    int centerX = (area.x1 + area.x2) / 2;
-    int centerY = (area.y1 + area.y2) / 2;
-    int dx = point.x - centerX;
-    int dy = point.y - centerY;
-    int radius = lv_obj_get_width(obj) / 2;
-
-    if (dx * dx + dy * dy <= radius * radius) {
-        float angle = lv_atan2(-dy, dx) * 180.0f / M_PI;
-        if (angle < 0) 
-            angle += 360;
-        
-        hue = (int)angle;
-        saturation = (int)(sqrt(dx * dx + dy * dy) / radius * 100);
-        brightness = (int)lv_slider_get_value(brightnessSlider);
-        logError("ColorPicker", "H: %d, S: %d, V: %d", (int) hue, (int) saturation, (int) brightness);
-        lv_color_t color = lv_color_hsv_to_rgb(hue, saturation, brightness);
-        #if LVGL_VERSION_MAJOR >= 9   
-        red = color.red;
-        green = color.green;
-        blue = color.blue;
-        #else
-        red = color & 0xFF;
-        green = (color >> 8) & 0xFF;
-        blue = (color >> 16) & 0xFF;
-        #endif
-        logError("ColorPicker", "R: %d, G: %d, B: %d", (int) red, (int) green, (int) blue);
-        
-        // Use the color or update H, S, and V values here
-        // For example, you can log or display the color
-    }
-    logError("ColorPicker", "pressed: %d", (int) isPressed);
-    updateColor();
-}
-void RGBScreen::setRGB(uint8_t r, uint8_t g, uint8_t b) 
-{
-    if (!isPressed) {
-        logError("RGBScreen", "Ignore setRGB because pressed");
-        return;
-    }
-    red = r;
-    green = g;
-    blue = b;
-    auto lv_color_hsv_t = lv_color_rgb_to_hsv(r, g, b);
-    hue = lv_color_hsv_t.h;
-    saturation = lv_color_hsv_t.s;
-    brightness = lv_color_hsv_t.v;
-    lv_slider_set_value(brightnessSlider, brightness, LV_ANIM_OFF);
-    updateColor();
-}
-
-void RGBScreen::updateColor()
-{
-    lv_style_set_arc_color(&colorStyle, lv_color_make(red, green, blue));
-}
-
 RGBScreen::RGBScreen()
 {
     logError("RGBScreen", "Constructor");
@@ -86,10 +22,11 @@ RGBScreen::RGBScreen()
     lv_obj_clear_flag(hsvContainer, LV_OBJ_FLAG_SCROLLABLE);
 
 
-    int arcWitdh = 10;
+    int arcWitdh = 5;
     lv_obj_t * color = lv_arc_create(screen);
-    lv_obj_set_size(hsvContainer, circleDiameter + arcWitdh, circleDiameter + arcWitdh);
-    lv_arc_set_rotation(color, 270);
+    lv_obj_set_size(color, circleDiameter + arcWitdh, circleDiameter + arcWitdh);
+    lv_arc_set_range(color,0, 100);
+    lv_arc_set_value(color, 100);
     lv_arc_set_bg_angles(color, 0, 360);
     lv_obj_remove_style(color, NULL, LV_PART_KNOB);   /*Be sure the knob is not displayed*/
     lv_obj_remove_flag(color, LV_OBJ_FLAG_CLICKABLE);  /*To not allow adjusting by click*/
@@ -170,4 +107,67 @@ logError("RGBScreen", "create canvas");
 
    
 
+}
+
+void RGBScreen::hsv_event_handler(lv_event_t* e) {
+    lv_point_t point;
+    lv_indev_get_point(lv_indev_get_act(), &point);
+    lv_obj_t* obj = (lv_obj_t*)lv_event_get_target(e);
+    isPressed = lv_event_get_code(e) != LV_EVENT_RELEASED;
+    lv_area_t area;
+    lv_obj_get_coords(obj, &area);
+
+    int centerX = (area.x1 + area.x2) / 2;
+    int centerY = (area.y1 + area.y2) / 2;
+    int dx = point.x - centerX;
+    int dy = point.y - centerY;
+    int radius = lv_obj_get_width(obj) / 2;
+
+    if (dx * dx + dy * dy <= radius * radius) {
+        float angle = lv_atan2(-dy, dx) * 180.0f / M_PI;
+        if (angle < 0) 
+            angle += 360;
+        
+        hue = (int)angle;
+        saturation = (int)(sqrt(dx * dx + dy * dy) / radius * 100);
+        brightness = (int)lv_slider_get_value(brightnessSlider);
+        logError("ColorPicker", "H: %d, S: %d, V: %d", (int) hue, (int) saturation, (int) brightness);
+        lv_color_t color = lv_color_hsv_to_rgb(hue, saturation, brightness);
+        #if LVGL_VERSION_MAJOR >= 9   
+        red = color.red;
+        green = color.green;
+        blue = color.blue;
+        #else
+        red = color & 0xFF;
+        green = (color >> 8) & 0xFF;
+        blue = (color >> 16) & 0xFF;
+        #endif
+        logError("ColorPicker", "R: %d, G: %d, B: %d", (int) red, (int) green, (int) blue);
+        
+        // Use the color or update H, S, and V values here
+        // For example, you can log or display the color
+    }
+    logError("ColorPicker", "pressed: %d", (int) isPressed);
+    updateColor();
+}
+void RGBScreen::setRGB(uint8_t r, uint8_t g, uint8_t b) 
+{
+    if (!isPressed) {
+        logError("RGBScreen", "Ignore setRGB because pressed");
+        return;
+    }
+    red = r;
+    green = g;
+    blue = b;
+    auto lv_color_hsv_t = lv_color_rgb_to_hsv(r, g, b);
+    hue = lv_color_hsv_t.h;
+    saturation = lv_color_hsv_t.s;
+    brightness = lv_color_hsv_t.v;
+    lv_slider_set_value(brightnessSlider, brightness, LV_ANIM_OFF);
+    updateColor();
+}
+
+void RGBScreen::updateColor()
+{
+    lv_style_set_arc_color(&colorStyle, lv_color_make(red, green, blue));
 }
