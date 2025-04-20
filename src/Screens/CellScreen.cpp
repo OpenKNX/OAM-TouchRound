@@ -119,6 +119,7 @@ _height(height)
     
     cell = lv_obj_create(cellPage.screen);
     lv_obj_set_size(cell, width, height);
+    lv_obj_set_style_bg_opa(cell, LV_OPA_TRANSP, 0);
     lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); 
 
     label = lv_label_create(cell);
@@ -133,26 +134,42 @@ _height(height)
             lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
         else
             lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
+        
+        lv_obj_set_style_border_side(cell, isTop ? LV_BORDER_SIDE_BOTTOM : LV_BORDER_SIDE_TOP , LV_PART_MAIN);
     }
     else
     {
         if (isLeft)
         {
+            // left side
             lv_obj_align(value, LV_ALIGN_CENTER, -10, 0);
             lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_RIGHT, 0);
             if (isTop)
+            {
                 lv_obj_align(label, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+                lv_obj_set_style_border_side(cell, (lv_border_side_t) (LV_BORDER_SIDE_BOTTOM | LV_BORDER_SIDE_RIGHT) , LV_PART_MAIN);
+            }
             else
+            {
                 lv_obj_align(label, LV_ALIGN_TOP_RIGHT, 0, 0);
+                lv_obj_set_style_border_side(cell, (lv_border_side_t) (LV_BORDER_SIDE_TOP | LV_BORDER_SIDE_RIGHT) , LV_PART_MAIN);
+            }
         }
         else
         {
+            // right side
             lv_obj_align(value, LV_ALIGN_CENTER, -10, 0);
             lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_LEFT, 0);
             if (isTop)
+            {
                 lv_obj_align(label, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+                lv_obj_set_style_border_side(cell, (lv_border_side_t) (LV_BORDER_SIDE_BOTTOM | LV_BORDER_SIDE_LEFT) , LV_PART_MAIN);
+            }
             else
+            {
                 lv_obj_align(label, LV_ALIGN_TOP_LEFT, 0, 0);
+                lv_obj_set_style_border_side(cell, (lv_border_side_t) (LV_BORDER_SIDE_TOP | LV_BORDER_SIDE_LEFT) , LV_PART_MAIN);
+            }
         }
     }
  
