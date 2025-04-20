@@ -67,7 +67,7 @@ void DateTimeCell::updateTime(bool forceUpdate)
             char buffer[50] = {0};
             if (_showTime && _showDate)
             {
-                sprintf(buffer, "%02d.%02d.%04d %02d:%02d:%02d", (int)localTime.day, (int)localTime.month, (int)localTime.year, (int)localTime.hour, (int)localTime.minute, (int)localTime.second);
+                sprintf(buffer, "%02d.%02d.%04d %02d:%02d", (int)localTime.day, (int)localTime.month, (int)localTime.year, (int)localTime.hour, (int)localTime.minute/*, (int)localTime.second*/);
             }
             else if (_showDate)
             {
