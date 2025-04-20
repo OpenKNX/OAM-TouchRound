@@ -9,6 +9,7 @@ class RolladenDeviceBridge : public RolladenBridge
     lv_event_cb_t _eventButtonDownPressed = nullptr;
     lv_event_cb_t _eventButtonMainFunctionPressed = nullptr;
     lv_event_cb_t _eventSliderReleased = nullptr;
+    lv_event_cb_t _evnetSliderClicked = nullptr;
     RolladenScreen& _screen;
 protected:
     DetailDevicePage& _detailDevicePage;

@@ -6,8 +6,9 @@ RolladenScreen* RolladenScreen::instance = nullptr;
 
 RolladenScreen::RolladenScreen()
 {
-    icon = lv_img_create(screen);
-    lv_obj_align(icon, LV_ALIGN_CENTER, 0, -10);  
+    image = lv_img_create(screen);
+    lv_obj_add_flag(image, LV_OBJ_FLAG_CLICKABLE);
+    lv_obj_align(image, LV_ALIGN_CENTER, 0, -10);  
  
     buttonUp = lv_img_create(screen);
     ImageLoader::loadImage(buttonUp, "up.png", false, false);
@@ -24,8 +25,14 @@ RolladenScreen::RolladenScreen()
     lv_obj_align(buttonDown, LV_ALIGN_BOTTOM_MID, 0, -56);  
 
     sliderPosition = lv_slider_create(screen);
+    lv_obj_add_flag(sliderPosition, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_size(sliderPosition, 20, 110);
+#if LVGL_VERSION_MAJOR < 9
     lv_slider_set_range(sliderPosition, 0, 100);  
+#else
+    lv_slider_set_range(sliderPosition, 100, 0);  
+#endif
+
     lv_obj_align(sliderPosition, LV_ALIGN_LEFT_MID, 35, -10);  
 
      

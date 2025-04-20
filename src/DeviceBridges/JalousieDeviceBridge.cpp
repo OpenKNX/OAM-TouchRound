@@ -22,11 +22,20 @@ JalousieDeviceBridge::~JalousieDeviceBridge()
 
 void JalousieDeviceBridge::sliderSlatReleased() 
 {
+#if LVGL_VERSION_MAJOR < 9    
     uint8_t value = 100 - lv_slider_get_value(_screen.sliderSlat);
-    _channel->commandPosition(this, value);
+#else
+    uint8_t value = lv_slider_get_value(_screen.sliderSlat);
+#endif
+    _channel->commandPosition(nullptr, value);
 }
 
 void JalousieDeviceBridge::setSlatPosition(uint8_t position)
 {
-    lv_slider_set_value(_screen.sliderSlat, 100 - position, LV_ANIM_ON);
+#if LVGL_VERSION_MAJOR < 9
+    uint8_t value = 100 - position;
+#else
+    uint8_t value = position;
+#endif
+    lv_slider_set_value(_screen.sliderSlat, value, LV_ANIM_ON);
 }
