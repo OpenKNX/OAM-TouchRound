@@ -19,17 +19,17 @@ void DateTimeCell::setup()
     CellObject& cellObject = *_cellObject;
     if (_showDate && _showTime)
     {
-        ImageLoader::loadImage(cellObject.image, "DateTime.png");
+        lv_label_set_text(cellObject.label, "Datum/Zeit");
     }
     else if (_showDate)
     {
-        ImageLoader::loadImage(cellObject.image, "Date.png");
+        lv_label_set_text(cellObject.label, "Datum");
     }
     else if (_showTime)
     {
-        ImageLoader::loadImage(cellObject.image, "Time.png");
+        lv_label_set_text(cellObject.label, "Zeit");
     }
-    lv_label_set_text(cellObject.value, "");
+    ImageLoader::loadImage(cellObject.image, "");
     updateTime(true);
 }
 
@@ -77,7 +77,7 @@ void DateTimeCell::updateTime(bool forceUpdate)
             {
                 sprintf(buffer, "%02d:%02d", (int) localTime.hour, (int)localTime.minute/*, (int)localTime.second*/);
             }
-            lv_label_set_text(cellObject.label, buffer);
+            lv_label_set_text(cellObject.value, buffer);
         }
     }
     else
@@ -86,15 +86,15 @@ void DateTimeCell::updateTime(bool forceUpdate)
         {
             if (_showTime && _showDate)
             {
-                lv_label_set_text(cellObject.label, "??.??.???? ??:??:??");
+                lv_label_set_text(cellObject.value, "??.??.???? ??:??:??");
             }
             else if (_showDate)
             {
-                lv_label_set_text(cellObject.label, "??.??.????");
+                lv_label_set_text(cellObject.value, "??.??.????");
             }
             else if (_showTime)
             {
-                lv_label_set_text(cellObject.label, "??:??:??");
+                lv_label_set_text(cellObject.value, "??:??:??");
             }
         }
     }
