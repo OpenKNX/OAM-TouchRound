@@ -50,7 +50,7 @@ void FanDeviceBridge::setPower(bool power)
 void FanDeviceBridge::buttonClicked()
 {
     auto& device = *_channel;
-    device.commandAutomatic(this, !_automatic);
+    device.commandAutomatic(nullptr, !_automatic);
 }
 
 void FanDeviceBridge::mainFunctionValueChanged()
