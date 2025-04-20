@@ -23,7 +23,6 @@ JalousieDeviceBridge::~JalousieDeviceBridge()
 void JalousieDeviceBridge::sliderSlatReleased() 
 {
     uint8_t value = 100 - lv_slider_get_value(_screen.sliderSlat);
-    logErrorP("Slider Slat released %d", value); 
     _channel->commandPosition(this, value);
 }
 

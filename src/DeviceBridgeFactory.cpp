@@ -38,7 +38,6 @@ RolladenBridge* DeviceBridgeFactory::createRolladen(KnxChannelRolladen& channel,
 
 RolladenBridge* DeviceBridgeFactory::createJalousien(KnxChannelJalousie& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
-    logError("DeviceBridgeFactory", "Jolousie");
     auto result = new JalousieDeviceBridge(*_currentDevicePage);
     channel.add(result);
     return result;
@@ -68,7 +67,6 @@ FanBridge* DeviceBridgeFactory::createFan(KnxChannelFan& channel, uint8_t _chann
 
 RGBBridge* DeviceBridgeFactory::createRGB(KnxChannelRGB& channel, uint8_t channelIndex, uint8_t deviceType)
 {
-    logError("DeviceBridgeFactory", "RGBDeviceBridge");
     auto result = new RGBDeviceBridge(*_currentDevicePage);
     channel.add(result);
     return result;

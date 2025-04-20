@@ -19,4 +19,5 @@ public:
     void released();
     void buttonClicked();
     void updateText();
+    virtual void mainFunctionValueChanged() override;
 };  

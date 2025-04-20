@@ -19,6 +19,5 @@ public:
 
     void colorChanged();
  
- 
     virtual void mainFunctionValueChanged() override;
 };

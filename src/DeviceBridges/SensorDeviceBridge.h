@@ -12,4 +12,5 @@ public:
     virtual ~SensorDeviceBridge() override;
     virtual void setup(uint8_t _channelIndex) override;
     virtual void setDetected(bool detected) override;
+    virtual void mainFunctionValueChanged() override;
 };  

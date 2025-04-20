@@ -25,6 +25,8 @@ void ThermostatDeviceBridge::setup(uint8_t _channelIndex)
     
     ImageLoader::colorImage(_screen.buttonUp, openknxTouchDisplayModule.getInactiveColor());
     ImageLoader::colorImage(_screen.buttonDown, openknxTouchDisplayModule.getInactiveColor());
+
+
     mainFunctionValueChanged();
     _screen.show();
 }
@@ -42,8 +44,6 @@ ThermostatDeviceBridge::~ThermostatDeviceBridge()
 void ThermostatDeviceBridge::mainFunctionValueChanged() 
 {
     auto& device = *_detailDevicePage.getDevice();
-    auto image = device.mainFunctionImage();
-    ImageLoader::loadImage(_screen.image, image.imageFile, image.allowRecolor, device.mainFunctionValue());
     lv_label_set_text(_screen.value, device.currentValueAsString().c_str());
 }
 
@@ -54,6 +54,10 @@ void ThermostatDeviceBridge::buttonUpPressed()
     {
         _channel->commandTargetTemperature(this, _targetTemperature + 0.5);
     }
+    else if (!std::isnan(_currentTemperature))
+    {
+        _channel->commandTargetTemperature(this, _currentTemperature + 0.5);
+    }
 }
    
 
@@ -62,6 +66,10 @@ void ThermostatDeviceBridge::buttonDownPressed()
     if (!std::isnan(_targetTemperature))
     {
         _channel->commandTargetTemperature(this, _targetTemperature - 0.5);
+    }
+    else if (!std::isnan(_currentTemperature))
+    {
+        _channel->commandTargetTemperature(this, _currentTemperature - 0.5);
     }
 }
 
@@ -73,32 +81,54 @@ void ThermostatDeviceBridge::buttonMainFunctionPressed()
 
 void ThermostatDeviceBridge::setTargetTemperature(double temperature)
 {
-
+    _targetTemperature = temperature;
 }
 void ThermostatDeviceBridge::setCurrentTemperature(double temperature)
 {
+    _currentTemperature = temperature;
     char buffer[30];
     snprintf(buffer, sizeof(buffer), "Raum: %0.1f°", temperature);
     lv_label_set_text(_screen.labelValue, buffer);
 }
 void ThermostatDeviceBridge::setMode(ThermostatMode mode)
 {
-
+    switch (mode)
+    {
+    case ThermostatMode::ThermostatModeOff:
+        lv_label_set_text(_screen.labelMode, "Aus");
+        ImageLoader::loadImage(_screen.image, "thermostatOff.png", true, false);
+        break;
+    case ThermostatMode::ThermostatModeHeating:
+        lv_label_set_text(_screen.labelMode, "Heizen");
+        ImageLoader::loadImage(_screen.image, "thermostatHeading.png", true, true);
+        break;
+    case ThermostatMode::ThermostatModeCooling:
+        lv_label_set_text(_screen.labelMode, "Kühlen");
+        ImageLoader::loadImage(_screen.image, "thermostatCooling.png", true, false);
+        break;
+    case ThermostatMode::ThermostatModeAutoHeatingCooling:
+        lv_label_set_text(_screen.labelMode, "Auto");
+        ImageLoader::loadImage(_screen.image, "thermostatAuto.png", true, false);
+        break;
+    default:
+        break;
+    }
 }
 void ThermostatDeviceBridge::setCurrentState(ThermostatCurrentState currentState)
 {
     switch (currentState)
     {
-    case ThermostatCurrentStateOff:
-        lv_label_set_text(_screen.labelMode, "Aus");
+    case ThermostatCurrentState::ThermostatCurrentStateOff:
+        ImageLoader::colorImage(_screen.buttonUp, openknxTouchDisplayModule.getInactiveColor());
+        ImageLoader::colorImage(_screen.buttonDown, openknxTouchDisplayModule.getInactiveColor());
         break;
-    case ThermostatCurrentStateHeating:
-        lv_label_set_text(_screen.labelMode, "Heizen");
+    case ThermostatCurrentState::ThermostatCurrentStateHeating:
+        ImageLoader::colorImage(_screen.buttonUp, openknxTouchDisplayModule.getActiveColor());
+        ImageLoader::colorImage(_screen.buttonDown, openknxTouchDisplayModule.getInactiveColor());
         break;
-    case ThermostatCurrentStateCooling:
-        lv_label_set_text(_screen.labelMode, "Kühlen");
-        break;
-    default:
+    case ThermostatCurrentState::ThermostatCurrentStateCooling:
+        ImageLoader::colorImage(_screen.buttonUp, openknxTouchDisplayModule.getInactiveColor());
+        ImageLoader::colorImage(_screen.buttonDown, openknxTouchDisplayModule.getActiveColor());
         break;
     }
 }

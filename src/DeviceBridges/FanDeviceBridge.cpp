@@ -20,9 +20,9 @@ void FanDeviceBridge::setup(uint8_t _channelIndex)
    
     _eventIconPressed = [](lv_event_t *e) { ((FanDeviceBridge*) lv_event_get_user_data(e))->imageClicked(); };
     lv_obj_add_event_cb(_screen.image, _eventIconPressed, LV_EVENT_CLICKED, this);
-    
-    _screen.show();
+
     mainFunctionValueChanged();
+    _screen.show(); 
 }
 
 FanDeviceBridge::~FanDeviceBridge()
@@ -44,7 +44,7 @@ void FanDeviceBridge::setAutomatic(bool automatic)
 
 void FanDeviceBridge::setPower(bool power)
 {
-    _channel->commandPower(this, power);
+
 }
 
 void FanDeviceBridge::buttonClicked()

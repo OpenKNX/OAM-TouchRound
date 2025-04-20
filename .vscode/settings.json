@@ -90,6 +90,8 @@
         "chevron_up.c": "cpp",
         "type72.c": "cpp",
         "up.c": "cpp",
-        "down.c": "cpp"
+        "down.c": "cpp",
+        "alert.c": "cpp",
+        "thermostatcooling.c": "cpp"
     }
 }

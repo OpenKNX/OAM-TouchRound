@@ -41,6 +41,10 @@
 #include "../Images/Bild2.c"
 #include "../Images/Bild3.c"
 #include "../Images/alert.c"
+#include "../Images/thermostatHeading.c"
+#include "../Images/thermostatCooling.c"
+#include "../Images/thermostatAuto.c"
+#include "../Images/thermostatOff.c"
 
 
 #include "LittleFS.h"
@@ -184,6 +188,22 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     else if (fileName == "stop.png")
     {
         lv_img_set_src(imageObject, &stop);
+    }
+    else if (fileName == "thermostatHeading.png")
+    {
+        lv_img_set_src(imageObject, &thermostatHeading);
+    }
+    else if (fileName == "thermostatCooling.png")
+    {
+        lv_img_set_src(imageObject, &thermostatCooling);
+    }
+    else if (fileName == "thermostatAuto.png")
+    {
+        lv_img_set_src(imageObject, &thermostatAuto);
+    }
+    else if (fileName == "thermostatOff.png")
+    {
+        lv_img_set_src(imageObject, &thermostatOff);
     }
     else if (fileName == "Bild1.png")
     {

@@ -8,6 +8,8 @@ class ThermostatDeviceBridge : public ThermostatBridge
     lv_event_cb_t _eventButtonUpPressed = nullptr;
     lv_event_cb_t _eventButtonDownPressed = nullptr;
     lv_event_cb_t _eventButtonMainFunctionPressed = nullptr;
+    MainFunctionChangedHandler _handler;
+  
     ThermostatScreen& _screen;
     double _targetTemperature = NAN;
     double _currentTemperature = NAN;

@@ -14,6 +14,7 @@ void DimmerDeviceBridge::setup(uint8_t _channelIndex)
     _eventButtonPressed = [](lv_event_t *e) { ((DimmerDeviceBridge*) lv_event_get_user_data(e))->buttonClicked(); };
     lv_obj_add_event_cb(_screen.image, _eventButtonPressed , LV_EVENT_CLICKED, this);
 
+    mainFunctionValueChanged();
     _screen.show();
 }
 
@@ -27,7 +28,6 @@ DimmerDeviceBridge::~DimmerDeviceBridge()
 
 void DimmerDeviceBridge::setBrightness(uint8_t brightness)
 {
-    logErrorP("setBrightness %d", (int) brightness);
     lv_arc_set_value(_screen.slider, brightness);  
     ImageLoader::loadImage(_screen.image, _channel->mainFunctionImage().imageFile, _channel->mainFunctionImage().allowRecolor, brightness != 0); 
     updateText(); 
@@ -48,4 +48,9 @@ void DimmerDeviceBridge::released()
 void DimmerDeviceBridge::buttonClicked()
 {    
     _channel->commandMainFunctionClick();   
+}
+
+void DimmerDeviceBridge::mainFunctionValueChanged()
+{
+    
 }
