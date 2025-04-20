@@ -8,7 +8,7 @@ JalousieScreen::JalousieScreen()
 {
     sliderSlat = lv_slider_create(screen);
     lv_obj_set_size(sliderSlat, 20, 110);
-#if LVGL_VERSION_MAJOR < 9
+#if LVGL_VERSION_MAJOR < 10
     lv_slider_set_range(sliderSlat, 0, 100);  
 #else
     lv_slider_set_range(sliderSlat, 100, 0);
