@@ -26,7 +26,7 @@ void JumpCell::setup()
     Page* page = Page::createPage(ParamTCH_CHJumpToShort1 - 1);
     logDebug("JumpCell", "Setup JumpCell %s", page->name().c_str()); 
     lv_label_set_text(cellObject.label, page->name().c_str());
-    ImageLoader::loadImage(cellObject.image, page->image().c_str());
+    ImageLoader::loadImage(cellObject.image, page->image().c_str(), true, false);
     delete page;
     lv_label_set_text(cellObject.value, "");
 }
