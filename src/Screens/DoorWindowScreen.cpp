@@ -9,7 +9,8 @@ DoorWindowScreen::DoorWindowScreen()
     lv_obj_align(slider, LV_ALIGN_TOP_MID, 0, 45);  
 
     image = lv_img_create(screen);  
-    lv_obj_align(image, LV_ALIGN_CENTER, 0, -15);  
+    lv_obj_align(image, LV_ALIGN_CENTER, 0, -15); 
+    lv_obj_add_flag(image, LV_OBJ_FLAG_CLICKABLE); 
 
     obstruction = lv_img_create(screen);  
     lv_obj_align(obstruction, LV_ALIGN_CENTER, 73, -15);  

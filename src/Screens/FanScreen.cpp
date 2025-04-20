@@ -15,7 +15,7 @@ FanScreen::FanScreen()
 
     image = lv_img_create(screen);  
     lv_obj_align(image, LV_ALIGN_CENTER, 0, -15);  
-    lv_obj_add_flag(buttonAuto, LV_OBJ_FLAG_CHECKABLE);
+    lv_obj_add_flag(image, LV_OBJ_FLAG_CLICKABLE); 
   
     value = lv_label_create(screen);
     lv_obj_set_width(value, LV_SIZE_CONTENT);  /// 1

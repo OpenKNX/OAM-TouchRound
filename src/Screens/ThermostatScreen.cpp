@@ -19,13 +19,16 @@ ThermostatScreen::ThermostatScreen()
 
     image = lv_img_create(screen);  
     lv_obj_align(image, LV_ALIGN_CENTER, 32, -25);  
+    lv_obj_add_flag(image, LV_OBJ_FLAG_CLICKABLE); 
 
     buttonUp = lv_image_create(screen);
     lv_obj_align(buttonUp, LV_ALIGN_TOP_LEFT, 42, 73);
+    lv_obj_add_flag(buttonUp, LV_OBJ_FLAG_CLICKABLE); 
     ImageLoader::loadImage(buttonUp, "up.png", false, 0);
 
     buttonDown = lv_image_create(screen);
     lv_obj_align(buttonDown, LV_ALIGN_TOP_LEFT, 42, 132);
+    lv_obj_add_flag(buttonDown, LV_OBJ_FLAG_CLICKABLE); 
     ImageLoader::loadImage(buttonDown, "down.png", false, 0);
 
     value = lv_label_create(screen);
