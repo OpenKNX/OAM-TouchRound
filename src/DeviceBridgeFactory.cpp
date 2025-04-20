@@ -8,6 +8,7 @@
 #include "DeviceBridges/FanDeviceBridge.h"
 #include "DeviceBridges/RGBDeviceBridge.h"
 #include "DeviceBridges/DoorWindowDeviceBridge.h"
+#include "DeviceBridges/ThermostatDeviceBridge.h"
 
 const std::string DeviceBridgeFactory::name()
 {
@@ -76,6 +77,13 @@ RGBBridge* DeviceBridgeFactory::createRGB(KnxChannelRGB& channel, uint8_t channe
 DoorWindowBridge* DeviceBridgeFactory::createDoorWindow(KnxChannelDoorWindow& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
 {
     auto result = new DoorWindowDeviceBridge(*_currentDevicePage);
+    channel.add(result);
+    return result;
+}
+
+ThermostatBridge* DeviceBridgeFactory::createThermostat(KnxChannelThermostat& channel, uint8_t _channelIndex /* this parameter is used in macros, do not rename */, uint8_t deviceType)
+{
+    auto result = new ThermostatDeviceBridge(*_currentDevicePage);
     channel.add(result);
     return result;
 }

@@ -3,7 +3,6 @@
 #include "lvgl.h"
 #include "lv_xiao_round_screen.h"
 #include "knxprod.h"
-#include "./Pages/Page.h"
 #include "./Screens/CellScreen.h"
 #include "./Screens/MainFunctionScreen.h"
 #include "./Screens/DateTimeScreen.h"
@@ -15,9 +14,13 @@
 #include "./Screens/JalousieScreen.h"
 #include "./Screens/FanScreen.h"
 #include "./Screens/DoorWindowScreen.h"
+#include "./Screens/ThermostatScreen.h"
+#include "./Screens/RGBScreen.h"
+#include "./Pages/Page.h"
 #include "./Pages/ProgButtonPage.h"
 #include "./ImageLoader.h"
-#include "./Screens/RGBScreen.h"
+
+
 
 const std::string TouchDisplayModule::name()
 {
@@ -370,6 +373,7 @@ void TouchDisplayModule::setup(bool configured)
     FanScreen::instance = new FanScreen();
     RGBScreen::instance = new RGBScreen();
     DoorWindowScreen::instance = new DoorWindowScreen();
+    ThermostatScreen::instance = new ThermostatScreen();
 
     if (configured)
     {
