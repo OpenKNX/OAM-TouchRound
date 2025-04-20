@@ -119,18 +119,43 @@ _height(height)
     
     cell = lv_obj_create(cellPage.screen);
     lv_obj_set_size(cell, width, height);
-    lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); /// Flags
-    label = lv_label_create(cell);
-    if (isTop)
-        lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
-    else
-        lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
- 
-    image = lv_img_create(cell);  
+    lv_obj_clear_flag(cell, LV_OBJ_FLAG_SCROLLABLE); 
 
-    lv_obj_align(image, LV_ALIGN_CENTER,  wideCell ? 0 : isLeft ? 20 : -20, isTop ? -10 : 10);  
+    label = lv_label_create(cell);
     value = lv_label_create(cell);
-    lv_obj_set_align(value, LV_ALIGN_CENTER);
-    lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_CENTER, 0);
+    image = lv_img_create(cell);  
+   
+    if (wideCell)
+    {
+        lv_obj_align(value, LV_ALIGN_CENTER, 0, 0);
+        lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_CENTER, 0);
+        if (isTop)
+            lv_obj_align(label, LV_ALIGN_BOTTOM_MID, 0, 0);
+        else
+            lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
+    }
+    else
+    {
+        if (isLeft)
+        {
+            lv_obj_align(value, LV_ALIGN_CENTER, -10, 0);
+            lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_RIGHT, 0);
+            if (isTop)
+                lv_obj_align(label, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+            else
+                lv_obj_align(label, LV_ALIGN_TOP_RIGHT, 0, 0);
+        }
+        else
+        {
+            lv_obj_align(value, LV_ALIGN_CENTER, -10, 0);
+            lv_obj_set_style_text_align(value, LV_TEXT_ALIGN_LEFT, 0);
+            if (isTop)
+                lv_obj_align(label, LV_ALIGN_BOTTOM_LEFT, 0, 0);
+            else
+                lv_obj_align(label, LV_ALIGN_TOP_LEFT, 0, 0);
+        }
+    }
+ 
+    lv_obj_align(image, LV_ALIGN_CENTER,  wideCell ? 0 : isLeft ? 20 : -20, isTop ? -10 : 10);  
 }
 
