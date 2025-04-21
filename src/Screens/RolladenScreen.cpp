@@ -26,8 +26,8 @@ RolladenScreen::RolladenScreen()
 
     sliderPosition = lv_slider_create(screen);
     lv_obj_add_flag(sliderPosition, LV_OBJ_FLAG_CLICKABLE);
-    lv_obj_set_size(sliderPosition, 20, 110);
-#if LVGL_VERSION_MAJOR < 10
+    lv_obj_set_size(sliderPosition, 25, 110);
+#if LVGL_VERSION_MAJOR < 9
     lv_slider_set_range(sliderPosition, 0, 100);  
 #else
     lv_slider_set_range(sliderPosition, 100, 0);  

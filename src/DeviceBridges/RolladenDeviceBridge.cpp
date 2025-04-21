@@ -53,7 +53,7 @@ void RolladenDeviceBridge::mainFunctionValueChanged()
 
 void RolladenDeviceBridge::setPosition(uint8_t position)
 {
-#if LVGL_VERSION_MAJOR < 10    
+#if LVGL_VERSION_MAJOR < 9    
     lv_slider_set_value(_screen.sliderPosition,100 - position, LV_ANIM_ON);
 #else
     lv_slider_set_value(_screen.sliderPosition, position, LV_ANIM_ON);
@@ -84,7 +84,7 @@ void RolladenDeviceBridge::setMovement(MoveState movement)
 
 void RolladenDeviceBridge::sliderReleased()
 {
-#if LVGL_VERSION_MAJOR < 10    
+#if LVGL_VERSION_MAJOR < 9    
     uint8_t value = 100 - lv_slider_get_value(_screen.sliderPosition);
 #else
     uint8_t value = lv_slider_get_value(_screen.sliderPosition);

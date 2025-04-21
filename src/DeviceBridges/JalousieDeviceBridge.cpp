@@ -22,7 +22,7 @@ JalousieDeviceBridge::~JalousieDeviceBridge()
 
 void JalousieDeviceBridge::sliderSlatReleased() 
 {
-#if LVGL_VERSION_MAJOR < 10    
+#if LVGL_VERSION_MAJOR < 9    
     uint8_t value = 100 - lv_slider_get_value(_screen.sliderSlat);
 #else
     uint8_t value = lv_slider_get_value(_screen.sliderSlat);
@@ -32,7 +32,7 @@ void JalousieDeviceBridge::sliderSlatReleased()
 
 void JalousieDeviceBridge::setSlatPosition(uint8_t position)
 {
-#if LVGL_VERSION_MAJOR < 10
+#if LVGL_VERSION_MAJOR < 9
     uint8_t value = 100 - position;
 #else
     uint8_t value = position;
