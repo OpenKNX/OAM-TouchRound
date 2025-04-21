@@ -10,7 +10,7 @@
             ReplacesVersions="%ReleaseReplacesVersions%"
             ApplicationRevision="0"
             ProductName="Rundes Touch-Display"
-            ApplicationName="AB-TouchRound-Logic-Button"
+            ApplicationName="AB-TouchRound"
             BuildSuffix="-Beta"
             BuildSuffixText=" (Beta)"
             OrderNumber="OpenKnxTouchRound"
