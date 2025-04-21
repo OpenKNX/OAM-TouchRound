@@ -10,7 +10,7 @@
                 "--Debug",
                 "-h",
                 "include/knxprod.h",
-                "src/TouchRoundModule-Dev"
+                "src/TouchRound-Dev"
             ],
             "problemMatcher": [],
             "group": "test"
