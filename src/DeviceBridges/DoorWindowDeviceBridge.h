@@ -6,6 +6,7 @@
 class DoorWindowDeviceBridge : public DoorWindowBridge
 {
     lv_event_cb_t _eventIconPressed = nullptr;
+    lv_event_cb_t _eventSliderReleased = nullptr;
     DetailDevicePage& _detailDevicePage;
     DoorWindowScreen& _screen = *DoorWindowScreen::instance;
     bool _automatic = false;
@@ -17,6 +18,6 @@ class DoorWindowDeviceBridge : public DoorWindowBridge
     virtual void setMovement(DoorWindowMoveState movement) override;
     virtual void setObstructionDetected(bool obstructionDetected) override;
     virtual void mainFunctionValueChanged() override;
-    void buttonClicked();
+    void sliderReleased();
     void imageClicked();
 };

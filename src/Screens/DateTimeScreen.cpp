@@ -24,7 +24,7 @@ DateTimeScreen::DateTimeScreen()
     lv_obj_set_x(time, 0);
     lv_obj_set_y(time, 30);
     lv_obj_set_align(time, LV_ALIGN_CENTER);
-    lv_obj_set_style_text_font(time, &lv_font_montserrat_40, LV_PART_MAIN | LV_STATE_DEFAULT); 
+    lv_obj_set_style_text_font(time, &Monserat40WithGermanLetters, LV_PART_MAIN | LV_STATE_DEFAULT); 
   
     message = lv_label_create(screen);
     lv_obj_set_width(message, LV_SIZE_CONTENT);

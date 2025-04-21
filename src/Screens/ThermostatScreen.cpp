@@ -36,5 +36,5 @@ ThermostatScreen::ThermostatScreen()
     lv_obj_set_height(value, LV_SIZE_CONTENT); 
     lv_obj_set_align(value, LV_ALIGN_CENTER);
     lv_obj_align(value, LV_ALIGN_CENTER, 32, 40);  
-    lv_obj_set_style_text_font(value, &lv_font_montserrat_40, LV_PART_MAIN | LV_STATE_DEFAULT); 
+    lv_obj_set_style_text_font(value, &Monserat40WithGermanLetters, LV_PART_MAIN | LV_STATE_DEFAULT); 
 }

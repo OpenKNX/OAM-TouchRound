@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Size: 14 px
  * Bpp: 1
- * Opts: --bpp 1 --size 14 --no-compress --font Montserrat-Regular.ttf --symbols ¡¢£¤¥|§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ --range 32-126 --format lvgl -o MonseratWithGermanLetters.c
+ * Opts: --bpp 1 --size 14 --no-compress --font Montserrat-Regular.ttf --symbols ¡¢£¤¥|§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ --range 32-126 --format lvgl -o Monserat14WithGermanLetters.c
  ******************************************************************************/
 
 //#ifdef LV_LVGL_H_INCLUDE_SIMPLE
@@ -10,11 +10,11 @@
 //#include "lvgl/lvgl.h"
 //#endif
 
-#ifndef MONSERATWITHGERMANLETTERS
-#define MONSERATWITHGERMANLETTERS 1
+#ifndef MONSERAT14WITHGERMANLETTERS
+#define MONSERAT14WITHGERMANLETTERS 1
 #endif
 
-#if MONSERATWITHGERMANLETTERS
+#if MONSERAT14WITHGERMANLETTERS
 
 
 
@@ -1224,9 +1224,9 @@ static lv_font_fmt_txt_dsc_t font_dsc = {
 
 /*Initialize a public general font descriptor*/
 #if LVGL_VERSION_MAJOR >= 8
-const lv_font_t MonseratWithGermanLetters = {
+const lv_font_t Monserat14WithGermanLetters = {
 #else
-lv_font_t MonseratWithGermanLetters = {
+lv_font_t Monserat14WithGermanLetters = {
 #endif
     .get_glyph_dsc = lv_font_get_glyph_dsc_fmt_txt,    /*Function pointer to get glyph's data*/
     .get_glyph_bitmap = lv_font_get_bitmap_fmt_txt,    /*Function pointer to get glyph's bitmap*/
@@ -1248,5 +1248,5 @@ lv_font_t MonseratWithGermanLetters = {
 
 
 
-#endif /*#if MONSERATWITHGERMANLETTERS*/
+#endif /*#if MONSERAT14WITHGERMANLETTERS*/
 

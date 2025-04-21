@@ -45,6 +45,8 @@
 #include "../Images/thermostatCooling.c"
 #include "../Images/thermostatAuto.c"
 #include "../Images/thermostatOff.c"
+#include "../Images/opening.c"
+#include "../Images/closing.c"
 
 
 #include "LittleFS.h"
@@ -188,6 +190,14 @@ void ImageLoader::loadImage(lv_obj_t* imageObject, std::string fileName, bool us
     else if (fileName == "stop.png")
     {
         lv_img_set_src(imageObject, &stop);
+    }
+    else if (fileName == "opening.png")
+    {
+        lv_img_set_src(imageObject, &opening);
+    }
+    else if (fileName == "closing.png")
+    {
+        lv_img_set_src(imageObject, &closing);
     }
     else if (fileName == "thermostatHeading.png")
     {
@@ -354,7 +364,7 @@ void ImageLoader::colorImage(lv_obj_t* imageObject, uint8_t red, uint8_t green, 
 
 void ImageLoader::colorImage(lv_obj_t* imageObject, lv_color_t color)
 {
-    lv_obj_set_style_img_recolor_opa(imageObject, 255, 0);
+    lv_obj_set_style_img_recolor_opa(imageObject, LV_OPA_50, 0);
     lv_obj_set_style_img_recolor(imageObject, color, 0);
 }
 

@@ -17,9 +17,13 @@ void DoorWindowDeviceBridge::setup(uint8_t _channelIndex)
     
     _eventIconPressed = [](lv_event_t *e) { ((DoorWindowDeviceBridge*) lv_event_get_user_data(e))->imageClicked(); };
     lv_obj_add_event_cb(_screen.image, _eventIconPressed, LV_EVENT_CLICKED, this);
+    _eventSliderReleased = [](lv_event_t *e) { ((DoorWindowDeviceBridge*) lv_event_get_user_data(e))->sliderReleased(); };
+    lv_obj_add_event_cb(_screen.slider, _eventSliderReleased, LV_EVENT_RELEASED, this);
     
     ImageLoader::loadImage(_screen.obstruction, "alert.png");
     ImageLoader::colorImage(_screen.obstruction, 255, 0, 0);
+    lv_obj_add_flag(_screen.obstruction, LV_OBJ_FLAG_HIDDEN);
+    ImageLoader::unloadImage(_screen.movement);
     mainFunctionValueChanged();
     _screen.show();
 
@@ -33,10 +37,30 @@ DoorWindowDeviceBridge::~DoorWindowDeviceBridge()
 
 void DoorWindowDeviceBridge::setPosition(uint8_t position)
 {
+    lv_slider_set_value(_screen.slider, position, LV_ANIM_ON);
 }
 
 void DoorWindowDeviceBridge::setMovement(DoorWindowMoveState movement)
 {
+    switch (movement)
+    {
+        case DoorWindowMoveState::DoorWindowMoveStateOpening:
+            ImageLoader::loadImage(_screen.movement, "opening.png", true, true);
+            break;
+        case DoorWindowMoveState::DoorWindowMoveStateClosing:
+            ImageLoader::loadImage(_screen.movement, "closing.png", true, true);
+            break;
+        case DoorWindowMoveState::DoorWindowMoveStateHold:
+            ImageLoader::unloadImage(_screen.movement);
+            break;
+    }
+}
+
+void DoorWindowDeviceBridge::sliderReleased()
+{
+    auto& device = *_channel;
+    int32_t value = lv_slider_get_value(_screen.slider);
+    device.commandPosition(nullptr, value);
 }
 
 void DoorWindowDeviceBridge::setObstructionDetected(bool obstructionDetected)

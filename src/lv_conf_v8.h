@@ -375,7 +375,7 @@
 #define LV_FONT_MONTSERRAT_34 0
 #define LV_FONT_MONTSERRAT_36 0
 #define LV_FONT_MONTSERRAT_38 0
-#define LV_FONT_MONTSERRAT_40 1
+#define LV_FONT_MONTSERRAT_40 0
 #define LV_FONT_MONTSERRAT_42 0
 #define LV_FONT_MONTSERRAT_44 0
 #define LV_FONT_MONTSERRAT_46 0
@@ -396,12 +396,11 @@
 /*Optionally declare custom fonts here.
  *You can use these fonts as default font too and they will be available globally.
  *E.g. #define LV_FONT_CUSTOM_DECLARE   LV_FONT_DECLARE(my_font_1) LV_FONT_DECLARE(my_font_2)*/
-#define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(MonseratWithGermanLetters)
-
+#define LV_FONT_CUSTOM_DECLARE LV_FONT_DECLARE(Monserat14WithGermanLetters) LV_FONT_DECLARE(Monserat40WithGermanLetters)
 
 
 /*Always set a default font*/
-#define LV_FONT_DEFAULT &MonseratWithGermanLetters
+#define LV_FONT_DEFAULT &Monserat14WithGermanLetters
 
 /*Enable handling large font and/or fonts with a lot of characters.
  *The limit depends on the font size, font face and bpp.

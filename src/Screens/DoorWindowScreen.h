@@ -10,5 +10,6 @@ public:
     lv_obj_t* image;
     lv_obj_t* value;
     lv_obj_t* obstruction;
+    lv_obj_t* movement;
     DoorWindowScreen();
 };
