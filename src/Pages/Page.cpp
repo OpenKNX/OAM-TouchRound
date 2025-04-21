@@ -35,6 +35,7 @@ void Page::showPage(Page* page)
         logError("Page", "Page set multiple times");
         delete _pageToSet;
     }
+    logError("Page", "New page to show");
     _pageToSet = page; 
 }
 void Page::handleLoop(bool configured)
@@ -50,6 +51,7 @@ void Page::handleLoop(bool configured)
         _pageToSet = nullptr;
         logDebug("Page", "Setup Page %s", _currentPage->name().c_str());
         _currentPage->setup();
+        logError("Page", "After Setup Page");
     }
     if (_currentPage != nullptr && openknxTouchDisplayModule.isDisplayOn())
     {

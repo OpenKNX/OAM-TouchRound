@@ -22,20 +22,20 @@ RGBScreen::RGBScreen()
     lv_obj_clear_flag(hsvContainer, LV_OBJ_FLAG_SCROLLABLE);
 
 
-    int arcWitdh = 5;
-    lv_obj_t * color = lv_arc_create(screen);
-    lv_obj_set_size(color, circleDiameter + arcWitdh, circleDiameter + arcWitdh);
-    lv_arc_set_range(color,0, 100);
-    lv_arc_set_value(color, 100);
-    lv_arc_set_bg_angles(color, 0, 360);
-    lv_obj_remove_style(color, NULL, LV_PART_KNOB);   /*Be sure the knob is not displayed*/
-    lv_obj_clear_flag(color, LV_OBJ_FLAG_CLICKABLE);  /*To not allow adjusting by click*/
-    lv_obj_align(color, LV_ALIGN_CENTER, hsvX, hsvY);
+    int arcWitdh = 10;
+    currentColor = lv_arc_create(screen);
+    lv_obj_set_size(currentColor, circleDiameter + arcWitdh, circleDiameter + arcWitdh);
+    lv_arc_set_range(currentColor,0, 100);
+    lv_arc_set_value(currentColor, 0);
+    lv_arc_set_bg_angles(currentColor, 0, 360);
+    lv_obj_remove_style(currentColor, NULL, LV_PART_KNOB);   /*Be sure the knob is not displayed*/
+    lv_obj_clear_flag(currentColor, LV_OBJ_FLAG_CLICKABLE);  /*To not allow adjusting by click*/
+    lv_obj_align(currentColor, LV_ALIGN_CENTER, hsvX, hsvY);
     
     lv_style_init(&colorStyle);
-    lv_style_set_arc_color(&colorStyle, lv_color_hex(0xCCCCCC)); // Hellgrau
+    lv_style_set_arc_color(&colorStyle, lv_color_make(128,128,128)); 
     lv_style_set_arc_width(&colorStyle, arcWitdh);
-    lv_obj_add_style(color, &colorStyle, LV_PART_MAIN);
+    lv_obj_add_style(currentColor, &colorStyle, LV_PART_MAIN);
 
 
     // Generate the HSV gradient programmatically
@@ -169,5 +169,7 @@ void RGBScreen::setRGB(uint8_t r, uint8_t g, uint8_t b)
 
 void RGBScreen::updateColor()
 {
+    logError("RGBScreen", "Update color: %u %u %u", red, green, blue);
     lv_style_set_arc_color(&colorStyle, lv_color_make(red, green, blue));
+    lv_obj_add_style(currentColor, &colorStyle, LV_PART_MAIN);
 }

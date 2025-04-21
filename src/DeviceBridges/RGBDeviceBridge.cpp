@@ -8,6 +8,11 @@ RGBDeviceBridge::RGBDeviceBridge(DetailDevicePage& detailDevicePage)
 
 RGBDeviceBridge::~RGBDeviceBridge()
 {
+    if (_eventColorChanged != nullptr)
+    {
+        lv_obj_remove_event_cb(_screen.brightnessSlider, _eventColorChanged);
+        lv_obj_remove_event_cb(_screen.hsvContainer, _eventColorChanged);
+    }
 }
 
 void RGBDeviceBridge::setup(uint8_t channelIndex)
@@ -35,7 +40,7 @@ void RGBDeviceBridge::colorChanged()
     logErrorP("colorChanged from widget");
     auto& device = *(KnxChannelRGB*) _detailDevicePage.getDevice();
     auto rgb = _screen.red << 16 | _screen.green << 8 | _screen.blue;
-    device.commandRGB(this, rgb);
+    device.commandRGB(nullptr, rgb);
     lv_label_set_text(_screen.value, device.currentValueAsString().c_str());
 }
 
