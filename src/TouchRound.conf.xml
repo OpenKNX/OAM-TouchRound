@@ -7,7 +7,7 @@
   <op:config name="%BRI_VerifyVersion%" value="0.1" />
   <op:config name="%LOG_VerifyVersion%" value="3.5" />
   <op:config name="%FCB_VerifyVersion%" value="0.4" />
-  <op:config name="%BTN_VerifyVersion%" value="0.5" />
+  <!-- <op:config name="%BTN_VerifyVersion%" value="0.5" /> -->
   <op:config name="%TCH_VerifyVersion%" value="0.1" />
   <op:config name="%SENS_VerifyVersion%" value="4.3" />
 
@@ -20,7 +20,7 @@
   <op:config name="%BRI_TabName%" value="Geräte" />
   <op:config name="%BRI_TabIcon%" value="home-edit-outline" />
   <op:config name="%BRI_DisplaySettings%" value="1" />
-  <op:config name="%BRI_BridgeSettings%" value="1" />
+  <op:config name="%BRI_BridgeSettings%" value="0" />
   <op:config name="%BRI_HomeKitSupport%" value="0" />
   <op:config name="%BRI_HueSupport%" value="0" />
   <op:config name="%BRI_NumChannelsDefault%" value="0" />

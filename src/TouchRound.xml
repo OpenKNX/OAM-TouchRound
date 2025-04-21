@@ -2,17 +2,17 @@
 <?xml-model href="../../Organization/knxprod-support/knx_project_20/knx-editor.xsd" type="application/xml" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
 
-  <op:config href="TouchRoundModule.conf.xml" />
+  <op:config href="TouchRound.conf.xml" />
 
   <op:ETS OpenKnxId="0xA6"
-            ApplicationNumber="0x03"
-            ApplicationVersion="0.10"
-            ReplacesVersions="0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0"
+            ApplicationNumber="0x04"
+            ApplicationVersion="%ReleaseApplicationVersion%"
+            ReplacesVersions="%ReleaseReplacesVersions%"
             ApplicationRevision="0"
             ProductName="Rundes Touch-Display"
             ApplicationName="AB-TouchRound-Logic-Button"
-            BuildSuffix="-Dev"
-            BuildSuffixText=" (Dev)"
+            BuildSuffix="-Beta"
+            BuildSuffixText=" (Beta)"
             OrderNumber="OpenKnxTouchRound"
     />
 

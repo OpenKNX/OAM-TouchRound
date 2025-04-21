@@ -39,97 +39,20 @@
             ],
             "problemMatcher": [],
             "group": "test"
-        },
+        },    
         {
-            "label": "Develop: ESP32",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_ESP32"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040 (USB)",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040_USB",
-                "upload"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040 (JLINK)",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040_JLINK",
-                "upload"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040_DUALCORE",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040_DUALCORE"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040_DUALCORE (USB)",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040_DUALCORE_USB",
-                "upload"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Develop: RP2040_DUALCORE (JLINK)",
-            "type": "shell",
-            "command": "scripts/OpenKNX-Build.ps1",
-            "args": [
-                "develop_RP2040_DUALCORE_JLINK",
-                "upload"
-            ],
-            "group": "build",
-            "problemMatcher": []
-        },
-        {
-            "label": "Build-Beta",
+           "label": "Build Beta",
             "type": "shell",
             "command": "scripts/Build-Release.ps1", 
-            "args": [
-                "Beta"
-            ],
+            "args": [],
             "problemMatcher": [],
             "group": "test"
         },
         {
-            "label": "Build-Release",
+            "label": "Build Release",
             "type": "shell",
             "command": "scripts/Build-Release.ps1", 
-            "args": [
-            ],
+            "args": [ "Release" ],
             "problemMatcher": [],
             "group": "test"
         }

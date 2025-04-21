@@ -1,1 +1,1 @@
-openknxproducer create src/TouchRoundModule-Dev.xml -h include/knxprod.h -o TouchRoundModule-Dev.knxprod -debug
+openknxproducer create src/TouchRound-Dev.xml -h include/knxprod.h -o TouchRound-Dev.knxprod -debug

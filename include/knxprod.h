@@ -9,8 +9,8 @@
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
 #define MAIN_OpenKnxId 0xA6
-#define MAIN_ApplicationNumber 3
-#define MAIN_ApplicationVersion 10
+#define MAIN_ApplicationNumber 4
+#define MAIN_ApplicationVersion 1
 #define MAIN_ParameterSize 14614
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"

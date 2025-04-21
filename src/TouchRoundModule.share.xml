@@ -122,7 +122,7 @@
                     <Enumeration Value="30" Id="%ENID%" Text="Jalousie" Icon="window-shutter" />
                     <Enumeration Value="31" Id="%ENID%" Text="Rolladen" Icon="roller-shade-closed" />
                     <Enumeration Value="32" Id="%ENID%" Text="Markise" Icon="storefront-outline" />
-                    <Enumeration Value="50" Id="%ENID%" Text="Thermostat" Icon="thermostat" />
+                    <Enumeration Value="50" Id="%ENID%" Text="Thermostat" Icon="thermometer-lines" />
                     <Enumeration Value="60" Id="%ENID%" Text="Anzeige" Icon="card-text-outline" />
                     <Enumeration Value="70" Id="%ENID%" Text="Kontakt" Icon="electric-switch"/>
                     <Enumeration Value="71" Id="%ENID%" Text="Bewegungsmelder" Icon="walk" />
