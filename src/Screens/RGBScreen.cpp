@@ -29,7 +29,7 @@ RGBScreen::RGBScreen()
     lv_arc_set_value(color, 100);
     lv_arc_set_bg_angles(color, 0, 360);
     lv_obj_remove_style(color, NULL, LV_PART_KNOB);   /*Be sure the knob is not displayed*/
-    lv_obj_remove_flag(color, LV_OBJ_FLAG_CLICKABLE);  /*To not allow adjusting by click*/
+    lv_obj_clear_flag(color, LV_OBJ_FLAG_CLICKABLE);  /*To not allow adjusting by click*/
     lv_obj_align(color, LV_ALIGN_CENTER, hsvX, hsvY);
     
     lv_style_init(&colorStyle);
@@ -138,9 +138,9 @@ void RGBScreen::hsv_event_handler(lv_event_t* e) {
         green = color.green;
         blue = color.blue;
         #else
-        red = color & 0xFF;
-        green = (color >> 8) & 0xFF;
-        blue = (color >> 16) & 0xFF;
+        red = color.ch.red;
+        green = color.ch.green;
+        blue = color.ch.blue;
         #endif
         logError("ColorPicker", "R: %d, G: %d, B: %d", (int) red, (int) green, (int) blue);
         
