@@ -471,7 +471,12 @@ void TouchDisplayModule::setTheme(uint8_t theme)
     lv_obj_del(label);
   
     lv_obj_t *btn = lv_btn_create(lv_scr_act());
+#if LVGL_VERSION_MAJOR < 9
+ //   lv_obj_add_state(btn, LV_STATE_CHECKED);
+    _colorActive = lv_color_make(255,255,0); //  lv_obj_get_style_bg_color(btn, LV_PART_MAIN);
+#else
     _colorActive = lv_obj_get_style_bg_color(btn, LV_PART_MAIN | LV_STATE_CHECKED);
+#endif
     lv_obj_del(btn); 
     Page::showPage(Page::createPage(_channelIndex));
 }
