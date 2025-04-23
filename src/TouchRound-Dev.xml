@@ -40,13 +40,13 @@
     </op:define>
 
     <op:define prefix="TCH"
-              share="TouchRoundModule.share.xml"
-              template="TouchRoundModule.templ.xml"
-              ModuleType="14"
-              KoSingleOffset="500"
-              KoOffset="520"
-              NumChannels="50" >
-      <op:verify File="../library.json" ModuleVersion="%TCH_VerifyVersion%" />
+        share="../lib/OFM-TouchDisplay/src/TouchDisplay.share.xml"
+        template="../lib/OFM-TouchDisplay/src/TouchDisplay.templ.xml"
+        ModuleType="14"
+        KoSingleOffset="500"
+        KoOffset="520"
+        NumChannels="50" >
+      <op:verify File="../lib/OFM-TouchDisplay/library.json" ModuleVersion="%TCH_VerifyVersion%" />
     </op:define>
 
     <op:define prefix="LOG" 

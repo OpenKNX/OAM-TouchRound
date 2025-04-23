@@ -1,2 +1,0 @@
-﻿### Kurzer Druck
-

@@ -1,2 +1,0 @@
-﻿### Standardseite Rückfallzeit
-

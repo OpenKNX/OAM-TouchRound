@@ -1,2 +1,0 @@
-﻿### Links-Rechts tauschen
-

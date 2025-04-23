@@ -1,3 +1,0 @@
-<TypeRestriction Base="Value" SizeInBit="8">
-    <Enumeration Text="Gerät %Pn%" Value="%Pn%" Id="%ENID%" />
-</TypeRestriction>

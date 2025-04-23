@@ -1,13 +1,35 @@
 #include <Arduino.h>
 #include "OpenKNX.h"
-#include "TouchDisplayModule.h"
 #include "FileTransferModule.h"
 #include "UsbExchangeModule.h"
 #include "FunctionBlocksModule.h"
 #include "SmartHomeBridgeModule.h"
+#include "TouchDisplayModule.h"
 #include "Logic.h"
 #include "SensorModule.h"
 #include "SensorDevices.h"
+#include "lv_xiao_round_screen.h"
+
+
+bool touchIsPressed()
+{
+    return chsc6x_is_pressed();
+}
+
+void displayInit()
+{
+    lv_xiao_disp_init();
+}
+
+void touchInit()
+{
+    lv_xiao_touch_init();
+}
+
+void backgroundLight(bool on)
+{
+    digitalWrite(XIAO_BL, on ? HIGH : LOW);
+}
 
 void setup()
 {

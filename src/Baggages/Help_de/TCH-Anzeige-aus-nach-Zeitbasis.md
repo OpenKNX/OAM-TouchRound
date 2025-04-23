@@ -1,2 +1,0 @@
-﻿### Anzeige aus nach Zeitbasis
-

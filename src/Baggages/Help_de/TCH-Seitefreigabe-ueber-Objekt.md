@@ -1,2 +1,0 @@
-﻿### Seitefreigabe über Objekt
-

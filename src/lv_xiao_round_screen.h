@@ -4,7 +4,7 @@
 #include <lvgl.h>
 #include <SPI.h>
 #include <Wire.h>
-
+extern bool touchIsPressedForLgvl();
 // uncomment a library for display driver
 #define USE_TFT_ESPI_LIBRARY
 // #define USE_ARDUINO_GFX_LIBRARY
@@ -144,7 +144,6 @@ void lv_xiao_disp_init(void)
 }
 
 
-
 /* touch driver : chsc6x */
 unsigned long xiao_UnpressedStart = 0; 
 bool xiao_waitForUnpressed = false;
@@ -205,8 +204,6 @@ void chsc6x_get_xy(lv_coord_t * x, lv_coord_t * y)
     }
 }
 
-extern bool isTouchPressed();
-
 #if LVGL_VERSION_MAJOR >= 9
 void chsc6x_read( lv_indev_t * indev_driver, lv_indev_data_t * data )
 #else
@@ -214,7 +211,7 @@ void chsc6x_read( lv_indev_drv_t * indev_driver, lv_indev_data_t * data )
 #endif
 {
     lv_coord_t touchX, touchY;
-    if( !isTouchPressed() )
+    if( !touchIsPressedForLgvl() )
     {
         data->state = LV_INDEV_STATE_RELEASED;
     } else {
