@@ -4,6 +4,12 @@
 			"path": "."
 		},
 		{
+			"path": "../OFM-TouchDisplay"
+		},
+		{
+			"path": "../OFM-SmartHomeBridge"
+		},
+		{
 			"path": "../OFM-Logicmodule"
 		},
 		{
@@ -17,9 +23,6 @@
 		},
 		{
 			"path": "../OFM-FileTransferModule"
-		},
-		{
-			"path": "../OFM-SmartHomeBridge"
 		},
 		{
 			"path": "../OFM-FunctionBlocks"
