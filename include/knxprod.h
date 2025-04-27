@@ -10,7 +10,7 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 1
+#define MAIN_ApplicationVersion 3
 #define MAIN_ParameterSize 14614
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -257,9 +257,12 @@
 #define BRI_CHThemostateCoolingFeedbackKoType   54      // 1 Bit, Bit 5
 #define     BRI_CHThemostateCoolingFeedbackKoTypeMask 0x20
 #define     BRI_CHThemostateCoolingFeedbackKoTypeShift 5
-#define BRI_CHContactAlarmSensorInvert          53      // 1 Bit, Bit 7
-#define     BRI_CHContactAlarmSensorInvertMask 0x80
-#define     BRI_CHContactAlarmSensorInvertShift 7
+#define BRI_CHAlarmInvert                       53      // 1 Bit, Bit 7
+#define     BRI_CHAlarmInvertMask 0x80
+#define     BRI_CHAlarmInvertShift 7
+#define BRI_CHAlarmType                         53      // 4 Bits, Bit 3-0
+#define     BRI_CHAlarmTypeMask 0x0F
+#define     BRI_CHAlarmTypeShift 0
 #define BRI_CHDisplayType                       53      // 8 Bits, Bit 7-0
 #define BRI_CHDisplayLower                      54      // float
 #define BRI_CHDisplayUpper                      58      // float
@@ -364,7 +367,9 @@
 // Kühlen aktiv Rückmeldung
 #define ParamBRI_CHThemostateCoolingFeedbackKoType   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)) & BRI_CHThemostateCoolingFeedbackKoTypeMask))
 // Eingang Invertieren
-#define ParamBRI_CHContactAlarmSensorInvert          ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHContactAlarmSensorInvert)) & BRI_CHContactAlarmSensorInvertMask))
+#define ParamBRI_CHAlarmInvert                       ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmInvert)) & BRI_CHAlarmInvertMask))
+// Type
+#define ParamBRI_CHAlarmType                         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmType)) & BRI_CHAlarmTypeMask)
 // Anzeigewert
 #define ParamBRI_CHDisplayType                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayType)))
 // Wert
@@ -579,6 +584,12 @@
 #define     TCH_CHDevicePageTypeMask 0xF0
 #define     TCH_CHDevicePageTypeShift 4
 #define TCH_CHDeviceSelection1                  39      // 8 Bits, Bit 7-0
+#define TCH_CHShortPressDevice1                 40      // 4 Bits, Bit 7-4
+#define     TCH_CHShortPressDevice1Mask 0xF0
+#define     TCH_CHShortPressDevice1Shift 4
+#define TCH_CHLongPressDevice1                  40      // 4 Bits, Bit 3-0
+#define     TCH_CHLongPressDevice1Mask 0x0F
+#define     TCH_CHLongPressDevice1Shift 0
 #define TCH_CHShortPress1                       40      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPress1Mask 0xF0
 #define     TCH_CHShortPress1Shift 4
@@ -587,8 +598,16 @@
 #define     TCH_CHLongPress1Shift 0
 #define TCH_CHJumpToShort1                      41      // uint8_t
 #define TCH_CHJumpToLong1                       42      // uint8_t
+#define TCH_CHDeviceShort1                      41      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceLong1                       42      // 8 Bits, Bit 7-0
 #define TCH_CHTCHCellType1                      43      // 8 Bits, Bit 7-0
 #define TCH_CHDeviceSelection2                  44      // 8 Bits, Bit 7-0
+#define TCH_CHShortPressDevice2                 45      // 4 Bits, Bit 7-4
+#define     TCH_CHShortPressDevice2Mask 0xF0
+#define     TCH_CHShortPressDevice2Shift 4
+#define TCH_CHLongPressDevice2                  45      // 4 Bits, Bit 3-0
+#define     TCH_CHLongPressDevice2Mask 0x0F
+#define     TCH_CHLongPressDevice2Shift 0
 #define TCH_CHShortPress2                       45      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPress2Mask 0xF0
 #define     TCH_CHShortPress2Shift 4
@@ -597,8 +616,16 @@
 #define     TCH_CHLongPress2Shift 0
 #define TCH_CHJumpToShort2                      46      // uint8_t
 #define TCH_CHJumpToLong2                       47      // uint8_t
+#define TCH_CHDeviceShort2                      46      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceLong2                       47      // 8 Bits, Bit 7-0
 #define TCH_CHTCHCellType2                      48      // 8 Bits, Bit 7-0
 #define TCH_CHDeviceSelection3                  49      // 8 Bits, Bit 7-0
+#define TCH_CHShortPressDevice3                 50      // 4 Bits, Bit 7-4
+#define     TCH_CHShortPressDevice3Mask 0xF0
+#define     TCH_CHShortPressDevice3Shift 4
+#define TCH_CHLongPressDevice3                  50      // 4 Bits, Bit 3-0
+#define     TCH_CHLongPressDevice3Mask 0x0F
+#define     TCH_CHLongPressDevice3Shift 0
 #define TCH_CHShortPress3                       50      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPress3Mask 0xF0
 #define     TCH_CHShortPress3Shift 4
@@ -607,8 +634,16 @@
 #define     TCH_CHLongPress3Shift 0
 #define TCH_CHJumpToShort3                      51      // uint8_t
 #define TCH_CHJumpToLong3                       52      // uint8_t
+#define TCH_CHDeviceShort3                      51      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceLong3                       52      // 8 Bits, Bit 7-0
 #define TCH_CHTCHCellType3                      53      // 8 Bits, Bit 7-0
 #define TCH_CHDeviceSelection4                  54      // 8 Bits, Bit 7-0
+#define TCH_CHShortPressDevice4                 55      // 4 Bits, Bit 7-4
+#define     TCH_CHShortPressDevice4Mask 0xF0
+#define     TCH_CHShortPressDevice4Shift 4
+#define TCH_CHLongPressDevice4                  55      // 4 Bits, Bit 3-0
+#define     TCH_CHLongPressDevice4Mask 0x0F
+#define     TCH_CHLongPressDevice4Shift 0
 #define TCH_CHShortPress4                       55      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPress4Mask 0xF0
 #define     TCH_CHShortPress4Shift 4
@@ -617,6 +652,8 @@
 #define     TCH_CHLongPress4Shift 0
 #define TCH_CHJumpToShort4                      56      // uint8_t
 #define TCH_CHJumpToLong4                       57      // uint8_t
+#define TCH_CHDeviceShort4                      56      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceLong4                       57      // 8 Bits, Bit 7-0
 #define TCH_CHTCHCellType4                      58      // 8 Bits, Bit 7-0
 
 // Seitentyp
@@ -638,6 +675,10 @@
 // Gerät
 #define ParamTCH_CHDeviceSelection1                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceSelection1)))
 // Kurzer Druck
+#define ParamTCH_CHShortPressDevice1                 ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPressDevice1)) & TCH_CHShortPressDevice1Mask) >> TCH_CHShortPressDevice1Shift)
+// Langer Druck
+#define ParamTCH_CHLongPressDevice1                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHLongPressDevice1)) & TCH_CHLongPressDevice1Mask)
+// Kurzer Druck
 #define ParamTCH_CHShortPress1                       ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPress1)) & TCH_CHShortPress1Mask) >> TCH_CHShortPress1Shift)
 // Langer Druck
 #define ParamTCH_CHLongPress1                        (knx.paramByte(TCH_ParamCalcIndex(TCH_CHLongPress1)) & TCH_CHLongPress1Mask)
@@ -645,10 +686,18 @@
 #define ParamTCH_CHJumpToShort1                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToShort1)))
 // Absprung zu
 #define ParamTCH_CHJumpToLong1                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToLong1)))
+// Gerät
+#define ParamTCH_CHDeviceShort1                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceShort1)))
+// Gerät
+#define ParamTCH_CHDeviceLong1                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceLong1)))
 // Funktion
 #define ParamTCH_CHTCHCellType1                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHTCHCellType1)))
 // Gerät
 #define ParamTCH_CHDeviceSelection2                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceSelection2)))
+// Kurzer Druck
+#define ParamTCH_CHShortPressDevice2                 ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPressDevice2)) & TCH_CHShortPressDevice2Mask) >> TCH_CHShortPressDevice2Shift)
+// Langer Druck
+#define ParamTCH_CHLongPressDevice2                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHLongPressDevice2)) & TCH_CHLongPressDevice2Mask)
 // Kurzer Druck
 #define ParamTCH_CHShortPress2                       ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPress2)) & TCH_CHShortPress2Mask) >> TCH_CHShortPress2Shift)
 // Langer Druck
@@ -657,10 +706,18 @@
 #define ParamTCH_CHJumpToShort2                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToShort2)))
 // Absprung zu
 #define ParamTCH_CHJumpToLong2                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToLong2)))
+// Gerät
+#define ParamTCH_CHDeviceShort2                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceShort2)))
+// Gerät
+#define ParamTCH_CHDeviceLong2                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceLong2)))
 // Funktion
 #define ParamTCH_CHTCHCellType2                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHTCHCellType2)))
 // Gerät
 #define ParamTCH_CHDeviceSelection3                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceSelection3)))
+// Kurzer Druck
+#define ParamTCH_CHShortPressDevice3                 ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPressDevice3)) & TCH_CHShortPressDevice3Mask) >> TCH_CHShortPressDevice3Shift)
+// Langer Druck
+#define ParamTCH_CHLongPressDevice3                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHLongPressDevice3)) & TCH_CHLongPressDevice3Mask)
 // Kurzer Druck
 #define ParamTCH_CHShortPress3                       ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPress3)) & TCH_CHShortPress3Mask) >> TCH_CHShortPress3Shift)
 // Langer Druck
@@ -669,10 +726,18 @@
 #define ParamTCH_CHJumpToShort3                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToShort3)))
 // Absprung zu
 #define ParamTCH_CHJumpToLong3                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToLong3)))
+// Gerät
+#define ParamTCH_CHDeviceShort3                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceShort3)))
+// Gerät
+#define ParamTCH_CHDeviceLong3                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceLong3)))
 // Funktion
 #define ParamTCH_CHTCHCellType3                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHTCHCellType3)))
 // Gerät
 #define ParamTCH_CHDeviceSelection4                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceSelection4)))
+// Kurzer Druck
+#define ParamTCH_CHShortPressDevice4                 ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPressDevice4)) & TCH_CHShortPressDevice4Mask) >> TCH_CHShortPressDevice4Shift)
+// Langer Druck
+#define ParamTCH_CHLongPressDevice4                  (knx.paramByte(TCH_ParamCalcIndex(TCH_CHLongPressDevice4)) & TCH_CHLongPressDevice4Mask)
 // Kurzer Druck
 #define ParamTCH_CHShortPress4                       ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHShortPress4)) & TCH_CHShortPress4Mask) >> TCH_CHShortPress4Shift)
 // Langer Druck
@@ -681,6 +746,10 @@
 #define ParamTCH_CHJumpToShort4                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToShort4)))
 // Absprung zu
 #define ParamTCH_CHJumpToLong4                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHJumpToLong4)))
+// Gerät
+#define ParamTCH_CHDeviceShort4                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceShort4)))
+// Gerät
+#define ParamTCH_CHDeviceLong4                       (knx.paramByte(TCH_ParamCalcIndex(TCH_CHDeviceLong4)))
 // Funktion
 #define ParamTCH_CHTCHCellType4                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHTCHCellType4)))
 
