@@ -11,3 +11,5 @@
 
 #define TOUCH_LEFT_PIN 24
 #define TOUCH_RIGHT_PIN 25
+
+#define KNX_UART_NUM 1
