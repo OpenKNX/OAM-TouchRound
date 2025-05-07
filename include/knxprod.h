@@ -8,9 +8,9 @@
             (time & 0xC000) == 0x8000 ? ((time & 0x3FFF) > 1000 ? 3600000 : \
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
-#define MAIN_OpenKnxId 0xA6
+#define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 3
+#define MAIN_ApplicationVersion 7
 #define MAIN_ParameterSize 14618
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -233,6 +233,10 @@
 #define BRI_CHSlatHandling                      54      // 4 Bits, Bit 7-4
 #define     BRI_CHSlatHandlingMask 0xF0
 #define     BRI_CHSlatHandlingShift 4
+#define BRI_CHSceneHueEmulation                 53      // 1 Bit, Bit 7
+#define     BRI_CHSceneHueEmulationMask 0x80
+#define     BRI_CHSceneHueEmulationShift 7
+#define BRI_CHSceneNumber                       54      // uint8_t
 #define BRI_CHThermostatTemperaturUnitType      53      // 1 Bit, Bit 7
 #define     BRI_CHThermostatTemperaturUnitTypeMask 0x80
 #define     BRI_CHThermostatTemperaturUnitTypeShift 7
@@ -350,6 +354,10 @@
 #define ParamBRI_CHJalousieUpDownHandling            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieUpDownHandling)) & BRI_CHJalousieUpDownHandlingMask)
 // Lamellenposition bei Fahrt
 #define ParamBRI_CHSlatHandling                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHSlatHandling)) & BRI_CHSlatHandlingMask) >> BRI_CHSlatHandlingShift)
+// In HUE als Lampe darstellen
+#define ParamBRI_CHSceneHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneHueEmulation)) & BRI_CHSceneHueEmulationMask))
+// Szene Nummer
+#define ParamBRI_CHSceneNumber                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneNumber)))
 // Einheit
 #define ParamBRI_CHThermostatTemperaturUnitType      ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)) & BRI_CHThermostatTemperaturUnitTypeMask))
 // Betriebsart
@@ -595,7 +603,7 @@
 #define TCH_CHDevicePageType                    38      // 4 Bits, Bit 7-4
 #define     TCH_CHDevicePageTypeMask 0xF0
 #define     TCH_CHDevicePageTypeShift 4
-#define TCH_CHDeviceSelection1                  39      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceSelection1                  39      // uint8_t
 #define TCH_CHShortPressDevice1                 40      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPressDevice1Mask 0xF0
 #define     TCH_CHShortPressDevice1Shift 4
@@ -610,10 +618,10 @@
 #define     TCH_CHLongPress1Shift 0
 #define TCH_CHJumpToShort1                      41      // uint8_t
 #define TCH_CHJumpToLong1                       42      // uint8_t
-#define TCH_CHDeviceShort1                      41      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceLong1                       42      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceShort1                      41      // uint8_t
+#define TCH_CHDeviceLong1                       42      // uint8_t
 #define TCH_CHTCHCellType1                      43      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceSelection2                  44      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceSelection2                  44      // uint8_t
 #define TCH_CHShortPressDevice2                 45      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPressDevice2Mask 0xF0
 #define     TCH_CHShortPressDevice2Shift 4
@@ -628,10 +636,10 @@
 #define     TCH_CHLongPress2Shift 0
 #define TCH_CHJumpToShort2                      46      // uint8_t
 #define TCH_CHJumpToLong2                       47      // uint8_t
-#define TCH_CHDeviceShort2                      46      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceLong2                       47      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceShort2                      46      // uint8_t
+#define TCH_CHDeviceLong2                       47      // uint8_t
 #define TCH_CHTCHCellType2                      48      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceSelection3                  49      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceSelection3                  49      // uint8_t
 #define TCH_CHShortPressDevice3                 50      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPressDevice3Mask 0xF0
 #define     TCH_CHShortPressDevice3Shift 4
@@ -646,10 +654,10 @@
 #define     TCH_CHLongPress3Shift 0
 #define TCH_CHJumpToShort3                      51      // uint8_t
 #define TCH_CHJumpToLong3                       52      // uint8_t
-#define TCH_CHDeviceShort3                      51      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceLong3                       52      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceShort3                      51      // uint8_t
+#define TCH_CHDeviceLong3                       52      // uint8_t
 #define TCH_CHTCHCellType3                      53      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceSelection4                  54      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceSelection4                  54      // uint8_t
 #define TCH_CHShortPressDevice4                 55      // 4 Bits, Bit 7-4
 #define     TCH_CHShortPressDevice4Mask 0xF0
 #define     TCH_CHShortPressDevice4Shift 4
@@ -664,8 +672,8 @@
 #define     TCH_CHLongPress4Shift 0
 #define TCH_CHJumpToShort4                      56      // uint8_t
 #define TCH_CHJumpToLong4                       57      // uint8_t
-#define TCH_CHDeviceShort4                      56      // 8 Bits, Bit 7-0
-#define TCH_CHDeviceLong4                       57      // 8 Bits, Bit 7-0
+#define TCH_CHDeviceShort4                      56      // uint8_t
+#define TCH_CHDeviceLong4                       57      // uint8_t
 #define TCH_CHTCHCellType4                      58      // 8 Bits, Bit 7-0
 
 // Seitentyp
