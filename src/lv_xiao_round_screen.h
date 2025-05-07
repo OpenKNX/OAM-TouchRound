@@ -122,11 +122,11 @@ void lv_xiao_disp_init(void)
  #ifdef  PICO_RP2040 
     int drawBufSize = SCREEN_HEIGHT * SCREEN_WIDTH * colorSize / 20;
     static void* buf0 = new byte[drawBufSize];
-    static void* buf1 = new byte[drawBufSize]; //   90 KB 
+    static void* buf1 = nullptr; //new byte[drawBufSize]; //   90 KB 
 #else
     int drawBufSize = SCREEN_HEIGHT * SCREEN_WIDTH * colorSize;
     static void* buf0 = new byte[drawBufSize];
-    static void* buf1 = new byte[drawBufSize]; //   90 KB 
+    static void* buf1 = nullptr; // new byte[drawBufSize]; //   90 KB 
 #endif
     lv_display_set_buffers(disp, buf0, buf1, drawBufSize, LV_DISPLAY_RENDER_MODE_PARTIAL);
 #else
