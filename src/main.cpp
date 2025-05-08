@@ -10,6 +10,7 @@
 #include "SensorDevices.h"
 #include "lv_xiao_round_screen.h"
 
+bool core1_separate_stack = true;
 
 bool touchIsPressed()
 {
