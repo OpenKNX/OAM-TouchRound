@@ -94,6 +94,8 @@
         "alert.c": "cpp",
         "thermostatcooling.c": "cpp",
         "lv_gc.h": "c",
-        "lv_theme_default.h": "c"
+        "lv_theme_default.h": "c",
+        "type60_4.c": "cpp",
+        "type60_3.c": "cpp"
     }
 }

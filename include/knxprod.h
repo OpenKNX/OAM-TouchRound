@@ -10,8 +10,8 @@
                                              
 #define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 7
-#define MAIN_ParameterSize 14618
+#define MAIN_ApplicationVersion 8
+#define MAIN_ParameterSize 14918
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
 #define BASE_ModuleVersion 19
@@ -182,7 +182,7 @@
 
 // Parameter per channel
 #define BRI_ParamBlockOffset 83
-#define BRI_ParamBlockSize 63
+#define BRI_ParamBlockSize 69
 #define BRI_ParamCalcIndex(index) (index + BRI_ParamBlockOffset + _channelIndex * BRI_ParamBlockSize)
 
 #define BRI_CHDeviceType                         0      // 8 Bits, Bit 7-0
@@ -237,6 +237,12 @@
 #define     BRI_CHSceneHueEmulationMask 0x80
 #define     BRI_CHSceneHueEmulationShift 7
 #define BRI_CHSceneNumber                       54      // uint8_t
+#define BRI_CHMediaHueEmulation                 53      // 1 Bit, Bit 7
+#define     BRI_CHMediaHueEmulationMask 0x80
+#define     BRI_CHMediaHueEmulationShift 7
+#define BRI_CHMediaTextInput                    53      // 1 Bit, Bit 6
+#define     BRI_CHMediaTextInputMask 0x40
+#define     BRI_CHMediaTextInputShift 6
 #define BRI_CHThermostatTemperaturUnitType      53      // 1 Bit, Bit 7
 #define     BRI_CHThermostatTemperaturUnitTypeMask 0x80
 #define     BRI_CHThermostatTemperaturUnitTypeShift 7
@@ -279,6 +285,10 @@
 #define BRI_CHDisplayIconState3                 62      // 2 Bits, Bit 1-0
 #define     BRI_CHDisplayIconState3Mask 0x03
 #define     BRI_CHDisplayIconState3Shift 0
+#define BRI_CHDisplayUnit                       63      // char*, 5 Byte
+#define BRI_CHDisplayInput                      68      // 4 Bits, Bit 7-4
+#define     BRI_CHDisplayInputMask 0xF0
+#define     BRI_CHDisplayInputShift 4
 #define BRI_CHFanHueEmulation                   53      // 1 Bit, Bit 7
 #define     BRI_CHFanHueEmulationMask 0x80
 #define     BRI_CHFanHueEmulationShift 7
@@ -300,6 +310,9 @@
 #define BRI_CHDoorWindowObstructionDetection    53      // 1 Bit, Bit 5
 #define     BRI_CHDoorWindowObstructionDetectionMask 0x20
 #define     BRI_CHDoorWindowObstructionDetectionShift 5
+#define BRI_CHDoorWindowUsePercent              53      // 1 Bit, Bit 4
+#define     BRI_CHDoorWindowUsePercentMask 0x10
+#define     BRI_CHDoorWindowUsePercentShift 4
 #define BRI_CHDoorWindowUpDownHandling          53      // 4 Bits, Bit 3-0
 #define     BRI_CHDoorWindowUpDownHandlingMask 0x0F
 #define     BRI_CHDoorWindowUpDownHandlingShift 0
@@ -309,6 +322,9 @@
 #define BRI_CHDoorWindowFeedbackType            54      // 4 Bits, Bit 3-0
 #define     BRI_CHDoorWindowFeedbackTypeMask 0x0F
 #define     BRI_CHDoorWindowFeedbackTypeShift 0
+#define BRI_CHDoorWindowOpenDirection           55      // 4 Bits, Bit 7-4
+#define     BRI_CHDoorWindowOpenDirectionMask 0xF0
+#define     BRI_CHDoorWindowOpenDirectionShift 4
 
 // Type
 #define ParamBRI_CHDeviceType                        (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
@@ -358,6 +374,10 @@
 #define ParamBRI_CHSceneHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneHueEmulation)) & BRI_CHSceneHueEmulationMask))
 // Szene Nummer
 #define ParamBRI_CHSceneNumber                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHSceneNumber)))
+// In HUE als dimmbare Lampe darstellen
+#define ParamBRI_CHMediaHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHMediaHueEmulation)) & BRI_CHMediaHueEmulationMask))
+// Objekt für Mediatitel
+#define ParamBRI_CHMediaTextInput                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHMediaTextInput)) & BRI_CHMediaTextInputMask))
 // Einheit
 #define ParamBRI_CHThermostatTemperaturUnitType      ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)) & BRI_CHThermostatTemperaturUnitTypeMask))
 // Betriebsart
@@ -390,6 +410,10 @@
 #define ParamBRI_CHDisplayIconState2                 ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState2)) & BRI_CHDisplayIconState2Mask) >> BRI_CHDisplayIconState2Shift)
 // Anzeigemodus und Statuseinfärbung
 #define ParamBRI_CHDisplayIconState3                 (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayIconState3)) & BRI_CHDisplayIconState3Mask)
+// Einheit
+#define ParamBRI_CHDisplayUnit                       (knx.paramData(BRI_ParamCalcIndex(BRI_CHDisplayUnit)))
+// Eingang
+#define ParamBRI_CHDisplayInput                      ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisplayInput)) & BRI_CHDisplayInputMask) >> BRI_CHDisplayInputShift)
 // Lüfter in HUE als Lampe darstellen
 #define ParamBRI_CHFanHueEmulation                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHFanHueEmulation)) & BRI_CHFanHueEmulationMask))
 // Lüfter hat Automatikmodus
@@ -404,12 +428,16 @@
 #define ParamBRI_CHDoorWindowMotor                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowMotor)) & BRI_CHDoorWindowMotorMask))
 // Blockadenerkennung
 #define ParamBRI_CHDoorWindowObstructionDetection    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowObstructionDetection)) & BRI_CHDoorWindowObstructionDetectionMask))
-// Auf/Ab Objekt verwenden
+// Prozent Steuerung Objekt
+#define ParamBRI_CHDoorWindowUsePercent              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUsePercent)) & BRI_CHDoorWindowUsePercentMask))
+// Öffnen/Schließen Objekt
 #define ParamBRI_CHDoorWindowUpDownHandling          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUpDownHandling)) & BRI_CHDoorWindowUpDownHandlingMask)
-// Stopp Objekt verwenden
+// Stopp Objekt
 #define ParamBRI_CHDoorWindowUseStop                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUseStop)) & BRI_CHDoorWindowUseStopMask))
 // Rückmeldung
 #define ParamBRI_CHDoorWindowFeedbackType            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowFeedbackType)) & BRI_CHDoorWindowFeedbackTypeMask)
+// Öffnungsrichtung
+#define ParamBRI_CHDoorWindowOpenDirection           ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowOpenDirection)) & BRI_CHDoorWindowOpenDirectionMask) >> BRI_CHDoorWindowOpenDirectionShift)
 
 // deprecated
 #define BRI_KoOffset 600
@@ -451,48 +479,48 @@
 // KO9 %C%
 #define KoBRI_KO9_                                (knx.getGroupObject(BRI_KoCalcNumber(BRI_KoKO9_)))
 
-#define TCH_VisibleChannels                     3233      // uint8_t
-#define TCH_DefaultPage                         3234      // uint8_t
-#define TCH_DefaultPageDelayBase                3235      // 2 Bits, Bit 7-6
+#define TCH_VisibleChannels                     3533      // uint8_t
+#define TCH_DefaultPage                         3534      // uint8_t
+#define TCH_DefaultPageDelayBase                3535      // 2 Bits, Bit 7-6
 #define     TCH_DefaultPageDelayBaseMask 0xC0
 #define     TCH_DefaultPageDelayBaseShift 6
-#define TCH_DefaultPageDelayTime                3235      // 14 Bits, Bit 13-0
+#define TCH_DefaultPageDelayTime                3535      // 14 Bits, Bit 13-0
 #define     TCH_DefaultPageDelayTimeMask 0x3FFF
 #define     TCH_DefaultPageDelayTimeShift 0
-#define TCH_DefaultPageKO                       3237      // 1 Bit, Bit 7
+#define TCH_DefaultPageKO                       3537      // 1 Bit, Bit 7
 #define     TCH_DefaultPageKOMask 0x80
 #define     TCH_DefaultPageKOShift 7
-#define TCH_SensorKeys                          3237      // 1 Bit, Bit 6
+#define TCH_SensorKeys                          3537      // 1 Bit, Bit 6
 #define     TCH_SensorKeysMask 0x40
 #define     TCH_SensorKeysShift 6
-#define TCH_LeftRightChanged                    3237      // 1 Bit, Bit 5
+#define TCH_LeftRightChanged                    3537      // 1 Bit, Bit 5
 #define     TCH_LeftRightChangedMask 0x20
 #define     TCH_LeftRightChangedShift 5
-#define TCH_Slide                               3237      // 1 Bit, Bit 4
+#define TCH_Slide                               3537      // 1 Bit, Bit 4
 #define     TCH_SlideMask 0x10
 #define     TCH_SlideShift 4
-#define TCH_DayNightObject                      3237      // 4 Bits, Bit 3-0
+#define TCH_DayNightObject                      3537      // 4 Bits, Bit 3-0
 #define     TCH_DayNightObjectMask 0x0F
 #define     TCH_DayNightObjectShift 0
-#define TCH_SwitchOffDeleayBase                 3238      // 2 Bits, Bit 7-6
+#define TCH_SwitchOffDeleayBase                 3538      // 2 Bits, Bit 7-6
 #define     TCH_SwitchOffDeleayBaseMask 0xC0
 #define     TCH_SwitchOffDeleayBaseShift 6
-#define TCH_SwitchOffDelayTime                  3238      // 14 Bits, Bit 13-0
+#define TCH_SwitchOffDelayTime                  3538      // 14 Bits, Bit 13-0
 #define     TCH_SwitchOffDelayTimeMask 0x3FFF
 #define     TCH_SwitchOffDelayTimeShift 0
-#define TCH_ThemeDay                            3240      // 4 Bits, Bit 7-4
+#define TCH_ThemeDay                            3540      // 4 Bits, Bit 7-4
 #define     TCH_ThemeDayMask 0xF0
 #define     TCH_ThemeDayShift 4
-#define TCH_ThemeNight                          3240      // 4 Bits, Bit 3-0
+#define TCH_ThemeNight                          3540      // 4 Bits, Bit 3-0
 #define     TCH_ThemeNightMask 0x0F
 #define     TCH_ThemeNightShift 0
-#define TCH_DisplayRotation                     3241      // 4 Bits, Bit 7-4
+#define TCH_DisplayRotation                     3541      // 4 Bits, Bit 7-4
 #define     TCH_DisplayRotationMask 0xF0
 #define     TCH_DisplayRotationShift 4
-#define TCH_ColorPaletteDay                     3242      // 8 Bits, Bit 7-0
-#define TCH_ColorPaletteDayOn                   3243      // 8 Bits, Bit 7-0
-#define TCH_ColorPaletteNight                   3244      // 8 Bits, Bit 7-0
-#define TCH_ColorPaletteNightOn                 3245      // 8 Bits, Bit 7-0
+#define TCH_ColorPaletteDay                     3542      // 8 Bits, Bit 7-0
+#define TCH_ColorPaletteDayOn                   3543      // 8 Bits, Bit 7-0
+#define TCH_ColorPaletteNight                   3544      // 8 Bits, Bit 7-0
+#define TCH_ColorPaletteNightOn                 3545      // 8 Bits, Bit 7-0
 
 // Verfügbare Seiten
 #define ParamTCH_VisibleChannels                     (knx.paramByte(TCH_VisibleChannels))
@@ -585,7 +613,7 @@
 #define TCH_ChannelCount 50
 
 // Parameter per channel
-#define TCH_ParamBlockOffset 3246
+#define TCH_ParamBlockOffset 3546
 #define TCH_ParamBlockSize 59
 #define TCH_ParamCalcIndex(index) (index + TCH_ParamBlockOffset + _channelIndex * TCH_ParamBlockSize)
 
@@ -773,251 +801,251 @@
 // Funktion
 #define ParamTCH_CHTCHCellType4                      (knx.paramByte(TCH_ParamCalcIndex(TCH_CHTCHCellType4)))
 
-#define LOG_BuzzerInstalled                     6196      // 1 Bit, Bit 7
+#define LOG_BuzzerInstalled                     6496      // 1 Bit, Bit 7
 #define     LOG_BuzzerInstalledMask 0x80
 #define     LOG_BuzzerInstalledShift 7
-#define LOG_LedInstalled                        6196      // 1 Bit, Bit 6
+#define LOG_LedInstalled                        6496      // 1 Bit, Bit 6
 #define     LOG_LedInstalledMask 0x40
 #define     LOG_LedInstalledShift 6
-#define LOG_VacationKo                          6196      // 1 Bit, Bit 5
+#define LOG_VacationKo                          6496      // 1 Bit, Bit 5
 #define     LOG_VacationKoMask 0x20
 #define     LOG_VacationKoShift 5
-#define LOG_HolidayKo                           6196      // 1 Bit, Bit 4
+#define LOG_HolidayKo                           6496      // 1 Bit, Bit 4
 #define     LOG_HolidayKoMask 0x10
 #define     LOG_HolidayKoShift 4
-#define LOG_VacationRead                        6196      // 1 Bit, Bit 3
+#define LOG_VacationRead                        6496      // 1 Bit, Bit 3
 #define     LOG_VacationReadMask 0x08
 #define     LOG_VacationReadShift 3
-#define LOG_HolidaySend                         6196      // 1 Bit, Bit 2
+#define LOG_HolidaySend                         6496      // 1 Bit, Bit 2
 #define     LOG_HolidaySendMask 0x04
 #define     LOG_HolidaySendShift 2
-#define LOG_Neujahr                             6197      // 1 Bit, Bit 7
+#define LOG_Neujahr                             6497      // 1 Bit, Bit 7
 #define     LOG_NeujahrMask 0x80
 #define     LOG_NeujahrShift 7
-#define LOG_DreiKoenige                         6197      // 1 Bit, Bit 6
+#define LOG_DreiKoenige                         6497      // 1 Bit, Bit 6
 #define     LOG_DreiKoenigeMask 0x40
 #define     LOG_DreiKoenigeShift 6
-#define LOG_Weiberfastnacht                     6197      // 1 Bit, Bit 5
+#define LOG_Weiberfastnacht                     6497      // 1 Bit, Bit 5
 #define     LOG_WeiberfastnachtMask 0x20
 #define     LOG_WeiberfastnachtShift 5
-#define LOG_Rosenmontag                         6197      // 1 Bit, Bit 4
+#define LOG_Rosenmontag                         6497      // 1 Bit, Bit 4
 #define     LOG_RosenmontagMask 0x10
 #define     LOG_RosenmontagShift 4
-#define LOG_Fastnachtsdienstag                  6197      // 1 Bit, Bit 3
+#define LOG_Fastnachtsdienstag                  6497      // 1 Bit, Bit 3
 #define     LOG_FastnachtsdienstagMask 0x08
 #define     LOG_FastnachtsdienstagShift 3
-#define LOG_Aschermittwoch                      6197      // 1 Bit, Bit 2
+#define LOG_Aschermittwoch                      6497      // 1 Bit, Bit 2
 #define     LOG_AschermittwochMask 0x04
 #define     LOG_AschermittwochShift 2
-#define LOG_Frauentag                           6197      // 1 Bit, Bit 1
+#define LOG_Frauentag                           6497      // 1 Bit, Bit 1
 #define     LOG_FrauentagMask 0x02
 #define     LOG_FrauentagShift 1
-#define LOG_Gruendonnerstag                     6197      // 1 Bit, Bit 0
+#define LOG_Gruendonnerstag                     6497      // 1 Bit, Bit 0
 #define     LOG_GruendonnerstagMask 0x01
 #define     LOG_GruendonnerstagShift 0
-#define LOG_Karfreitag                          6198      // 1 Bit, Bit 7
+#define LOG_Karfreitag                          6498      // 1 Bit, Bit 7
 #define     LOG_KarfreitagMask 0x80
 #define     LOG_KarfreitagShift 7
-#define LOG_Ostersonntag                        6198      // 1 Bit, Bit 6
+#define LOG_Ostersonntag                        6498      // 1 Bit, Bit 6
 #define     LOG_OstersonntagMask 0x40
 #define     LOG_OstersonntagShift 6
-#define LOG_Ostermontag                         6198      // 1 Bit, Bit 5
+#define LOG_Ostermontag                         6498      // 1 Bit, Bit 5
 #define     LOG_OstermontagMask 0x20
 #define     LOG_OstermontagShift 5
-#define LOG_TagDerArbeit                        6198      // 1 Bit, Bit 4
+#define LOG_TagDerArbeit                        6498      // 1 Bit, Bit 4
 #define     LOG_TagDerArbeitMask 0x10
 #define     LOG_TagDerArbeitShift 4
-#define LOG_Himmelfahrt                         6198      // 1 Bit, Bit 3
+#define LOG_Himmelfahrt                         6498      // 1 Bit, Bit 3
 #define     LOG_HimmelfahrtMask 0x08
 #define     LOG_HimmelfahrtShift 3
-#define LOG_Pfingstsonntag                      6198      // 1 Bit, Bit 2
+#define LOG_Pfingstsonntag                      6498      // 1 Bit, Bit 2
 #define     LOG_PfingstsonntagMask 0x04
 #define     LOG_PfingstsonntagShift 2
-#define LOG_Pfingstmontag                       6198      // 1 Bit, Bit 1
+#define LOG_Pfingstmontag                       6498      // 1 Bit, Bit 1
 #define     LOG_PfingstmontagMask 0x02
 #define     LOG_PfingstmontagShift 1
-#define LOG_Fronleichnam                        6198      // 1 Bit, Bit 0
+#define LOG_Fronleichnam                        6498      // 1 Bit, Bit 0
 #define     LOG_FronleichnamMask 0x01
 #define     LOG_FronleichnamShift 0
-#define LOG_Friedensfest                        6199      // 1 Bit, Bit 7
+#define LOG_Friedensfest                        6499      // 1 Bit, Bit 7
 #define     LOG_FriedensfestMask 0x80
 #define     LOG_FriedensfestShift 7
-#define LOG_MariaHimmelfahrt                    6199      // 1 Bit, Bit 6
+#define LOG_MariaHimmelfahrt                    6499      // 1 Bit, Bit 6
 #define     LOG_MariaHimmelfahrtMask 0x40
 #define     LOG_MariaHimmelfahrtShift 6
-#define LOG_DeutscheEinheit                     6199      // 1 Bit, Bit 5
+#define LOG_DeutscheEinheit                     6499      // 1 Bit, Bit 5
 #define     LOG_DeutscheEinheitMask 0x20
 #define     LOG_DeutscheEinheitShift 5
-#define LOG_Reformationstag                     6199      // 1 Bit, Bit 4
+#define LOG_Reformationstag                     6499      // 1 Bit, Bit 4
 #define     LOG_ReformationstagMask 0x10
 #define     LOG_ReformationstagShift 4
-#define LOG_Allerheiligen                       6199      // 1 Bit, Bit 3
+#define LOG_Allerheiligen                       6499      // 1 Bit, Bit 3
 #define     LOG_AllerheiligenMask 0x08
 #define     LOG_AllerheiligenShift 3
-#define LOG_BussBettag                          6199      // 1 Bit, Bit 2
+#define LOG_BussBettag                          6499      // 1 Bit, Bit 2
 #define     LOG_BussBettagMask 0x04
 #define     LOG_BussBettagShift 2
-#define LOG_Advent1                             6199      // 1 Bit, Bit 1
+#define LOG_Advent1                             6499      // 1 Bit, Bit 1
 #define     LOG_Advent1Mask 0x02
 #define     LOG_Advent1Shift 1
-#define LOG_Advent2                             6199      // 1 Bit, Bit 0
+#define LOG_Advent2                             6499      // 1 Bit, Bit 0
 #define     LOG_Advent2Mask 0x01
 #define     LOG_Advent2Shift 0
-#define LOG_Advent3                             6200      // 1 Bit, Bit 7
+#define LOG_Advent3                             6500      // 1 Bit, Bit 7
 #define     LOG_Advent3Mask 0x80
 #define     LOG_Advent3Shift 7
-#define LOG_Advent4                             6200      // 1 Bit, Bit 6
+#define LOG_Advent4                             6500      // 1 Bit, Bit 6
 #define     LOG_Advent4Mask 0x40
 #define     LOG_Advent4Shift 6
-#define LOG_Heiligabend                         6200      // 1 Bit, Bit 5
+#define LOG_Heiligabend                         6500      // 1 Bit, Bit 5
 #define     LOG_HeiligabendMask 0x20
 #define     LOG_HeiligabendShift 5
-#define LOG_Weihnachtstag1                      6200      // 1 Bit, Bit 4
+#define LOG_Weihnachtstag1                      6500      // 1 Bit, Bit 4
 #define     LOG_Weihnachtstag1Mask 0x10
 #define     LOG_Weihnachtstag1Shift 4
-#define LOG_Weihnachtstag2                      6200      // 1 Bit, Bit 3
+#define LOG_Weihnachtstag2                      6500      // 1 Bit, Bit 3
 #define     LOG_Weihnachtstag2Mask 0x08
 #define     LOG_Weihnachtstag2Shift 3
-#define LOG_Silvester                           6200      // 1 Bit, Bit 2
+#define LOG_Silvester                           6500      // 1 Bit, Bit 2
 #define     LOG_SilvesterMask 0x04
 #define     LOG_SilvesterShift 2
-#define LOG_Nationalfeiertag                    6200      // 1 Bit, Bit 1
+#define LOG_Nationalfeiertag                    6500      // 1 Bit, Bit 1
 #define     LOG_NationalfeiertagMask 0x02
 #define     LOG_NationalfeiertagShift 1
-#define LOG_MariaEmpfaengnis                    6200      // 1 Bit, Bit 0
+#define LOG_MariaEmpfaengnis                    6500      // 1 Bit, Bit 0
 #define     LOG_MariaEmpfaengnisMask 0x01
 #define     LOG_MariaEmpfaengnisShift 0
-#define LOG_NationalfeiertagSchweiz             6201      // 1 Bit, Bit 7
+#define LOG_NationalfeiertagSchweiz             6501      // 1 Bit, Bit 7
 #define     LOG_NationalfeiertagSchweizMask 0x80
 #define     LOG_NationalfeiertagSchweizShift 7
-#define LOG_Totensonntag                        6201      // 1 Bit, Bit 6
+#define LOG_Totensonntag                        6501      // 1 Bit, Bit 6
 #define     LOG_TotensonntagMask 0x40
 #define     LOG_TotensonntagShift 6
-#define LOG_BuzzerSilent                        6202      // uint16_t
-#define LOG_BuzzerNormal                        6204      // uint16_t
-#define LOG_BuzzerLoud                          6206      // uint16_t
-#define LOG_VisibleChannels                     6208      // uint8_t
-#define LOG_LedMapping                          6209      // 3 Bits, Bit 7-5
+#define LOG_BuzzerSilent                        6502      // uint16_t
+#define LOG_BuzzerNormal                        6504      // uint16_t
+#define LOG_BuzzerLoud                          6506      // uint16_t
+#define LOG_VisibleChannels                     6508      // uint8_t
+#define LOG_LedMapping                          6509      // 3 Bits, Bit 7-5
 #define     LOG_LedMappingMask 0xE0
 #define     LOG_LedMappingShift 5
-#define LOG_UserFormula1                        6210      // char*, 99 Byte
-#define LOG_UserFormula1Active                  6309      // 1 Bit, Bit 7
+#define LOG_UserFormula1                        6510      // char*, 99 Byte
+#define LOG_UserFormula1Active                  6609      // 1 Bit, Bit 7
 #define     LOG_UserFormula1ActiveMask 0x80
 #define     LOG_UserFormula1ActiveShift 7
-#define LOG_UserFormula2                        6310      // char*, 99 Byte
-#define LOG_UserFormula2Active                  6409      // 1 Bit, Bit 7
+#define LOG_UserFormula2                        6610      // char*, 99 Byte
+#define LOG_UserFormula2Active                  6709      // 1 Bit, Bit 7
 #define     LOG_UserFormula2ActiveMask 0x80
 #define     LOG_UserFormula2ActiveShift 7
-#define LOG_UserFormula3                        6410      // char*, 99 Byte
-#define LOG_UserFormula3Active                  6509      // 1 Bit, Bit 7
+#define LOG_UserFormula3                        6710      // char*, 99 Byte
+#define LOG_UserFormula3Active                  6809      // 1 Bit, Bit 7
 #define     LOG_UserFormula3ActiveMask 0x80
 #define     LOG_UserFormula3ActiveShift 7
-#define LOG_UserFormula4                        6510      // char*, 99 Byte
-#define LOG_UserFormula4Active                  6609      // 1 Bit, Bit 7
+#define LOG_UserFormula4                        6810      // char*, 99 Byte
+#define LOG_UserFormula4Active                  6909      // 1 Bit, Bit 7
 #define     LOG_UserFormula4ActiveMask 0x80
 #define     LOG_UserFormula4ActiveShift 7
-#define LOG_UserFormula5                        6610      // char*, 99 Byte
-#define LOG_UserFormula5Active                  6709      // 1 Bit, Bit 7
+#define LOG_UserFormula5                        6910      // char*, 99 Byte
+#define LOG_UserFormula5Active                  7009      // 1 Bit, Bit 7
 #define     LOG_UserFormula5ActiveMask 0x80
 #define     LOG_UserFormula5ActiveShift 7
-#define LOG_UserFormula6                        6710      // char*, 99 Byte
-#define LOG_UserFormula6Active                  6809      // 1 Bit, Bit 7
+#define LOG_UserFormula6                        7010      // char*, 99 Byte
+#define LOG_UserFormula6Active                  7109      // 1 Bit, Bit 7
 #define     LOG_UserFormula6ActiveMask 0x80
 #define     LOG_UserFormula6ActiveShift 7
-#define LOG_UserFormula7                        6810      // char*, 99 Byte
-#define LOG_UserFormula7Active                  6909      // 1 Bit, Bit 7
+#define LOG_UserFormula7                        7110      // char*, 99 Byte
+#define LOG_UserFormula7Active                  7209      // 1 Bit, Bit 7
 #define     LOG_UserFormula7ActiveMask 0x80
 #define     LOG_UserFormula7ActiveShift 7
-#define LOG_UserFormula8                        6910      // char*, 99 Byte
-#define LOG_UserFormula8Active                  7009      // 1 Bit, Bit 7
+#define LOG_UserFormula8                        7210      // char*, 99 Byte
+#define LOG_UserFormula8Active                  7309      // 1 Bit, Bit 7
 #define     LOG_UserFormula8ActiveMask 0x80
 #define     LOG_UserFormula8ActiveShift 7
-#define LOG_UserFormula9                        7010      // char*, 99 Byte
-#define LOG_UserFormula9Active                  7109      // 1 Bit, Bit 7
+#define LOG_UserFormula9                        7310      // char*, 99 Byte
+#define LOG_UserFormula9Active                  7409      // 1 Bit, Bit 7
 #define     LOG_UserFormula9ActiveMask 0x80
 #define     LOG_UserFormula9ActiveShift 7
-#define LOG_UserFormula10                       7110      // char*, 99 Byte
-#define LOG_UserFormula10Active                 7209      // 1 Bit, Bit 7
+#define LOG_UserFormula10                       7410      // char*, 99 Byte
+#define LOG_UserFormula10Active                 7509      // 1 Bit, Bit 7
 #define     LOG_UserFormula10ActiveMask 0x80
 #define     LOG_UserFormula10ActiveShift 7
-#define LOG_UserFormula11                       7210      // char*, 99 Byte
-#define LOG_UserFormula11Active                 7309      // 1 Bit, Bit 7
+#define LOG_UserFormula11                       7510      // char*, 99 Byte
+#define LOG_UserFormula11Active                 7609      // 1 Bit, Bit 7
 #define     LOG_UserFormula11ActiveMask 0x80
 #define     LOG_UserFormula11ActiveShift 7
-#define LOG_UserFormula12                       7310      // char*, 99 Byte
-#define LOG_UserFormula12Active                 7409      // 1 Bit, Bit 7
+#define LOG_UserFormula12                       7610      // char*, 99 Byte
+#define LOG_UserFormula12Active                 7709      // 1 Bit, Bit 7
 #define     LOG_UserFormula12ActiveMask 0x80
 #define     LOG_UserFormula12ActiveShift 7
-#define LOG_UserFormula13                       7410      // char*, 99 Byte
-#define LOG_UserFormula13Active                 7509      // 1 Bit, Bit 7
+#define LOG_UserFormula13                       7710      // char*, 99 Byte
+#define LOG_UserFormula13Active                 7809      // 1 Bit, Bit 7
 #define     LOG_UserFormula13ActiveMask 0x80
 #define     LOG_UserFormula13ActiveShift 7
-#define LOG_UserFormula14                       7510      // char*, 99 Byte
-#define LOG_UserFormula14Active                 7609      // 1 Bit, Bit 7
+#define LOG_UserFormula14                       7810      // char*, 99 Byte
+#define LOG_UserFormula14Active                 7909      // 1 Bit, Bit 7
 #define     LOG_UserFormula14ActiveMask 0x80
 #define     LOG_UserFormula14ActiveShift 7
-#define LOG_UserFormula15                       7610      // char*, 99 Byte
-#define LOG_UserFormula15Active                 7709      // 1 Bit, Bit 7
+#define LOG_UserFormula15                       7910      // char*, 99 Byte
+#define LOG_UserFormula15Active                 8009      // 1 Bit, Bit 7
 #define     LOG_UserFormula15ActiveMask 0x80
 #define     LOG_UserFormula15ActiveShift 7
-#define LOG_UserFormula16                       7710      // char*, 99 Byte
-#define LOG_UserFormula16Active                 7809      // 1 Bit, Bit 7
+#define LOG_UserFormula16                       8010      // char*, 99 Byte
+#define LOG_UserFormula16Active                 8109      // 1 Bit, Bit 7
 #define     LOG_UserFormula16ActiveMask 0x80
 #define     LOG_UserFormula16ActiveShift 7
-#define LOG_UserFormula17                       7810      // char*, 99 Byte
-#define LOG_UserFormula17Active                 7909      // 1 Bit, Bit 7
+#define LOG_UserFormula17                       8110      // char*, 99 Byte
+#define LOG_UserFormula17Active                 8209      // 1 Bit, Bit 7
 #define     LOG_UserFormula17ActiveMask 0x80
 #define     LOG_UserFormula17ActiveShift 7
-#define LOG_UserFormula18                       7910      // char*, 99 Byte
-#define LOG_UserFormula18Active                 8009      // 1 Bit, Bit 7
+#define LOG_UserFormula18                       8210      // char*, 99 Byte
+#define LOG_UserFormula18Active                 8309      // 1 Bit, Bit 7
 #define     LOG_UserFormula18ActiveMask 0x80
 #define     LOG_UserFormula18ActiveShift 7
-#define LOG_UserFormula19                       8010      // char*, 99 Byte
-#define LOG_UserFormula19Active                 8109      // 1 Bit, Bit 7
+#define LOG_UserFormula19                       8310      // char*, 99 Byte
+#define LOG_UserFormula19Active                 8409      // 1 Bit, Bit 7
 #define     LOG_UserFormula19ActiveMask 0x80
 #define     LOG_UserFormula19ActiveShift 7
-#define LOG_UserFormula20                       8110      // char*, 99 Byte
-#define LOG_UserFormula20Active                 8209      // 1 Bit, Bit 7
+#define LOG_UserFormula20                       8410      // char*, 99 Byte
+#define LOG_UserFormula20Active                 8509      // 1 Bit, Bit 7
 #define     LOG_UserFormula20ActiveMask 0x80
 #define     LOG_UserFormula20ActiveShift 7
-#define LOG_UserFormula21                       8210      // char*, 99 Byte
-#define LOG_UserFormula21Active                 8309      // 1 Bit, Bit 7
+#define LOG_UserFormula21                       8510      // char*, 99 Byte
+#define LOG_UserFormula21Active                 8609      // 1 Bit, Bit 7
 #define     LOG_UserFormula21ActiveMask 0x80
 #define     LOG_UserFormula21ActiveShift 7
-#define LOG_UserFormula22                       8310      // char*, 99 Byte
-#define LOG_UserFormula22Active                 8409      // 1 Bit, Bit 7
+#define LOG_UserFormula22                       8610      // char*, 99 Byte
+#define LOG_UserFormula22Active                 8709      // 1 Bit, Bit 7
 #define     LOG_UserFormula22ActiveMask 0x80
 #define     LOG_UserFormula22ActiveShift 7
-#define LOG_UserFormula23                       8410      // char*, 99 Byte
-#define LOG_UserFormula23Active                 8509      // 1 Bit, Bit 7
+#define LOG_UserFormula23                       8710      // char*, 99 Byte
+#define LOG_UserFormula23Active                 8809      // 1 Bit, Bit 7
 #define     LOG_UserFormula23ActiveMask 0x80
 #define     LOG_UserFormula23ActiveShift 7
-#define LOG_UserFormula24                       8510      // char*, 99 Byte
-#define LOG_UserFormula24Active                 8609      // 1 Bit, Bit 7
+#define LOG_UserFormula24                       8810      // char*, 99 Byte
+#define LOG_UserFormula24Active                 8909      // 1 Bit, Bit 7
 #define     LOG_UserFormula24ActiveMask 0x80
 #define     LOG_UserFormula24ActiveShift 7
-#define LOG_UserFormula25                       8610      // char*, 99 Byte
-#define LOG_UserFormula25Active                 8709      // 1 Bit, Bit 7
+#define LOG_UserFormula25                       8910      // char*, 99 Byte
+#define LOG_UserFormula25Active                 9009      // 1 Bit, Bit 7
 #define     LOG_UserFormula25ActiveMask 0x80
 #define     LOG_UserFormula25ActiveShift 7
-#define LOG_UserFormula26                       8710      // char*, 99 Byte
-#define LOG_UserFormula26Active                 8809      // 1 Bit, Bit 7
+#define LOG_UserFormula26                       9010      // char*, 99 Byte
+#define LOG_UserFormula26Active                 9109      // 1 Bit, Bit 7
 #define     LOG_UserFormula26ActiveMask 0x80
 #define     LOG_UserFormula26ActiveShift 7
-#define LOG_UserFormula27                       8810      // char*, 99 Byte
-#define LOG_UserFormula27Active                 8909      // 1 Bit, Bit 7
+#define LOG_UserFormula27                       9110      // char*, 99 Byte
+#define LOG_UserFormula27Active                 9209      // 1 Bit, Bit 7
 #define     LOG_UserFormula27ActiveMask 0x80
 #define     LOG_UserFormula27ActiveShift 7
-#define LOG_UserFormula28                       8910      // char*, 99 Byte
-#define LOG_UserFormula28Active                 9009      // 1 Bit, Bit 7
+#define LOG_UserFormula28                       9210      // char*, 99 Byte
+#define LOG_UserFormula28Active                 9309      // 1 Bit, Bit 7
 #define     LOG_UserFormula28ActiveMask 0x80
 #define     LOG_UserFormula28ActiveShift 7
-#define LOG_UserFormula29                       9010      // char*, 99 Byte
-#define LOG_UserFormula29Active                 9109      // 1 Bit, Bit 7
+#define LOG_UserFormula29                       9310      // char*, 99 Byte
+#define LOG_UserFormula29Active                 9409      // 1 Bit, Bit 7
 #define     LOG_UserFormula29ActiveMask 0x80
 #define     LOG_UserFormula29ActiveShift 7
-#define LOG_UserFormula30                       9110      // char*, 99 Byte
-#define LOG_UserFormula30Active                 9209      // 1 Bit, Bit 7
+#define LOG_UserFormula30                       9410      // char*, 99 Byte
+#define LOG_UserFormula30Active                 9509      // 1 Bit, Bit 7
 #define     LOG_UserFormula30ActiveMask 0x80
 #define     LOG_UserFormula30ActiveShift 7
 
@@ -1252,7 +1280,7 @@
 #define LOG_ChannelCount 50
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 9210
+#define LOG_ParamBlockOffset 9510
 #define LOG_ParamBlockSize 85
 #define LOG_ParamCalcIndex(index) (index + LOG_ParamBlockOffset + _channelIndex * LOG_ParamBlockSize)
 
@@ -2989,7 +3017,7 @@
 // Ausgang
 #define KoLOG_KOfO                                (knx.getGroupObject(LOG_KoCalcNumber(LOG_KoKOfO)))
 
-#define FCB_VisibleChannels                     13460      // uint8_t
+#define FCB_VisibleChannels                     13760      // uint8_t
 
 // Verfügbare Kanäle
 #define ParamFCB_VisibleChannels                     (knx.paramByte(FCB_VisibleChannels))
@@ -2997,7 +3025,7 @@
 #define FCB_ChannelCount 15
 
 // Parameter per channel
-#define FCB_ParamBlockOffset 13461
+#define FCB_ParamBlockOffset 13761
 #define FCB_ParamBlockSize 71
 #define FCB_ParamCalcIndex(index) (index + FCB_ParamBlockOffset + _channelIndex * FCB_ParamBlockSize)
 
@@ -3691,192 +3719,192 @@
 // 
 #define KoFCB_CHKO9                               (knx.getGroupObject(FCB_KoCalcNumber(FCB_KoCHKO9)))
 
-#define SENS_Error                               14526      // 1 Bit, Bit 7
+#define SENS_Error                               14826      // 1 Bit, Bit 7
 #define     SENS_ErrorMask 0x80
 #define     SENS_ErrorShift 7
-#define SENS_Dewpoint                            14526      // 1 Bit, Bit 6
+#define SENS_Dewpoint                            14826      // 1 Bit, Bit 6
 #define     SENS_DewpointMask 0x40
 #define     SENS_DewpointShift 6
-#define SENS_Comfort                             14526      // 1 Bit, Bit 5
+#define SENS_Comfort                             14826      // 1 Bit, Bit 5
 #define     SENS_ComfortMask 0x20
 #define     SENS_ComfortShift 5
-#define SENS_Airquality                          14526      // 1 Bit, Bit 4
+#define SENS_Airquality                          14826      // 1 Bit, Bit 4
 #define     SENS_AirqualityMask 0x10
 #define     SENS_AirqualityShift 4
-#define SENS_Accuracy                            14526      // 1 Bit, Bit 3
+#define SENS_Accuracy                            14826      // 1 Bit, Bit 3
 #define     SENS_AccuracyMask 0x08
 #define     SENS_AccuracyShift 3
-#define SENS_DeleteData                          14526      // 1 Bit, Bit 2
+#define SENS_DeleteData                          14826      // 1 Bit, Bit 2
 #define     SENS_DeleteDataMask 0x04
 #define     SENS_DeleteDataShift 2
-#define SENS_TempOffset                          14527      // int8_t
-#define SENS_TempCycleBase                       14528      // 2 Bits, Bit 7-6
+#define SENS_TempOffset                          14827      // int8_t
+#define SENS_TempCycleBase                       14828      // 2 Bits, Bit 7-6
 #define     SENS_TempCycleBaseMask 0xC0
 #define     SENS_TempCycleBaseShift 6
-#define SENS_TempCycleTime                       14528      // 14 Bits, Bit 13-0
+#define SENS_TempCycleTime                       14828      // 14 Bits, Bit 13-0
 #define     SENS_TempCycleTimeMask 0x3FFF
 #define     SENS_TempCycleTimeShift 0
-#define SENS_TempDeltaAbs                        14530      // uint16_t
-#define SENS_TempDeltaPercent                    14532      // uint8_t
-#define SENS_TempSmooth                          14533      // uint8_t
-#define SENS_TempExtCount                        14534      // 2 Bits, Bit 1-0
+#define SENS_TempDeltaAbs                        14830      // uint16_t
+#define SENS_TempDeltaPercent                    14832      // uint8_t
+#define SENS_TempSmooth                          14833      // uint8_t
+#define SENS_TempExtCount                        14834      // 2 Bits, Bit 1-0
 #define     SENS_TempExtCountMask 0x03
 #define     SENS_TempExtCountShift 0
-#define SENS_TempExtRead                         14534      // 1 Bit, Bit 2
+#define SENS_TempExtRead                         14834      // 1 Bit, Bit 2
 #define     SENS_TempExtReadMask 0x04
 #define     SENS_TempExtReadShift 2
-#define SENS_TempIntPercent                      14535      // uint8_t
-#define SENS_TempExt1Percent                     14536      // uint8_t
-#define SENS_TempExt2Percent                     14537      // uint8_t
-#define SENS_HumOffset                           14538      // int8_t
-#define SENS_HumCycleBase                        14539      // 2 Bits, Bit 7-6
+#define SENS_TempIntPercent                      14835      // uint8_t
+#define SENS_TempExt1Percent                     14836      // uint8_t
+#define SENS_TempExt2Percent                     14837      // uint8_t
+#define SENS_HumOffset                           14838      // int8_t
+#define SENS_HumCycleBase                        14839      // 2 Bits, Bit 7-6
 #define     SENS_HumCycleBaseMask 0xC0
 #define     SENS_HumCycleBaseShift 6
-#define SENS_HumCycleTime                        14539      // 14 Bits, Bit 13-0
+#define SENS_HumCycleTime                        14839      // 14 Bits, Bit 13-0
 #define     SENS_HumCycleTimeMask 0x3FFF
 #define     SENS_HumCycleTimeShift 0
-#define SENS_HumDeltaAbs                         14541      // uint16_t
-#define SENS_HumDeltaPercent                     14543      // uint8_t
-#define SENS_HumSmooth                           14544      // uint8_t
-#define SENS_HumExtCount                         14545      // 2 Bits, Bit 1-0
+#define SENS_HumDeltaAbs                         14841      // uint16_t
+#define SENS_HumDeltaPercent                     14843      // uint8_t
+#define SENS_HumSmooth                           14844      // uint8_t
+#define SENS_HumExtCount                         14845      // 2 Bits, Bit 1-0
 #define     SENS_HumExtCountMask 0x03
 #define     SENS_HumExtCountShift 0
-#define SENS_HumExtRead                          14545      // 1 Bit, Bit 2
+#define SENS_HumExtRead                          14845      // 1 Bit, Bit 2
 #define     SENS_HumExtReadMask 0x04
 #define     SENS_HumExtReadShift 2
-#define SENS_HumIntPercent                       14546      // uint8_t
-#define SENS_HumExt1Percent                      14547      // uint8_t
-#define SENS_HumExt2Percent                      14548      // uint8_t
-#define SENS_PreOffset                           14549      // int8_t
-#define SENS_PreCycleBase                        14550      // 2 Bits, Bit 7-6
+#define SENS_HumIntPercent                       14846      // uint8_t
+#define SENS_HumExt1Percent                      14847      // uint8_t
+#define SENS_HumExt2Percent                      14848      // uint8_t
+#define SENS_PreOffset                           14849      // int8_t
+#define SENS_PreCycleBase                        14850      // 2 Bits, Bit 7-6
 #define     SENS_PreCycleBaseMask 0xC0
 #define     SENS_PreCycleBaseShift 6
-#define SENS_PreCycleTime                        14550      // 14 Bits, Bit 13-0
+#define SENS_PreCycleTime                        14850      // 14 Bits, Bit 13-0
 #define     SENS_PreCycleTimeMask 0x3FFF
 #define     SENS_PreCycleTimeShift 0
-#define SENS_PreDeltaAbs                         14552      // uint16_t
-#define SENS_PreDeltaPercent                     14554      // uint8_t
-#define SENS_PreSmooth                           14555      // uint8_t
-#define SENS_PreExtCount                         14556      // 2 Bits, Bit 1-0
+#define SENS_PreDeltaAbs                         14852      // uint16_t
+#define SENS_PreDeltaPercent                     14854      // uint8_t
+#define SENS_PreSmooth                           14855      // uint8_t
+#define SENS_PreExtCount                         14856      // 2 Bits, Bit 1-0
 #define     SENS_PreExtCountMask 0x03
 #define     SENS_PreExtCountShift 0
-#define SENS_PreExtRead                          14556      // 1 Bit, Bit 2
+#define SENS_PreExtRead                          14856      // 1 Bit, Bit 2
 #define     SENS_PreExtReadMask 0x04
 #define     SENS_PreExtReadShift 2
-#define SENS_PreIntPercent                       14557      // uint8_t
-#define SENS_PreExt1Percent                      14558      // uint8_t
-#define SENS_PreExt2Percent                      14559      // uint8_t
-#define SENS_VocOffset                           14560      // int8_t
-#define SENS_VocCycleBase                        14561      // 2 Bits, Bit 7-6
+#define SENS_PreIntPercent                       14857      // uint8_t
+#define SENS_PreExt1Percent                      14858      // uint8_t
+#define SENS_PreExt2Percent                      14859      // uint8_t
+#define SENS_VocOffset                           14860      // int8_t
+#define SENS_VocCycleBase                        14861      // 2 Bits, Bit 7-6
 #define     SENS_VocCycleBaseMask 0xC0
 #define     SENS_VocCycleBaseShift 6
-#define SENS_VocCycleTime                        14561      // 14 Bits, Bit 13-0
+#define SENS_VocCycleTime                        14861      // 14 Bits, Bit 13-0
 #define     SENS_VocCycleTimeMask 0x3FFF
 #define     SENS_VocCycleTimeShift 0
-#define SENS_VocDeltaAbs                         14563      // uint16_t
-#define SENS_VocDeltaPercent                     14565      // uint8_t
-#define SENS_VocSmooth                           14566      // uint8_t
-#define SENS_VocExtCount                         14567      // 2 Bits, Bit 1-0
+#define SENS_VocDeltaAbs                         14863      // uint16_t
+#define SENS_VocDeltaPercent                     14865      // uint8_t
+#define SENS_VocSmooth                           14866      // uint8_t
+#define SENS_VocExtCount                         14867      // 2 Bits, Bit 1-0
 #define     SENS_VocExtCountMask 0x03
 #define     SENS_VocExtCountShift 0
-#define SENS_VocExtRead                          14567      // 1 Bit, Bit 2
+#define SENS_VocExtRead                          14867      // 1 Bit, Bit 2
 #define     SENS_VocExtReadMask 0x04
 #define     SENS_VocExtReadShift 2
-#define SENS_VocIntPercent                       14568      // uint8_t
-#define SENS_VocExt1Percent                      14569      // uint8_t
-#define SENS_VocExt2Percent                      14570      // uint8_t
-#define SENS_Co2Offset                           14571      // int8_t
-#define SENS_Co2CycleBase                        14572      // 2 Bits, Bit 7-6
+#define SENS_VocIntPercent                       14868      // uint8_t
+#define SENS_VocExt1Percent                      14869      // uint8_t
+#define SENS_VocExt2Percent                      14870      // uint8_t
+#define SENS_Co2Offset                           14871      // int8_t
+#define SENS_Co2CycleBase                        14872      // 2 Bits, Bit 7-6
 #define     SENS_Co2CycleBaseMask 0xC0
 #define     SENS_Co2CycleBaseShift 6
-#define SENS_Co2CycleTime                        14572      // 14 Bits, Bit 13-0
+#define SENS_Co2CycleTime                        14872      // 14 Bits, Bit 13-0
 #define     SENS_Co2CycleTimeMask 0x3FFF
 #define     SENS_Co2CycleTimeShift 0
-#define SENS_Co2DeltaAbs                         14574      // uint16_t
-#define SENS_Co2DeltaPercent                     14576      // uint8_t
-#define SENS_Co2Smooth                           14577      // uint8_t
-#define SENS_Co2ExtCount                         14578      // 2 Bits, Bit 1-0
+#define SENS_Co2DeltaAbs                         14874      // uint16_t
+#define SENS_Co2DeltaPercent                     14876      // uint8_t
+#define SENS_Co2Smooth                           14877      // uint8_t
+#define SENS_Co2ExtCount                         14878      // 2 Bits, Bit 1-0
 #define     SENS_Co2ExtCountMask 0x03
 #define     SENS_Co2ExtCountShift 0
-#define SENS_Co2ExtRead                          14578      // 1 Bit, Bit 2
+#define SENS_Co2ExtRead                          14878      // 1 Bit, Bit 2
 #define     SENS_Co2ExtReadMask 0x04
 #define     SENS_Co2ExtReadShift 2
-#define SENS_Co2IntPercent                       14579      // uint8_t
-#define SENS_Co2Ext1Percent                      14580      // uint8_t
-#define SENS_Co2Ext2Percent                      14581      // uint8_t
-#define SENS_DewOffset                           14583      // int8_t
-#define SENS_DewCycleBase                        14584      // 2 Bits, Bit 7-6
+#define SENS_Co2IntPercent                       14879      // uint8_t
+#define SENS_Co2Ext1Percent                      14880      // uint8_t
+#define SENS_Co2Ext2Percent                      14881      // uint8_t
+#define SENS_DewOffset                           14883      // int8_t
+#define SENS_DewCycleBase                        14884      // 2 Bits, Bit 7-6
 #define     SENS_DewCycleBaseMask 0xC0
 #define     SENS_DewCycleBaseShift 6
-#define SENS_DewCycleTime                        14584      // 14 Bits, Bit 13-0
+#define SENS_DewCycleTime                        14884      // 14 Bits, Bit 13-0
 #define     SENS_DewCycleTimeMask 0x3FFF
 #define     SENS_DewCycleTimeShift 0
-#define SENS_DewDeltaAbs                         14586      // uint16_t
-#define SENS_DewDeltaPercent                     14588      // uint8_t
-#define SENS_DewSmooth                           14589      // uint8_t
-#define SENS_LuxOffset                           14590      // int8_t
-#define SENS_LuxCycleBase                        14591      // 2 Bits, Bit 7-6
+#define SENS_DewDeltaAbs                         14886      // uint16_t
+#define SENS_DewDeltaPercent                     14888      // uint8_t
+#define SENS_DewSmooth                           14889      // uint8_t
+#define SENS_LuxOffset                           14890      // int8_t
+#define SENS_LuxCycleBase                        14891      // 2 Bits, Bit 7-6
 #define     SENS_LuxCycleBaseMask 0xC0
 #define     SENS_LuxCycleBaseShift 6
-#define SENS_LuxCycleTime                        14591      // 14 Bits, Bit 13-0
+#define SENS_LuxCycleTime                        14891      // 14 Bits, Bit 13-0
 #define     SENS_LuxCycleTimeMask 0x3FFF
 #define     SENS_LuxCycleTimeShift 0
-#define SENS_LuxDeltaAbs                         14593      // uint16_t
-#define SENS_LuxDeltaPercent                     14595      // uint8_t
-#define SENS_LuxSmooth                           14596      // uint8_t
-#define SENS_LuxExtCount                         14597      // 2 Bits, Bit 1-0
+#define SENS_LuxDeltaAbs                         14893      // uint16_t
+#define SENS_LuxDeltaPercent                     14895      // uint8_t
+#define SENS_LuxSmooth                           14896      // uint8_t
+#define SENS_LuxExtCount                         14897      // 2 Bits, Bit 1-0
 #define     SENS_LuxExtCountMask 0x03
 #define     SENS_LuxExtCountShift 0
-#define SENS_LuxExtRead                          14597      // 1 Bit, Bit 2
+#define SENS_LuxExtRead                          14897      // 1 Bit, Bit 2
 #define     SENS_LuxExtReadMask 0x04
 #define     SENS_LuxExtReadShift 2
-#define SENS_LuxIntPercent                       14598      // uint8_t
-#define SENS_LuxExt1Percent                      14599      // uint8_t
-#define SENS_LuxExt2Percent                      14600      // uint8_t
-#define SENS_TofOffset                           14601      // int8_t
-#define SENS_TofCycleBase                        14602      // 2 Bits, Bit 7-6
+#define SENS_LuxIntPercent                       14898      // uint8_t
+#define SENS_LuxExt1Percent                      14899      // uint8_t
+#define SENS_LuxExt2Percent                      14900      // uint8_t
+#define SENS_TofOffset                           14901      // int8_t
+#define SENS_TofCycleBase                        14902      // 2 Bits, Bit 7-6
 #define     SENS_TofCycleBaseMask 0xC0
 #define     SENS_TofCycleBaseShift 6
-#define SENS_TofCycleTime                        14602      // 14 Bits, Bit 13-0
+#define SENS_TofCycleTime                        14902      // 14 Bits, Bit 13-0
 #define     SENS_TofCycleTimeMask 0x3FFF
 #define     SENS_TofCycleTimeShift 0
-#define SENS_TofDeltaAbs                         14604      // uint16_t
-#define SENS_TofDeltaPercent                     14606      // uint8_t
-#define SENS_TofSmooth                           14607      // uint8_t
-#define SENS_TofExtCount                         14608      // 2 Bits, Bit 1-0
+#define SENS_TofDeltaAbs                         14904      // uint16_t
+#define SENS_TofDeltaPercent                     14906      // uint8_t
+#define SENS_TofSmooth                           14907      // uint8_t
+#define SENS_TofExtCount                         14908      // 2 Bits, Bit 1-0
 #define     SENS_TofExtCountMask 0x03
 #define     SENS_TofExtCountShift 0
-#define SENS_TofExtRead                          14608      // 1 Bit, Bit 2
+#define SENS_TofExtRead                          14908      // 1 Bit, Bit 2
 #define     SENS_TofExtReadMask 0x04
 #define     SENS_TofExtReadShift 2
-#define SENS_TofIntPercent                       14609      // uint8_t
-#define SENS_TofExt1Percent                      14610      // uint8_t
-#define SENS_TofExt2Percent                      14611      // uint8_t
-#define SENS_TempSensor                          14612      // 4 Bits, Bit 7-4
+#define SENS_TofIntPercent                       14909      // uint8_t
+#define SENS_TofExt1Percent                      14910      // uint8_t
+#define SENS_TofExt2Percent                      14911      // uint8_t
+#define SENS_TempSensor                          14912      // 4 Bits, Bit 7-4
 #define     SENS_TempSensorMask 0xF0
 #define     SENS_TempSensorShift 4
-#define SENS_HumSensor                           14612      // 4 Bits, Bit 3-0
+#define SENS_HumSensor                           14912      // 4 Bits, Bit 3-0
 #define     SENS_HumSensorMask 0x0F
 #define     SENS_HumSensorShift 0
-#define SENS_PreSensor                           14613      // 4 Bits, Bit 7-4
+#define SENS_PreSensor                           14913      // 4 Bits, Bit 7-4
 #define     SENS_PreSensorMask 0xF0
 #define     SENS_PreSensorShift 4
-#define SENS_VocSensor                           14613      // 4 Bits, Bit 3-0
+#define SENS_VocSensor                           14913      // 4 Bits, Bit 3-0
 #define     SENS_VocSensorMask 0x0F
 #define     SENS_VocSensorShift 0
-#define SENS_Co2Sensor                           14614      // 4 Bits, Bit 7-4
+#define SENS_Co2Sensor                           14914      // 4 Bits, Bit 7-4
 #define     SENS_Co2SensorMask 0xF0
 #define     SENS_Co2SensorShift 4
-#define SENS_LuxSensor                           14614      // 4 Bits, Bit 3-0
+#define SENS_LuxSensor                           14914      // 4 Bits, Bit 3-0
 #define     SENS_LuxSensorMask 0x0F
 #define     SENS_LuxSensorShift 0
-#define SENS_TofSensor                           14615      // 4 Bits, Bit 7-4
+#define SENS_TofSensor                           14915      // 4 Bits, Bit 7-4
 #define     SENS_TofSensorMask 0xF0
 #define     SENS_TofSensorShift 4
-#define SENS_SCD41MeasureIntervalDelayBase       14616      // 2 Bits, Bit 7-6
+#define SENS_SCD41MeasureIntervalDelayBase       14916      // 2 Bits, Bit 7-6
 #define     SENS_SCD41MeasureIntervalDelayBaseMask 0xC0
 #define     SENS_SCD41MeasureIntervalDelayBaseShift 6
-#define SENS_SCD41MeasureIntervalDelayTime       14616      // 14 Bits, Bit 13-0
+#define SENS_SCD41MeasureIntervalDelayTime       14916      // 14 Bits, Bit 13-0
 #define     SENS_SCD41MeasureIntervalDelayTimeMask 0x3FFF
 #define     SENS_SCD41MeasureIntervalDelayTimeShift 0
 
@@ -4189,7 +4217,7 @@
 #define BASE_KommentarModuleModuleParamSize 0
 #define BASE_KommentarModuleSubmodulesParamSize 0
 #define BASE_KommentarModuleParamSize 0
-#define BASE_KommentarModuleParamOffset 14618
+#define BASE_KommentarModuleParamOffset 14918
 #define BASE_KommentarModuleCalcIndex(index, m1) (index + BASE_KommentarModuleParamOffset + _channelIndex * BASE_KommentarModuleCount * BASE_KommentarModuleParamSize + m1 * BASE_KommentarModuleParamSize)
 
 
