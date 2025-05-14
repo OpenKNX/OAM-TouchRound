@@ -96,6 +96,9 @@
         "lv_gc.h": "c",
         "lv_theme_default.h": "c",
         "type60_4.c": "cpp",
-        "type60_3.c": "cpp"
+        "type60_3.c": "cpp",
+        "opening_lr.c": "cpp",
+        "thermostatauto.c": "cpp",
+        "closing_l.c": "cpp"
     }
 }
