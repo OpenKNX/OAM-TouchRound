@@ -8,9 +8,9 @@
             (time & 0xC000) == 0x8000 ? ((time & 0x3FFF) > 1000 ? 3600000 : \
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
-#define MAIN_OpenKnxId 0xA6
+#define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 5
+#define MAIN_ApplicationVersion 10
 #define MAIN_ParameterSize 14918
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"
@@ -19,7 +19,7 @@
 #define BRI_ModuleVersion 1
 #define TCH_ModuleVersion 1
 #define LOG_ModuleVersion 53
-#define FCB_ModuleVersion 4
+#define FCB_ModuleVersion 5
 #define SENS_ModuleVersion 67
 // Parameter with single occurrence
 
@@ -360,7 +360,7 @@
 #define ParamBRI_CHLightSwitchOn2Behavior            (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightSwitchOn2Behavior)))
 // Bei EIN Befehl
 #define ParamBRI_CHLightRGBSwitchOnBehavior          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOnBehavior)))
-// Bei EIN wenn aktuelle Farbe > 0
+// Bei EIN wenn aktuelle Helligkeit > 0%
 #define ParamBRI_CHLightRGBSwitchOn2Behavior         (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightRGBSwitchOn2Behavior)))
 // In HUE als dimmbare Lampe darstellen
 #define ParamBRI_CHJalousieHueEmulation              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHJalousieHueEmulation)) & BRI_CHJalousieHueEmulationMask))
@@ -428,7 +428,7 @@
 #define ParamBRI_CHDoorWindowMotor                   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowMotor)) & BRI_CHDoorWindowMotorMask))
 // Blockadenerkennung
 #define ParamBRI_CHDoorWindowObstructionDetection    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowObstructionDetection)) & BRI_CHDoorWindowObstructionDetectionMask))
-// Prozent Steuerung Objekt
+// Steuerungs-Objekt
 #define ParamBRI_CHDoorWindowUsePercent              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUsePercent)) & BRI_CHDoorWindowUsePercentMask))
 // Öffnen/Schließen Objekt
 #define ParamBRI_CHDoorWindowUpDownHandling          (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDoorWindowUpDownHandling)) & BRI_CHDoorWindowUpDownHandlingMask)
@@ -708,7 +708,7 @@
 #define ParamTCH_CHPageType                          (knx.paramByte(TCH_ParamCalcIndex(TCH_CHPageType)))
 // Seite über Blättern erreichbar
 #define ParamTCH_CHNavigation                        ((bool)(knx.paramByte(TCH_ParamCalcIndex(TCH_CHNavigation)) & TCH_CHNavigationMask))
-// Seitefreigabe über Objekt
+// Seitenfreigabe über Objekt
 #define ParamTCH_CHPageEnabled                       ((knx.paramByte(TCH_ParamCalcIndex(TCH_CHPageEnabled)) & TCH_CHPageEnabledMask) >> TCH_CHPageEnabledShift)
 // Layout
 #define ParamTCH_CHNumbeOfFields                     (knx.paramByte(TCH_ParamCalcIndex(TCH_CHNumbeOfFields)))
@@ -3128,24 +3128,34 @@
 #define     FCB_CHPrioOutputTypeShift 4
 #define FCB_CHPrioOutPKo0                        5      // uint8_t
 #define FCB_CHPrioOutByteKo0                     5      // uint8_t
+#define FCB_CHPrioOutSceneKo0                    5      // uint8_t
 #define FCB_CHPrioOutPKo1                        6      // uint8_t
 #define FCB_CHPrioOutByteKo1                     6      // uint8_t
+#define FCB_CHPrioOutSceneKo1                    6      // uint8_t
 #define FCB_CHPrioOutPKo2                        7      // uint8_t
 #define FCB_CHPrioOutByteKo2                     7      // uint8_t
+#define FCB_CHPrioOutSceneKo2                    7      // uint8_t
 #define FCB_CHPrioOutPKo3                        8      // uint8_t
 #define FCB_CHPrioOutByteKo3                     8      // uint8_t
+#define FCB_CHPrioOutSceneKo3                    8      // uint8_t
 #define FCB_CHPrioOutPKo4                        9      // uint8_t
 #define FCB_CHPrioOutByteKo4                     9      // uint8_t
+#define FCB_CHPrioOutSceneKo4                    9      // uint8_t
 #define FCB_CHPrioOutPKo5                       10      // uint8_t
 #define FCB_CHPrioOutByteKo5                    10      // uint8_t
+#define FCB_CHPrioOutSceneKo5                   10      // uint8_t
 #define FCB_CHPrioOutPKo6                       11      // uint8_t
 #define FCB_CHPrioOutByteKo6                    11      // uint8_t
+#define FCB_CHPrioOutSceneKo6                   11      // uint8_t
 #define FCB_CHPrioOutPKo7                       12      // uint8_t
 #define FCB_CHPrioOutByteKo7                    12      // uint8_t
+#define FCB_CHPrioOutSceneKo7                   12      // uint8_t
 #define FCB_CHPrioOutPKo8                       13      // uint8_t
 #define FCB_CHPrioOutByteKo8                    13      // uint8_t
+#define FCB_CHPrioOutSceneKo8                   13      // uint8_t
 #define FCB_CHPrioOutPDefault                   14      // uint8_t
 #define FCB_CHPrioOutByteDefault                14      // uint8_t
+#define FCB_CHPrioOutSceneDefault               14      // uint8_t
 #define FCB_CHPrioBehavKo0                      15      // 4 Bits, Bit 7-4
 #define     FCB_CHPrioBehavKo0Mask 0xF0
 #define     FCB_CHPrioBehavKo0Shift 4
@@ -3423,42 +3433,62 @@
 #define ParamFCB_CHPrioOutPKo0                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo0)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo0                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo0)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo0                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo0)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo1                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo1)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo1                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo1)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo1                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo1)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo2                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo2)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo2                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo2)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo2                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo2)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo3                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo3)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo3                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo3)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo3                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo3)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo4                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo4)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo4                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo4)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo4                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo4)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo5                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo5)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo5                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo5)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo5                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo5)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo6                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo6)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo6                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo6)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo6                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo6)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo7                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo7)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo7                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo7)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo7                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo7)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutPKo8                       (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPKo8)))
 // Ausgangswert
 #define ParamFCB_CHPrioOutByteKo8                    (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteKo8)))
+// Ausgangswert Szenennummer
+#define ParamFCB_CHPrioOutSceneKo8                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneKo8)))
 // Ausgangswert wenn alle Eingänge AUS
 #define ParamFCB_CHPrioOutPDefault                   (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutPDefault)))
 // Ausgangswert wenn alle Eingänge AUS
 #define ParamFCB_CHPrioOutByteDefault                (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutByteDefault)))
+// Ausgangswert Szenennummer wenn alle Eingänge AUS
+#define ParamFCB_CHPrioOutSceneDefault               (knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioOutSceneDefault)))
 // Initialisierung
 #define ParamFCB_CHPrioBehavKo0                      ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHPrioBehavKo0)) & FCB_CHPrioBehavKo0Mask) >> FCB_CHPrioBehavKo0Shift)
 // Initialisierung
