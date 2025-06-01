@@ -4,12 +4,28 @@ OpenKNX Firmware und Anwendung zur OpenKNX-kompatiblen Einbindung von runden Tou
 
 ## Anwendungszwecke
 
-Aktuell werden Screens für folgende Anwendungszwecke entwickelt:
-- Dimmen
-- Schalten
-- Türsteuerung
+Folgende Geräte können gesteuert werden:
 
-Der angezeigt Screen (auch mehrere) kann über die ETS ausgewählt werden.
+- Ein- Ausschaltbares Gerät 
+- Steckdose
+- Lampe
+- Jalousie
+- Rolladen
+- Markise
+- Thermostat
+- Anzeige
+- Alam
+- Lüfter
+- Fenster
+- Tür
+- Garagentor
+- Szene
+- Mediensteuerung
+
+Die gesamte Konfiguration erfolgt über die ETS.
+Zusätzlich gibt es die Möglichkeit Benutzerspezifische Bildsymbole auf das Gerät zu laden.
+
+Mehr Information über die Konfiguration sind in der [Applikationsbeschreibung](doc/Applikationsbeschreibung.md) zu finden.
 
 ## Kompatible Displays
 
