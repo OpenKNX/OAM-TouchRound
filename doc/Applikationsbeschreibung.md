@@ -7,6 +7,8 @@
 
 * Diese KNXprod wird nicht von der KNX Association offiziell unterstützt!
 * Die Erzeugung der KNXprod geschieht auf Eure eigene Verantwortung!
+* Wird die Hintergrundbeleuchtung des Display's bei abgeschalten der Anzeige nicht ausgeschalten, ist die Hardware falsch konfiguriert. In diesem Fall muss der DIP Schalter 2 auf der Rückseite der Display-Platine umgeschalten werden.
+
 
 ## Module
 
