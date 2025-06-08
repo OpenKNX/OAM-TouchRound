@@ -34,6 +34,7 @@ void backgroundLight(bool on)
 
 void setup()
 {
+    int workaroundDmaChannel = dma_claim_unused_channel(true);
     const uint8_t firmwareRevision = 0;
     openknx.init(firmwareRevision);
     openknx.addModule(9, openknxFileTransferModule);
@@ -45,6 +46,7 @@ void setup()
     openknx.addModule(3, openknxSensorModule);
     openknx.addModule(4, openknxSensorDevicesModule);
     openknx.setup();
+    dma_channel_unclaim(workaroundDmaChannel);
 }
 
 void loop()
