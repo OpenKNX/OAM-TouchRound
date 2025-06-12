@@ -8,9 +8,9 @@
             (time & 0xC000) == 0x8000 ? ((time & 0x3FFF) > 1000 ? 3600000 : \
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
-#define MAIN_OpenKnxId 0xA6
+#define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 7
+#define MAIN_ApplicationVersion 12
 #define MAIN_ParameterSize 14968
 #define MAIN_MaxKoNumber 1049
 #define MAIN_OrderNumber "OpenKnxTouchRound"

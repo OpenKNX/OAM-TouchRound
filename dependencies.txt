@@ -11,4 +11,3 @@ f821317 v1 lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridg
 e39365e v1 lib/OFM-VirtualButton https://github.com/OpenKNX/OFM-VirtualButton
 29d46fb v1dev-tpuartlib lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 ca62b63 v1 lib/OGM-SensorDevices https://github.com/OpenKNX/OGM-SensorDevices.git
-5793878 master lib/TFT_eSPI https://github.com/Bodmer/TFT_eSPI
