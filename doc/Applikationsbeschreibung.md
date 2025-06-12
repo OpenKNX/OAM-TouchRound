@@ -27,4 +27,5 @@ Die Smart Home Bridge besteht aus folgenden Modulen:
   Hier können Logikfunktionen konfiguriert werden.
 - [Funktionsblöcke](https://github.com/OpenKNX/OFM-FunctionBlocks/blob/v1/doc/Applikationsbeschreibung-FunctionBlocks.md)
   Zusätzliche Funktionen wie Logikgatter mit vielen Eingängen, Countdown und vieles mehr.
-
+- [Sensoren](https://github.com/OpenKNX/OFM-SensorModule/blob/v1/doc/Applikationsbeschreibung-Sensor.md)
+  Konfiguration von am Display zusätzlich angeschlossene Sensoren
