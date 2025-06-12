@@ -14,4 +14,7 @@
 #define TOUCH_LEFT_PIN 24
 #define TOUCH_RIGHT_PIN 25
 
+#define I2C_WIRE Wire1
+#define I2C_SDA_PIN 26
+#define I2C_SCL_PIN 27
 

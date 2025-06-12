@@ -43,8 +43,8 @@ void setup()
     openknx.addModule(10, openknxTouchDisplayModule);
     openknx.addModule(1, openknxLogic);
     openknx.addModule(2, openknxFunctionBlocksModule);
-    openknx.addModule(3, openknxSensorModule);
-    openknx.addModule(4, openknxSensorDevicesModule);
+    openknx.addModule(3, openknxSensorDevicesModule); // SensorDevices must be before SensorModule, because SensorModule uses SensorDevices
+    openknx.addModule(4, openknxSensorModule);
     openknx.setup();
     dma_channel_unclaim(workaroundDmaChannel);
 }
