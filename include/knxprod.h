@@ -8,18 +8,22 @@
             (time & 0xC000) == 0x8000 ? ((time & 0x3FFF) > 1000 ? 3600000 : \
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
-#define MAIN_OpenKnxId 0xA6
+#ifndef FIRMWARE_NAME
+    #define FIRMWARE_NAME "Rundes Touch-Display (Dev)"
+#endif
+#define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 16
+#define MAIN_ApplicationVersion 19
+#define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 15032
-#define MAIN_MaxKoNumber 1049
+#define MAIN_MaxKoNumber 2088
 #define MAIN_OrderNumber "OpenKnxTouchRound"
 #define BASE_ModuleVersion 20
 #define UCT_ModuleVersion 4
-#define BRI_ModuleVersion 1
-#define TCH_ModuleVersion 1
+#define BRI_ModuleVersion 2
+#define TCH_ModuleVersion 2
 #define LOG_ModuleVersion 55
-#define FCB_ModuleVersion 5
+#define FCB_ModuleVersion 6
 #define SENS_ModuleVersion 67
 // Parameter with single occurrence
 
@@ -239,27 +243,33 @@
 #define BRI_CHThermostatTemperaturUnitType      53      // 1 Bit, Bit 7
 #define     BRI_CHThermostatTemperaturUnitTypeMask 0x80
 #define     BRI_CHThermostatTemperaturUnitTypeShift 7
-#define BRI_CHThermostatKoModeHeating           53      // 1 Bit, Bit 6
-#define     BRI_CHThermostatKoModeHeatingMask 0x40
-#define     BRI_CHThermostatKoModeHeatingShift 6
-#define BRI_CHThermostatKoModeHeatingFeedback   53      // 1 Bit, Bit 5
-#define     BRI_CHThermostatKoModeHeatingFeedbackMask 0x20
-#define     BRI_CHThermostatKoModeHeatingFeedbackShift 5
-#define BRI_CHThemostateHeatingFeedbackKoType   53      // 1 Bit, Bit 4
-#define     BRI_CHThemostateHeatingFeedbackKoTypeMask 0x10
-#define     BRI_CHThemostateHeatingFeedbackKoTypeShift 4
+#define BRI_CHThermostatKoType                  53      // 1 Bit, Bit 6
+#define     BRI_CHThermostatKoTypeMask 0x40
+#define     BRI_CHThermostatKoTypeShift 6
+#define BRI_CHThermostatFeedbackKoType          53      // 1 Bit, Bit 5
+#define     BRI_CHThermostatFeedbackKoTypeMask 0x20
+#define     BRI_CHThermostatFeedbackKoTypeShift 5
 #define BRI_CHThermostatMode                    53      // 4 Bits, Bit 3-0
 #define     BRI_CHThermostatModeMask 0x0F
 #define     BRI_CHThermostatModeShift 0
-#define BRI_CHThermostatKoModeCooling           54      // 1 Bit, Bit 7
+#define BRI_CHThermostatKoModeHeating           54      // 1 Bit, Bit 7
+#define     BRI_CHThermostatKoModeHeatingMask 0x80
+#define     BRI_CHThermostatKoModeHeatingShift 7
+#define BRI_CHThermostatKoModeHeatingFeedback   54      // 1 Bit, Bit 6
+#define     BRI_CHThermostatKoModeHeatingFeedbackMask 0x40
+#define     BRI_CHThermostatKoModeHeatingFeedbackShift 6
+#define BRI_CHThemostateHeatingFeedbackKoType   54      // 2 Bits, Bit 5-4
+#define     BRI_CHThemostateHeatingFeedbackKoTypeMask 0x30
+#define     BRI_CHThemostateHeatingFeedbackKoTypeShift 4
+#define BRI_CHThermostatKoModeCooling           55      // 1 Bit, Bit 7
 #define     BRI_CHThermostatKoModeCoolingMask 0x80
 #define     BRI_CHThermostatKoModeCoolingShift 7
-#define BRI_CHThermostatKoModeCoolingFeedback   54      // 1 Bit, Bit 6
+#define BRI_CHThermostatKoModeCoolingFeedback   55      // 1 Bit, Bit 6
 #define     BRI_CHThermostatKoModeCoolingFeedbackMask 0x40
 #define     BRI_CHThermostatKoModeCoolingFeedbackShift 6
-#define BRI_CHThemostateCoolingFeedbackKoType   54      // 1 Bit, Bit 5
-#define     BRI_CHThemostateCoolingFeedbackKoTypeMask 0x20
-#define     BRI_CHThemostateCoolingFeedbackKoTypeShift 5
+#define BRI_CHThemostateCoolingFeedbackKoType   55      // 2 Bits, Bit 5-4
+#define     BRI_CHThemostateCoolingFeedbackKoTypeMask 0x30
+#define     BRI_CHThemostateCoolingFeedbackKoTypeShift 4
 #define BRI_CHAlarmInvert                       53      // 1 Bit, Bit 7
 #define     BRI_CHAlarmInvertMask 0x80
 #define     BRI_CHAlarmInvertShift 7
@@ -373,20 +383,24 @@
 #define ParamBRI_CHMediaTextInput                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHMediaTextInput)) & BRI_CHMediaTextInputMask))
 // Einheit
 #define ParamBRI_CHThermostatTemperaturUnitType      ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatTemperaturUnitType)) & BRI_CHThermostatTemperaturUnitTypeMask))
+// Steuer-Objekt-Type
+#define ParamBRI_CHThermostatKoType                  ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoType)) & BRI_CHThermostatKoTypeMask))
+// Rückmeldungs-Objekt-Type
+#define ParamBRI_CHThermostatFeedbackKoType          ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatFeedbackKoType)) & BRI_CHThermostatFeedbackKoTypeMask))
+// Optionen
+#define ParamBRI_CHThermostatMode                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)) & BRI_CHThermostatModeMask)
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeHeating           ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeating)) & BRI_CHThermostatKoModeHeatingMask))
 // Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeHeatingFeedback   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeHeatingFeedback)) & BRI_CHThermostatKoModeHeatingFeedbackMask))
 // Heizen aktiv Rückmeldung
-#define ParamBRI_CHThemostateHeatingFeedbackKoType   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)) & BRI_CHThemostateHeatingFeedbackKoTypeMask))
-// Optionen
-#define ParamBRI_CHThermostatMode                    (knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatMode)) & BRI_CHThermostatModeMask)
+#define ParamBRI_CHThemostateHeatingFeedbackKoType   ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateHeatingFeedbackKoType)) & BRI_CHThemostateHeatingFeedbackKoTypeMask) >> BRI_CHThemostateHeatingFeedbackKoTypeShift)
 // Betriebsart
 #define ParamBRI_CHThermostatKoModeCooling           ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCooling)) & BRI_CHThermostatKoModeCoolingMask))
 // Betriebsart Rückmeldung
 #define ParamBRI_CHThermostatKoModeCoolingFeedback   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThermostatKoModeCoolingFeedback)) & BRI_CHThermostatKoModeCoolingFeedbackMask))
 // Kühlen aktiv Rückmeldung
-#define ParamBRI_CHThemostateCoolingFeedbackKoType   ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)) & BRI_CHThemostateCoolingFeedbackKoTypeMask))
+#define ParamBRI_CHThemostateCoolingFeedbackKoType   ((knx.paramByte(BRI_ParamCalcIndex(BRI_CHThemostateCoolingFeedbackKoType)) & BRI_CHThemostateCoolingFeedbackKoTypeMask) >> BRI_CHThemostateCoolingFeedbackKoTypeShift)
 // Eingang invertieren
 #define ParamBRI_CHAlarmInvert                       ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHAlarmInvert)) & BRI_CHAlarmInvertMask))
 // Type
@@ -510,6 +524,12 @@
 #define TCH_DisplayRotation                     3605      // 4 Bits, Bit 7-4
 #define     TCH_DisplayRotationMask 0xF0
 #define     TCH_DisplayRotationShift 4
+#define TCH_KoPageSwitchOn                      3605      // 1 Bit, Bit 3
+#define     TCH_KoPageSwitchOnMask 0x08
+#define     TCH_KoPageSwitchOnShift 3
+#define TCH_KoDefaultPageSwitchOn               3605      // 1 Bit, Bit 2
+#define     TCH_KoDefaultPageSwitchOnMask 0x04
+#define     TCH_KoDefaultPageSwitchOnShift 2
 #define TCH_ColorPaletteDay                     3606      // 8 Bits, Bit 7-0
 #define TCH_ColorPaletteDayOn                   3607      // 8 Bits, Bit 7-0
 #define TCH_ColorPaletteNight                   3608      // 8 Bits, Bit 7-0
@@ -547,6 +567,10 @@
 #define ParamTCH_ThemeNight                          (knx.paramByte(TCH_ThemeNight) & TCH_ThemeNightMask)
 // Anzeige drehen
 #define ParamTCH_DisplayRotation                     ((knx.paramByte(TCH_DisplayRotation) & TCH_DisplayRotationMask) >> TCH_DisplayRotationShift)
+// Objekt 'Gehe zu Seite' schaltet Anzeige ein
+#define ParamTCH_KoPageSwitchOn                      ((bool)(knx.paramByte(TCH_KoPageSwitchOn) & TCH_KoPageSwitchOnMask))
+// Objekt 'Standardseite' schaltet Anzeige ein
+#define ParamTCH_KoDefaultPageSwitchOn               ((bool)(knx.paramByte(TCH_KoDefaultPageSwitchOn) & TCH_KoDefaultPageSwitchOnMask))
 // Farbe Bedienelemente
 #define ParamTCH_ColorPaletteDay                     (knx.paramByte(TCH_ColorPaletteDay))
 // Farbe Bild EIN
@@ -3178,9 +3202,6 @@
 #define FCB_CHLogicKo8D                          4      // 2 Bits, Bit 7-6
 #define     FCB_CHLogicKo8DMask 0xC0
 #define     FCB_CHLogicKo8DShift 6
-#define FCB_CHLogicKo9D                          4      // 2 Bits, Bit 5-4
-#define     FCB_CHLogicKo9DMask 0x30
-#define     FCB_CHLogicKo9DShift 4
 #define FCB_CHLogicOutInv                        4      // 1 Bit, Bit 4
 #define     FCB_CHLogicOutInvMask 0x10
 #define     FCB_CHLogicOutInvShift 4
@@ -3503,8 +3524,6 @@
 #define ParamFCB_CHLogicKo7D                         (knx.paramByte(FCB_ParamCalcIndex(FCB_CHLogicKo7D)) & FCB_CHLogicKo7DMask)
 // Eingang 9
 #define ParamFCB_CHLogicKo8D                         ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHLogicKo8D)) & FCB_CHLogicKo8DMask) >> FCB_CHLogicKo8DShift)
-// Eingang 10
-#define ParamFCB_CHLogicKo9D                         ((knx.paramByte(FCB_ParamCalcIndex(FCB_CHLogicKo9D)) & FCB_CHLogicKo9DMask) >> FCB_CHLogicKo9DShift)
 // Invertiert
 #define ParamFCB_CHLogicOutInv                       ((bool)(knx.paramByte(FCB_ParamCalcIndex(FCB_CHLogicOutInv)) & FCB_CHLogicOutInvMask))
 // Initialisierung
