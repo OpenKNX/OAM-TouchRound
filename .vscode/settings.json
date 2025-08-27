@@ -99,6 +99,9 @@
         "type60_3.c": "cpp",
         "opening_lr.c": "cpp",
         "thermostatauto.c": "cpp",
-        "closing_l.c": "cpp"
+        "closing_l.c": "cpp",
+        "type80.c": "cpp",
+        "type92.c": "cpp",
+        "type31_a.c": "cpp"
     }
 }
