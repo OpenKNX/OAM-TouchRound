@@ -17,8 +17,9 @@ bool touchIsPressed()
     return chsc6x_is_pressed();
 }
 
-void displayInit()
+void displayInit(uint8_t screenRotation)
 {
+    screen_rotation = screenRotation;
     lv_xiao_disp_init();
 }
 
