@@ -17,6 +17,7 @@
   <op:config name="%LOG_NumChannelsDefault%" value="1" />
   <op:config name="%LOG_EnableSave%" value="1" />
   
+  <op:config name="%TCH_TabName%" value="Rundes Touch-Display" />
   <op:config name="%BRI_TabName%" value="Geräte" />
   <op:config name="%BRI_TabIcon%" value="home-edit-outline" />
   <op:config name="%BRI_DisplaySettings%" value="1" />
