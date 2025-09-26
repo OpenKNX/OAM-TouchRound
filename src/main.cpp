@@ -36,7 +36,7 @@ void backgroundLight(bool on)
 void setup()
 {
     int workaroundDmaChannel = dma_claim_unused_channel(true);
-    const uint8_t firmwareRevision = 1;
+    const uint8_t firmwareRevision = 2;
     openknx.init(firmwareRevision);
     openknx.addModule(9, openknxFileTransferModule);
     openknx.addModule(8, openknxUsbExchangeModule);
