@@ -9,11 +9,11 @@
                                          (time & 0x3FFF) * 3600000 ) : 0 )
                                              
 #ifndef FIRMWARE_NAME
-    #define FIRMWARE_NAME "Rundes Touch-Display"
+    #define FIRMWARE_NAME "Rundes Touch-Display (Dev)"
 #endif
-#define MAIN_OpenKnxId 0xA6
+#define MAIN_OpenKnxId 0xAF
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 17
+#define MAIN_ApplicationVersion 19
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 15032
 #define MAIN_MaxKoNumber 2088
