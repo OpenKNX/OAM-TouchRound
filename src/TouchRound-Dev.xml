@@ -70,7 +70,7 @@
     <op:define prefix="SENS" 
               share="../lib/OFM-SensorModule/src/Sensormodul.share.xml" 
               ModuleType="12"
-              KoSingleOffset="2000">
+              KoSingleOffset="2043">
       <op:verify File="../lib/OFM-SensorModule/library.json" ModuleVersion="%SENS_VerifyVersion%" />
     </op:define>
 
