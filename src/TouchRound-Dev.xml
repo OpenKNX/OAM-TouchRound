@@ -3,6 +3,10 @@
 <KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
 
   <op:config href="TouchRound.conf.xml" />
+  <op:config name="%SWA_Measure%" value="0" />
+
+  <op:nowarn id="1" regex="ReleaseApplicationVersion" />
+  <op:nowarn id="1" regex="ReleaseReplacesVersions" />
 
   <op:ETS OpenKnxId="0xAF"
             ApplicationNumber="0x04"
@@ -74,14 +78,33 @@
       <op:verify File="../lib/OFM-SensorModule/library.json" ModuleVersion="%SENS_VerifyVersion%" />
     </op:define>
 
-    <!-- <op:define prefix="BTN"
-              share="../lib/OFM-VirtualButton/src/VirtualButton.share.xml"
-              template="../lib/OFM-VirtualButton/src/VirtualButton.templ.xml"
-              NumChannels="1"
-              KoOffset="400"
-              ModuleType="13" >
-      <op:verify File="../lib/OFM-VirtualButton/library.json" ModuleVersion="%BTN_VerifyVersion%" />
-    </op:define> -->
+    <op:define prefix="SWA"
+      share="../lib/OFM-SwitchActuator/src/SwitchActuatorModule.share.xml"
+      template="../lib/OFM-SwitchActuator/src/SwitchActuatorModule.templ.xml"
+      ModuleType="15"
+      NumChannels="1"
+      KoSingleOffset="1900"
+      KoOffset="1901">
+      <op:verify File="../lib/OFM-SwitchActuator/library.json" ModuleVersion="%SWA_VerifyVersion%" />
+    </op:define> <!-- 9 KOs/Ch = 9 -->
+
+    <op:define prefix="BI"
+      share="../lib/OFM-BinaryInput/src/BinaryInputChannel.share.xml"
+      template="../lib/OFM-BinaryInput/src/BinaryInputChannel.templ.xml"
+      ModuleType="16"
+      NumChannels="4"
+      KoOffset="1910" >
+      <op:verify File="../lib/OFM-BinaryInput/library.json" ModuleVersion="%BI_VerifyVersion%" /> 
+    </op:define> <!-- 1 KO/Ch = 6 -->
+
+    <op:define prefix="BTN"
+      share="../lib/OFM-VirtualButton/src/VirtualButton.share.xml"
+      template="../lib/OFM-VirtualButton/src/VirtualButton.templ.xml"
+      ModuleType="17"
+      NumChannels="4"
+      KoOffset="1920">
+      <op:verify File="../lib/OFM-VirtualButton/library.json" ModuleVersion="%BTN_VerifyVersion%" /> 
+    </op:define> <!-- 6 KOs/Ch = 72 -->
 
     <generate />
 </KNX>
