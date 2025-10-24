@@ -396,7 +396,7 @@
 #define ParamBRI_CHDeviceType                        (knx.paramByte(BRI_ParamCalcIndex(BRI_CHDeviceType)))
 // Name
 #define ParamBRI_CHDeviceName                        (knx.paramData(BRI_ParamCalcIndex(BRI_CHDeviceName)))
-// Gerät deaktivieren (Konfiguration bleibt erhalten)
+// Gerät deaktivieren(Konfiguration bleibt erhalten)
 #define ParamBRI_CHDisableChannel                    ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHDisableChannel)) & BRI_CHDisableChannelMask))
 // Benutzerdefiniertes Bild
 #define ParamBRI_CHIcon                              ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHIcon)) & BRI_CHIconMask))
