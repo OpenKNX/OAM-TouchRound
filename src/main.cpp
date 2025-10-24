@@ -5,6 +5,9 @@
 #include "FunctionBlocksModule.h"
 #include "SmartHomeBridgeModule.h"
 #include "TouchDisplayModule.h"
+#include "GpioBinaryInputModule.h"
+#include "VirtualButtonModule.h"
+#include "SwitchActuatorModule.h"
 #include "Logic.h"
 #include "SensorModule.h"
 #include "SensorDevices.h"
@@ -45,6 +48,9 @@ void setup()
     openknx.addModule(2, openknxFunctionBlocksModule);
     openknx.addModule(3, openknxSensorDevicesModule); // SensorDevices must be before SensorModule, because SensorModule uses SensorDevices
     openknx.addModule(4, openknxSensorModule);
+    openknx.addModule(5, openknxGpioBinaryInputModule);
+    openknx.addModule(6, openknxVirtualButtonModule);
+    openknx.addModule(11, openknxSwitchActuatorModule);
     openknx.setup();
     dma_channel_unclaim(workaroundDmaChannel);
 }
