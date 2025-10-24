@@ -19,10 +19,10 @@
 #define ETS_ModuleId_SWA 8
 #define ETS_ModuleId_BI 9
 #define ETS_ModuleId_BTN 10
-#define MAIN_FirmwareName "Rundes Touch-Display (Dev)"
-#define MAIN_OpenKnxId 0xAF
+#define MAIN_FirmwareName "Rundes Touch-Display (Beta)"
+#define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 21
+#define MAIN_ApplicationVersion 18
 #define MAIN_FirmwareRevision 0
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 15894
