@@ -9,7 +9,7 @@ c825b0c v1 lib/OFM-SensorModule https://github.com/OpenKNX/OFM-SensorModule.git
 7802c6a v1 lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 70b79ab main lib/OFM-SwitchActuator https://github.com/OpenKNX/OFM-SwitchActuator.git
 b9c6ff5 v1 lib/OFM-TouchDisplay https://github.com/OpenKNX/OFM-TouchDisplay.git
-2c0bbb7 v1dev lib/OFM-UsbExchange https://github.com/OpenKNX/OFM-UsbExchange.git
+e869e19 v1 lib/OFM-UsbExchange https://github.com/OpenKNX/OFM-UsbExchange.git
 06ebdcb v1 lib/OFM-VirtualButton https://github.com/OpenKNX/OFM-VirtualButton
 193e462 v1 lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 e0f860e v1 lib/OGM-SensorDevices https://github.com/OpenKNX/OGM-SensorDevices.git
