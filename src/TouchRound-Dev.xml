@@ -3,7 +3,6 @@
 <KNX xmlns="http://knx.org/xml/project/20" xmlns:op="http://github.com/OpenKNX/OpenKNXproducer">
 
   <op:config href="TouchRound.conf.xml" />
-  <op:config name="%SWA_Measure%" value="0" />
 
   <op:nowarn id="1" regex="ReleaseApplicationVersion" />
   <op:nowarn id="1" regex="ReleaseReplacesVersions" />

@@ -12,8 +12,21 @@
 #include "SensorModule.h"
 #include "SensorDevices.h"
 #include "lv_xiao_round_screen.h"
+#include "DisplayLed.h"
 
 bool core1_separate_stack = true;
+
+void led_init()
+{
+#ifdef PROG_LED_PIN
+    openknx.leds.addLed(new OpenKNX::Led::GPIO(PROG_LED_PIN, PROG_LED_PIN_ACTIVE_ON), OpenKNX::Led::LED_TYPE_PROG);
+#endif
+#ifdef USER_LED_PIN
+    openknx.leds.addLed(new OpenKNX::Led::GPIO(USER_LED_PIN, USER_LED_PIN_ACTIVE_ON), OpenKNX::Led::LED_TYPE_USER);
+ #endif
+    DisplayLed::initLeds();
+  
+}
 
 bool touchIsPressed()
 {
@@ -40,6 +53,10 @@ void setup()
 {
     int workaroundDmaChannel = dma_claim_unused_channel(true);
     openknx.init();
+    if (!knx.configured())
+    {
+        openknx.ledFunctions.assignLed2Function(openknx.leds.getLed(OpenKNX::Led::LED_TYPE_USER), OPENKNX_LEDFUNC_BASE_STATE);
+    }
     openknx.addModule(9, openknxFileTransferModule);
     openknx.addModule(8, openknxUsbExchangeModule);
     openknx.addModule(7, openknxSmartHomeBridgeModule);

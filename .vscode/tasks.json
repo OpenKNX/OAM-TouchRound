@@ -4,7 +4,7 @@
         {
             "label": "OpenKNXproducer (Dev)",
             "type": "shell",
-            "command": "~/bin/OpenKNXproducer",
+            "command": "OpenKNXproducer",
             "args": [
                 "create",
                 "--Debug",
@@ -18,7 +18,7 @@
         {
             "label": "OpenKNXproducer Documentation",
             "type": "shell",
-            "command": "~/bin/OpenKNXproducer.exe",
+            "command": "OpenKNXproducer.exe",
             "args": [
                 "baggages",
                 "--DocFileName",
