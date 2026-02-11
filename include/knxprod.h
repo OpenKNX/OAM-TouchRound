@@ -296,6 +296,15 @@
 #define BRI_CHLockLocked                        53      // 1 Bit, Bit 5
 #define     BRI_CHLockLockedMask 0x20
 #define     BRI_CHLockLockedShift 5
+#define BRI_CHLockOperation                     53      // 1 Bit, Bit 4
+#define     BRI_CHLockOperationMask 0x10
+#define     BRI_CHLockOperationShift 4
+#define BRI_CHLockDirection                     53      // 1 Bit, Bit 3
+#define     BRI_CHLockDirectionMask 0x08
+#define     BRI_CHLockDirectionShift 3
+#define BRI_CHLockDisplay                       53      // 2 Bits, Bit 1-0
+#define     BRI_CHLockDisplayMask 0x03
+#define     BRI_CHLockDisplayShift 0
 #define BRI_CHLightHueEmulation                 53      // 1 Bit, Bit 7
 #define     BRI_CHLightHueEmulationMask 0x80
 #define     BRI_CHLightHueEmulationShift 7
@@ -465,6 +474,12 @@
 #define ParamBRI_CHLockLocking                       ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockLocking)) & BRI_CHLockLockingMask))
 // Objekt 'Versperrt Rückmeldung'
 #define ParamBRI_CHLockLocked                        ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockLocked)) & BRI_CHLockLockedMask))
+// Objekte für 'Entriegeln' / 'Verriegeln' Aktorrückmeldung
+#define ParamBRI_CHLockOperation                     ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockOperation)) & BRI_CHLockOperationMask))
+// Drehrichtung zum Verriegeln
+#define ParamBRI_CHLockDirection                     ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockDirection)) & BRI_CHLockDirectionMask))
+// Verriegelt / Entriegelt anzeigen als
+#define ParamBRI_CHLockDisplay                       (knx.paramByte(BRI_ParamCalcIndex(BRI_CHLockDisplay)) & BRI_CHLockDisplayMask)
 // Lampe in Hue verwenden
 #define ParamBRI_CHLightHueEmulation                 ((bool)(knx.paramByte(BRI_ParamCalcIndex(BRI_CHLightHueEmulation)) & BRI_CHLightHueEmulationMask))
 // KO für Schalten verwenden
