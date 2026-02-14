@@ -40,6 +40,4 @@ Die kompakte Steuerplatine kann optional vollständig in ein Standard-Schalterpr
 
 <kbd>![Schwarzer Rahmen](hardware/Bild1.png)</kbd>
 
-Dabei ist lediglich eine Einbautiefe von ca. 2 cm in einer Standard-60-mm-Unterputzdose erforderlich.
-
-Alle Infos zur kompatiblen Hardware findet sich [hier](https://www.ab-smarthouse.com/produkt/openknx-touch-display/) oder bei Interesse einfach Kontakt per [E-Mail](mailto:info@ab-smarthouse.com?subject=[OpenKNX]%20Touch%20Round) aufnehmen.
+Eine Funktionsbeschreibung sowie kompatible Hardware findet sich [hier](https://openknx.atlassian.net/wiki/spaces/OpenKNX/pages/172228615/Touch+Display).
