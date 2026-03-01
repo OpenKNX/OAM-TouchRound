@@ -1,9 +1,9 @@
-#define INFO_LED_PIN 11
-#define INFO_LED_PIN_ACTIVE_ON HIGH
 #define PROG_LED_PIN 10
 #define PROG_LED_PIN_ACTIVE_ON HIGH
 #define PROG_BUTTON_PIN 9
 #define PROG_BUTTON_PIN_INTERRUPT_ON FALLING
+#define USER_LED_PIN 11
+#define USER_LED_PIN_ACTIVE_ON HIGH
 
 #define KNX_UART_NUM 0
 #define KNX_UART_TX_PIN 12
@@ -28,3 +28,11 @@
 #define OPENKNX_SWA_SET_ACTIVE_ON LOW
 #define OPENKNX_SWA_RESET_ACTIVE_ON LOW
 #define OPENKNX_SWA_BISTABLE_IMPULSE_LENGTH 50
+
+#ifndef __ASSEMBLER__
+void led_init();
+#endif
+
+#define LED_INIT() \
+led_init();
+

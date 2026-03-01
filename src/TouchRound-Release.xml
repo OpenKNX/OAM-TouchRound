@@ -8,6 +8,7 @@
             ApplicationNumber="0x04"
             ApplicationVersion="%ReleaseApplicationVersion%"
             ReplacesVersions="%ReleaseReplacesVersions%"
+            UpdateLibraryJson="true"
             ApplicationRevision="0"
             ProductName="Rundes Touch-Display"
             ApplicationName="AB-TouchRound"
