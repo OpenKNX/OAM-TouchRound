@@ -6,10 +6,10 @@ eca6977 v1 lib/OFM-ConfigTransfer https://github.com/OpenKNX/OFM-ConfigTransfer.
 e8ec058 v1 lib/OFM-FunctionBlocks https://github.com/OpenKNX/OFM-FunctionBlocks.git
 45e2159 v1 lib/OFM-LogicModule https://github.com/OpenKNX/OFM-LogicModule.git
 a9347a7 v1 lib/OFM-SensorModule https://github.com/OpenKNX/OFM-SensorModule.git
-3fa0eed v1 lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
+fb62f8b v1dev lib/OFM-SmartHomeBridge https://github.com/OpenKNX/OFM-SmartHomeBridge
 7d4ec51 main lib/OFM-SwitchActuator https://github.com/OpenKNX/OFM-SwitchActuator.git
 f52e428 v1 lib/OFM-TouchDisplay https://github.com/OpenKNX/OFM-TouchDisplay.git
 55119fc v1 lib/OFM-UsbExchange https://github.com/OpenKNX/OFM-UsbExchange.git
 9ea99b5 v1 lib/OFM-VirtualButton https://github.com/OpenKNX/OFM-VirtualButton
-9f044df v1 lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
+f6dbb3c v1 lib/OGM-Common https://github.com/OpenKNX/OGM-Common.git
 369412c v1 lib/OGM-SensorDevices https://github.com/OpenKNX/OGM-SensorDevices.git
