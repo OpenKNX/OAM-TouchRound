@@ -22,7 +22,7 @@
 #define MAIN_FirmwareName "Rundes Touch-Display"
 #define MAIN_OpenKnxId 0xA6
 #define MAIN_ApplicationNumber 4
-#define MAIN_ApplicationVersion 21
+#define MAIN_ApplicationVersion 22
 #define MAIN_FirmwareRevision 0
 #define MAIN_ApplicationEncoding iso-8859-15
 #define MAIN_ParameterSize 16237
