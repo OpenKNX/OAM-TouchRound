@@ -32,6 +32,7 @@
 #include "Screens/SwitchScreen.h"
 #include "Screens/ThermostatScreen.h"
 #include "Screens/CellScreen.h"
+#include "Screens/CellScreenFactory.h"
 
 namespace
 {
@@ -46,6 +47,7 @@ public:
         CellScreen2::instance = new CellScreen2();
         CellScreen3::instance = new CellScreen3();
         CellScreen4::instance = new CellScreen4();
+        ICellScreenFactory::instance = new CellScreenFactory();
         ISwitchScreen::instance = new SwitchScreen();
         IDimmerScreen::instance = new DimmerScreen();
         IButtonMessageScreen::instance = new ButtonMessageScreen();
