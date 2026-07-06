@@ -33,6 +33,8 @@
 #include "Screens/ThermostatScreen.h"
 #include "Screens/CellScreen.h"
 #include "Screens/CellScreenFactory.h"
+#include "IScreenNavigation.h"
+#include "ScreenNavigation.h"
 
 namespace
 {
@@ -41,6 +43,7 @@ class DefaultTouchDisplayScreenFactory final : public TouchDisplayScreenFactory
 public:
     void createScreens() override
     {
+        IScreenNavigation::instance = new ScreenNavigation();
         IMessageScreen::instance = new MessageScreen();
         IMainFunctionScreen::instance = new MainFunctionScreen();
         IDateTimeScreen::instance = new DateTimeScreen();
