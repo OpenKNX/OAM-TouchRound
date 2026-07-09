@@ -6,6 +6,8 @@ IScreenNavigation *IScreenNavigation::instance = nullptr;
 
 void ScreenNavigation::init(TouchDisplayModule *module)
 {
+    if (!ParamTCH_Slide)
+        return;
     _module = module;
     if (_module == nullptr)
         return;
